@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="span12 collapse-group">
+        <h2><a data-toggle="collapse" data-target="#HH">Hodgkin Huxley</h2></a>
+        <div class="collapse" id="HH">
+            <p>Input the search options for each parameter to narrow down your search.</p>
+            <form class="form-horizontal">
+                <div class="container">
+                    
+                    <!-- Row -->
+                    <div class="row">
+                        <!-- Threshold -->
+                        <div class="col-md-4">
+                            <label class="span4">Threshold </label><br/>
+                            <input id="thresholdParam" type="text" class="input-medium search-query span4" name="thresholdParam" ng-model="searchDescription" placeholder="0.0">
+                                </div>
+                        <!-- Resting Potential -->
+                        <div class="col-md-4">
+                            <label class="span4">Resting Potential </label></br>
+                            <input id="restPotentialParam" type="text" class="input-medium search-query span4" name="restPotentialParam" ng-model="searchRestPotential" placeholder="0.0">
+                        </div>
+                    </div><!-- End Row -->
+                   <!-- Row -->
+                   <div class="row">
+                        <!-- Capacitance -->
+                        <div class="col-md-4">
+                            <label class="span4">Capacitance </label></br>
+                            <input id="capacitanceParam" type="text" class="input-medium search-query span4" name="capacitanceParam" ng-model="searchCapacitance" placeholder="0.0">   
+                                </div>
+
+                        <!-- D -->
+                        <div class="col-md-4">
+                            <label class="span4">Channels </label></br>
+                            <input id="dParam" type="text" class="input-medium search-query span4" name="dParam" ng-model="searchD" placeholder="List of Model Parameters">
+                                </div>
+                    </div><!-- End row -->
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button id="SearchSubmit" type="submit" class="btn" >Search</button>
+                        </div>
+                        
+                    </div><!-- End row -->
+                </div><!-- End Container -->
+            </form>
+        </div>
+    </div>
+</div>

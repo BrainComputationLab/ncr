@@ -1,0 +1,85 @@
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Threshold</th>
+            <th>Resting Potential</th>
+            <th>Leak Reversal Potential</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.parameters.threshhold.type}} : {{ db[5].specification.parameters.threshhold.value}}</td>
+            <td>{{ db[5].specification.parameters.resting_potential.type}} : {{ db[5].specification.parameters.resting_potential.min}} , {{ db[5].specification.parameters.resting_potential.max}}</td>
+            <td>{{ db[5].specification.parameters.leak_reversal_potential.type}} : {{ db[5].specification.parameters.leak_reversal_potential.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- CALCIUM -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>InitialCalcium</th>
+            <th>Calcium Spike Increment</th>
+            <th>Tau Calcium</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.parameters.initial_calcium.mean}}</td>
+            <td>{{ db[5].specification.parameters.calcium_spike_increment.type}} : {{ db[5].specification.parameters.calcium_spike_increment.value}}</td>
+            <td>{{ db[5].specification.parameters.tau_calcium.type}} : {{ db[5].specification.parameters.tau_calcium.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Last Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Leak Conductance</th>
+            <th>Tau Membrane</th>
+            <th>Membrane Resistance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.parameters.leak_conductance.type}} : {{ db[5].specification.parameters.leak_conductance.value}}</td>
+            <td>{{ db[5].specification.parameters.tau_membrane.type}} : {{ db[5].specification.parameters.tau_membrane.value}}</td>
+            <td>{{ db[5].specification.parameters.membrane_resistance.type}} : {{ db[5].specification.parameters.membrane_resistance.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Spike Shape Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Spike Shape</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.0, 0.0, 0.0, 0.0, 0.0, 0.0</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Channels </h3>
+<!-- Channels Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+</table>

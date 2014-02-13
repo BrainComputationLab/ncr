@@ -1,0 +1,66 @@
+<!-- 
+ Group: #3 - Neo-Cortical Repository
+ Class: CS 425
+ Date: 12/12/2013
+
+ This document supplied by the NCB team and altered for independent purposes by the NCR team 
+ -->
+
+<!DOCTYPE html>
+<html lang="en" ng-app> <!--ng-app="ModelManager">-->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="University of Nevada Brain Computation Lab">
+
+        <title>Neo-Cortical Repository</title>
+
+        <link rel="icon" type="image/png" href="/assets/ico/ncs_favicon.png">
+        
+        <!-- NCR Stylesheets -->
+        <link rel="stylesheet" href="assets/css/ncr/styles_reports.css" type="text/css">
+        <!-- End NCR Stylesheets -->
+                
+        <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/ncb/main.css" rel="stylesheet">
+        <link href="assets/css/ncb/modelbuilder.css" rel="stylesheet">
+    </head>
+
+    <body>
+    {% include 'global/header.html' %}
+
+    <div id="pages" >
+        {% include 'pages/reports/reports.html' %}
+        {% include 'pages/database/database.html' %} 
+    </div>
+
+    <div class="container footer">
+        <p>© University of Nevada {{ year }}</p>
+    </div>
+
+    <!-- Load the scripts via Require.js -->
+    <!--<script src="assets/js/lib/require.js" data-main="assets/js/ncb/main"></script>-->
+    <script src="assets/js/lib/jquery.js"></script>
+    <script src="assets/js/lib/angular.js"></script>
+    <script src="assets/js/lib/bootstrap.js"></script>
+    <script src="assets/js/lib/respond.js"></script>
+    <script src="assets/js/lib/store.js"></script>
+    <script src="assets/js/lib/html5shiv.js"></script>
+    <script src="assets/js/lib/underscore.js"></script>
+    <script src="assets/js/lib/angular-resource.js"></script>
+    <script src="assets/js/lib/async.js"></script>
+    <script src="assets/js/ncb/init.js"></script>
+    <script src="assets/js/ncr/DBManager.js"></script>
+
+        <!-- Report Scripts -->
+        <script src="assets/js/ncr/reports/sample_data.js"></script>
+        <script src="assets/js/ncr/reports/line-graph.js"></script>
+
+
+    <!-- Load Controllers -->
+        <script src="assets/js/ncr/controllers/DBController.js"></script>
+
+
+    </body>
+</html>
