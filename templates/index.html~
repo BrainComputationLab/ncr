@@ -56,7 +56,6 @@
         <!-- Report Scripts -->
         <script src="assets/js/ncr/reports/sample_data.js"></script>
         <script src="assets/js/ncr/reports/line-graph.js"></script>
-	<script src="assets/js/lib/jquery-ui.js"></script>
 
 
     <!-- Load Controllers -->

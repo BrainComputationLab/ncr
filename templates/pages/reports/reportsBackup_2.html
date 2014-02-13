@@ -7,8 +7,9 @@
         <h3> NCR Reports Testing </h3>
     </div>
     <div class="btn-group" style="margin:20px 20px;">
-		<button type="button" class="btn btn-default" onclick="addElement()">Line Graph</button>
-		<button type="button" class="btn btn-default" onclick="createPlot()">Raster Plot</button>
+		<button type="button" class="btn btn-default" onclick="addElement()">Click Me!</button>
+		<button type="button" class="btn btn-default" onclick="createGraph()">Graph</button>
+		<button type="button" class="btn btn-default" onclick="createPlot()">Generate Plot</button>
 	</div>
     
 	<div id="colorMenu" style="z-index:1000;"></div>
@@ -26,11 +27,6 @@
     
     <script>
         
-       	$(function() {
-	$( "#sortable" ).sortable();
-	$( "#sortable" ).disableSelection();
-	});
-
         var domsArray = new Array();
         var domID = 0;
         
@@ -252,10 +248,10 @@
         }
         
         function createPlot() {
-
+            
             // D3 plot basics for drawing axes found here:
             // http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
-            var w = 400,
+            var w = 940,
             h = 300,
             pad = 20,
             left_pad = 50,
@@ -263,11 +259,11 @@
             
             var svg = d3.select("#raster")
             .append("svg")
-            .attr("width", "100%")
+            .attr("width", "75%")
             .attr("height", h);
             
             var x = d3.scale.linear().domain([0, 23]).range([left_pad, w-pad]),
-            y = d3.scale.linear().domain([50, 0]).range([pad, h-pad*2]);
+            y = d3.scale.linear().domain([16, 0]).range([pad, h-pad*2]);
             
             var xAxis = d3.svg.axis().scale(x).orient("bottom"),
             yAxis = d3.svg.axis().scale(y).orient("left");
@@ -285,11 +281,11 @@
             
             // simple plot basics using D3, help found here:
             //http://bl.ocks.org/bunkat/2595950
-            var set = [];
+            var data = [[5,3], [10,17], [15,4], [2,8]];
             var g = svg.append("svg:g")
             
             g.selectAll("scatter-dots")
-            .data(set)
+            .data(data)
 			.enter().append("svg:circle")
 			.attr("class", "rasterData")
 			.attr("cx", function (d,i) { return x(d[0]); } )
@@ -297,11 +293,8 @@
 			.attr("r", 2);
             
             var result;
-	var concatedData = [];
-	var temp;
             
             var i=0;
-
             setInterval(function(){
                         i+=.5;
                         //x = d3.scale.linear().domain([2+i, 25+i]).range([left_pad, w-pad]);
@@ -314,44 +307,27 @@
                         .duration(300)
                         .ease("linear")
                         .call(xAxis);
-
-			data['values'].forEach(function(d,cellNum){
-				temp = d.shift();
-				d.push(temp);
-				if (temp > 32) {
-//document.getElementById("para1").innerHTML = "test";
-				concatedData.push([i+23,cellNum]);
-				}
-			});
                         
                         g.selectAll("scatter-dots")
-                        .data(concatedData)
+                        .data([[i+15,Math.random()*16]])
                         .enter().append("svg:circle")
                         .attr("class", "rasterData")
                         .attr("cx", function (d,i) { return x(d[0]); })
                         .attr("cy", function (d) { return y(d[1]); })
                         .attr("r", 2);
-
-			concatedData = [];
-/*
-			svg.selectAll(".rasterData").forEach(function(d, index){
-				if (d[0]<i)
-					d.remove();
-				document.getElementById("para1").innerHTML = d.attr("cx");
-
-			});
-*/
-
-
+                        
                         
                         svg.selectAll(".rasterData")
                         .transition()
                         .duration(300)
                         .ease("linear")
-                        .attr("cx", function (d) { return x(d[0]); })
-//                              return x(d[0]) < i ? x(d[0]+=23) : x(d[0]); })
-                        .attr("cy", function (d) { return y(d[1]); });
-
+                        .attr("cx", function (d,i) { 
+                              if (i==0) result = x(d[0]) < i ? x(d[0]+=23) : x(d[0]);
+                              return x(d[0]) < i ? x(d[0]+=23) : x(d[0]); })
+                        .attr("cy", function (d) { return y(d[1]); } );
+                        
+                        
+                        document.getElementById("test").innerHTML = result;
                         },300
                         )
         }
