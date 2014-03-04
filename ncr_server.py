@@ -54,6 +54,29 @@ def getmodels():
 def displayResults():
     return render_template('index.html', year = year, returned = izhCollection.find_one( {"entity_type": "neuron"} ), count = 48)#numResults)
 
+def search_scopes():
+    scope = 'lab' #replace with form data
+    user = list( db.Users.find( {'_id' : '6'}) ) #Replace with Gathered user's info
+    modelList = []
+    userIDList = []
+    userNameList = []
+    
+    if scope =='global':
+        modelList = db.Channels.find()
+        return render_template('index.html', year = 2014, mcount = len(modelList), db = modelList )
+    if scope == 'personal':
+        userIDList = list(user)
+    elif scope == 'lab':
+        userIDList = list(db.Labs.find( {'_id' : 'lab2'}, {'Users' : 1} )[0]['Users'])
+    #Create list of First + Last name of each author
+    #Should add email double check in the case of duplicate user names
+    for user in userIDList:
+        currentUser = db.Users.find({'_id' : user})
+        if currentUser:
+            userNameList.insert(0,  str(currentUser[0]['First_Name'] + " " + currentUser[0]['Last_Name']) )
+            modelList.extend( db.Channels.find({'author': userNameList[0]}) )
+    return render_template('index.html', year = userNameList, mcount = len(modelList), db = modelList )
+
 @app.route('/get_db', methods = ['GET'])
 def get_db():
 	modelsdb = db.sampleIzh
