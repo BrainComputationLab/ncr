@@ -42,10 +42,9 @@ def uploaded_file(filename):
 @app.route('/', methods=['GET'])
 def mainPage():
     year = datetime.datetime.now().year
-    modelList = list( db.sampleIzh.find() )
-    modelList = list(  list(db.Neuron.find() )  )
-    #modelList = list(db.Channels.find())
-    return render_template('index.html', year = year, mcount = len( modelList), db =  modelList ) #, models = list( db.sampleIzh.find()) )
+    modelList =  list(db.Neuron.find() )
+    modelList.extend( list(db.Channels.find()) )
+    return render_template('index.html', year = year, mcount = len( modelList), db =  modelList )
 
 def getmodels():
     modelsdb = db.sampleIzh

@@ -1,4 +1,23 @@
 ﻿function UserController($scope, $resource) {
+    //New Account
+    $scope.firstName = "";
+    $scope.lastName = "";
+    $scope.newUserEmail = "";
+    $scope.choosePassword = "";
+	$scope.confirmPassword = "";
+    $scope.securityQuestion = ""; //Not sure how to handle this
+	$scope.securityAnswer = "";
+
+    //Forgot Password
+    $scope.forgotPasswordEmail = 0;
+
+    //User Login
+    $scope.email = "";
+	$scope.password = "";
+	$scope.currentPage = 0;
+    
+    
+    
     // Define a new user resource that will simplify interaction between
     // the web server and the client
     var User = $resource('/users/:username', { username: '@username' },
