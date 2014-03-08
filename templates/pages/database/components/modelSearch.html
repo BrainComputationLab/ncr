@@ -1,0 +1,97 @@
+<form class="form-horizontal" role="form">
+<div class="checkbox">
+	<label>
+		<input type="checkbox" ng-model="izhBinary"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#izhoptions">Izhikevich</a>
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="izhoptions">
+	{% include 'pages/database/components/neurontypes/IZHNeuronCollapse.html' %}
+</div>         
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#hhoptions">Hodgkin Huxley</a>
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="hhoptions">
+	{% include 'pages/database/components/neurontypes/HHNeuronCollapse.html' %}
+</div>
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#ncsoptions">NCS</a>
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="ncsoptions">
+	{% include 'pages/database/components/neurontypes/NCSNeuronCollapse.html' %}
+</div>
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#vgoptions">Voltage Gated</a>
+		</div>  
+	</label>
+</div>		
+<div class="collapse" id="vgoptions">
+	{% include 'pages/database/components/channeltypes/VoltageGatedChannelCollapse.html' %}
+</div>   	
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#vgpoptions">Voltage Gated Particle</a>      
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="vgpoptions">
+	{% include 'pages/database/components/channeltypes/VoltageGatedParticleChannelCollapse.html' %}
+</div> 
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#vgioptions">Voltage Gated Ion</a>
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="vgioptions">
+	{% include 'pages/database/components/channeltypes/VoltageGatedIonChannelCollapse.html' %}
+</div>    
+<div class="checkbox">
+	<label>
+		<input type="checkbox"> 
+		<div class="size collapse-group">
+			<a data-toggle="collapse" data-target="#cdoptions">Calcium Dependent</a>
+		</div>  
+	</label>
+</div>
+<div class="collapse" id="cdoptions">
+	{% include 'pages/database/components/channeltypes/CalciumDependentChannelCollapse.html' %}
+</div>     
+<div class="form-group">
+	<label for="InputName" class="col-md-3 control-label"> Name</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="input model name">
+	</div>
+</div>
+<div class="form-group">
+	<label for="InputName" class="col-md-3 control-label"> Author</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="input model author">
+	</div>
+</div>
+<div class="form-group">
+	<label for="InputName" class="col-md-3 control-label"> Details</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="input details & notes">
+	</div>
+</div>
+</form>

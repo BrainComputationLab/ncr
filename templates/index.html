@@ -25,6 +25,7 @@
         <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
         <link href="assets/css/ncb/main.css" rel="stylesheet">
         <link href="assets/css/ncb/modelbuilder.css" rel="stylesheet">
+        <link href="assets/css/ncr/database_search.css" rel="stylesheet" type="text/css">
     </head>
 
     <body>
@@ -33,6 +34,9 @@
     <div id="pages" >
         {% include 'pages/reports/reports.html' %}
         {% include 'pages/database/database.html' %} 
+        
+        <!-- Logic based on whether user is logged in here-->
+        {% include 'pages/userAccount/userAccount.html' %} 
     </div>
 
     <div class="container footer">
@@ -52,15 +56,15 @@
     <script src="assets/js/lib/async.js"></script>
     <script src="assets/js/ncb/init.js"></script>
     <script src="assets/js/ncr/DBManager.js"></script>
+    <script src="assets/js/ncr/dbcontroller.js"></script>
 
         <!-- Report Scripts -->
         <script src="assets/js/ncr/reports/sample_data.js"></script>
         <script src="assets/js/ncr/reports/line-graph.js"></script>
-	<script src="assets/js/lib/jquery-ui.js"></script>
 
 
     <!-- Load Controllers -->
-        <script src="assets/js/ncr/controllers/DBController.js"></script>
+        <script src="assets/js/ncr/controllers/dbcontroller.js"></script>
 
 
     </body>

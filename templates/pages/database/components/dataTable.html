@@ -1,0 +1,38 @@
+<table class="table table-bordered table-hover" data-ng-controller="DBController">
+    <thead>
+        <tr>
+            <th>Model ID</th>
+            <th>Author</th>
+            <th>Description</th>
+            
+        </tr>
+    </thead>
+   <!-- Katie's Table 
+    <tbody>
+        {% for model in db %}
+        <tr>
+            <td>{{ model._id }}</td>
+            <td>{{ model.author }}</td>
+            <td>{{ model.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    -->
+    
+    <tbody>		
+        <tr data-ng-repeat="model in dbmodels | startFrom:currentPage*pageSize | limitTo:pageSize">               
+            <td>{{ '{{ model._id }}' }}</td>
+            <td>{{ '{{ model.author }}' }}</td>
+            <td>{{ '{{ model.entity_type }}' }}</td>
+            <td>{{ '{{ model.description }}' }}</td>
+        </tr>
+        <!-- Keep table at minimum 10 rows. -->
+        <tr ng-repeat="n in [] | range: currentPage*pageSize+pageSize - dbmodels.length">      
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </tbody>
+    
+</table>

@@ -1,54 +1,24 @@
-<div class="row">
-    <div class="span12 collapse-group">
-        <h2><a data-toggle="collapse" data-target="#VoltageGatedParticle">Voltage Gated Particle</h2></a>
-        <div class="collapse" id="VoltageGatedParticle">
-            <p>Input the search options for each parameter to narrow down your search.</p>
-            <form class="form-horizontal">
-        <div class="container">
-            
-<!-- Row -->
-        <div class="row">
-        <!-- Alpha -->
-        <div class="col-md-4">
-        <label class="span4">Alpha </label><br/>
-        <input id="alphaParam" type="text" class="input-medium search-query span4" name="alphaParam" ng-model="searchAlpha" placeholder="Model Parameters">
-        </div>
-        <!-- Beta -->
-        <div class="col-md-4">
-        <label class="span4">Beta </label><br/>
-        <input id="betaParam" type="text" class="input-medium search-query span4" name="betaParam" ng-model="searchBeta" placeholder="Model Parameters">
-        </div>
-            
-            
-        </div>
-            
-            <!-- Row -->
-            <div class="row">
-            
-            
-        <!-- Power -->
-        <div class="col-md-4">
-        <label class="span4">Power </label><br/>
-        <input id="powerParam" type="text" class="input-medium search-query span4" name="powerParam" ng-model="searchPower" placeholder="0.0">   
-        </div>
-
-        <!-- X Initial -->
-        <div class="col-md-4">
-        <label class="span4">X Initial </label><br/>
-        <input id="xInitialParam" type="text" class="input-medium search-query span4" name="xInitialParam" ng-model="searchXInitial" placeholder="0.0">
-        </div>
-
-        </div>
-
-        <br/>
-        <div class="row">
-            <div class="col-md-4">
-                <button id="SearchSubmit" type="submit" class="btn" >Search</button>
-            </div>
-            
-        </div><!-- End row -->
-        </div><!-- End Container -->
-            </form>
-        </div>
-    </div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> A</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Alpha">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> B</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Beta">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> P</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Power">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> X</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="X-Initial">
+	</div>
 </div>

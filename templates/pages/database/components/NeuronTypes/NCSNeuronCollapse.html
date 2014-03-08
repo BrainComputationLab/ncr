@@ -1,95 +1,18 @@
-<div class="row">
-    <div class="span12 collapse-group">
-        <h2><a data-toggle="collapse" data-target="#NCS">NCS</h2></a>
-        <div class="collapse" id="NCS">
-            <form class="form-horizontal">
-                <div class="container">
-                    
-                    <!-- Row -->
-                    <div class="row">
-                        <!-- Threshold -->
-                        <div class="col-md-4">
-                            <label class="span4">Threshold </label><br/>
-                            <input id="thresholdParam" type="text" class="input-medium search-query span4" name="thresholdParam" ng-model="searchThreshold" placeholder="0.0">
-                                </div>
-                        <!-- RestingPotential -->
-                        <div class="col-md-4">
-                            <label class="span4">Resting Potential </label><br/>
-                            <input id="restingPotentialParam" type="text" class="input-medium search-query span4" name="restingPotentialParam" ng-model="searchRestingPotential" placeholder="0.0">
-                                </div>
-                        <!-- Calcium -->
-                        <div class="col-md-4">
-                            <label class="span4">Calcium </label><br/>
-                            <input id="calciumParam" type="text" class="input-medium search-query span4" name="calciumParam" ng-model="searchCalcium" placeholder="0.0">   
-                                </div>
-                    </div>
-                    
-                    <!-- Row -->
-                    <div class="row">
-                        <!-- Calcium Spike Increment -->
-                        <div class="col-md-4">
-                            <label class="span4">Calcium Spike Increment </label><br/>
-                            <input id="calciumSpikeIncrementParam" type="text" class="input-medium search-query span4" name="calciumSpikeIncrementParam" ng-model="searchCalciumSpikeIncrement" placeholder="0.0">
-                                </div>
-                        <!-- Tau Calcium -->
-                        <div class="col-md-4">
-                            <label class="span4">Tau Calcium </label><br/>
-                            <input id="tauCalciumParam" type="text" class="input-medium search-query span4" name="tauCalciumParam" ng-model="searchTauCalcium" placeholder="0.0">
-                                </div>
-                        <!-- Leak Reversal Potential -->
-                        <div class="col-md-4">
-                            <label class="span4">Leak Reversal Potential </label><br/>
-                            <input id="leakReversalPotentialParam" type="text" class="input-medium search-query span4" name="leakReversalPotentialParam" ng-model="searchLeakReversalPotentialn" placeholder="0.0">
-                                </div>
-                    </div>
-                    <!-- Leak Conductance  -->
-                    <div class="row">
-                        <!-- Author -->
-                        <div class="col-md-4">
-                            <label class="span4">Leak Conductance </label>
-                            <br/>
-                            <input id="leakConductanceParam" type="text" class="input-medium search-query span4" name="leakConductanceParam" ng-model="searchLeakConductance" placeholder="0.0">
-                                </div>
-                        <!-- Tau Membrane -->
-                        <div class="col-md-4">
-                            <label class="span4">Tau Membrane </label><br/>
-                            <input id="tauMembraneParam" type="text" class="input-medium search-query span4" name="tauMembraneParam" ng-model="searchTauMembrane" placeholder="0.0">
-                                </div>
-                        
-                        <!-- R Membrane -->
-                        <div class="col-md-4">
-                            <label class="span4">R Membrane </label><br/>
-                            <input id="rMembraneParam" type="text" class="input-medium search-query span4" name="rMembraneParam" ng-model="searchRMembrane" placeholder="0.0">
-                                </div>
-                        
-                    </div><!-- End row -->
-                    
-                    
-                    <div class="row">
-                        <!-- Spike Shape -->
-                        <div class="col-md-4">
-                            <label class="span4">Spike Shape </label>
-                            <br/>
-                            <input id="spikeShapeParam" type="text" class="input-medium search-query span4" name="spikeShapeParam" ng-model="searchSpikeShape" placeholder="0.0, 0.0, ...">
-                                </div>
-                        <!-- Channels -->
-                        <div class="col-md-4">
-                            <label class="span4">Channels </label><br/>
-                            <input id="channelsParam" type="text" class="input-medium search-query span4" name="channelsParam" ng-model="searchChannels" placeholder="List of Model Parameters">
-                                </div>
-                        
-                        
-                    </div><!-- End row -->
-                    
-                                       <br/>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button id="SearchSubmit" type="submit" class="btn" >Search</button>
-                        </div>
-                        
-                    </div><!-- End row -->
-                </div><!-- End Container -->
-            </form>
-        </div>
-    </div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> T</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Threshold">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> R</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Resting Potential">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> Ca</label>
+	<div class="col-md-8">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Calcium">
+	</div>
 </div>

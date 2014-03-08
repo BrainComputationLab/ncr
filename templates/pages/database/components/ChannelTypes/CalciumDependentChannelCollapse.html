@@ -1,68 +1,42 @@
-<div class="row">
-    <div class="span12 collapse-group">
-        <h2><a data-toggle="collapse" data-target="#CalciumDependent">Calcium Dependent Channel</h2></a>
-        <div class="collapse" id="CalciumDependent">
-            <form class="form-horizontal">
-                <div class="container">
-                    
-                    <!-- Row -->
-                    <div class="row">
-                        <!-- M Initial -->
-                        <div class="col-md-4">
-                            <label class="span4">M Initial </label><br/>
-                            <input id="mInitialParam" type="text" class="input-medium search-query span4" name="mInitialParam" ng-model="searchMInitial" placeholder="0.0">
-                                </div>
-                        <!-- Reversal Potential -->
-                        <div class="col-md-4">
-                            <label class="span4">Reversal Potential </label><br/>
-                            <input id="reversalPotentialParam" type="text" class="input-medium search-query span4" name="reversalPotentialParam" ng-model="searchReversalPotential" placeholder="0.0">
-                                </div>
-                        <!-- Conductance -->
-                        <div class="col-md-4">
-                            <label class="span4">Conductance </label><br/>
-                            <input id="conductanceParam" type="text" class="input-medium search-query span4" name="conductanceParam" ng-model="searchConductance" placeholder="0.0">   
-                                </div>
-                    </div>
-                    
-                    <!-- Row -->
-                    <div class="row">
-                        <!-- Backwards Rate -->
-                        <div class="col-md-4">
-                            <label class="span4">Backwards Rate </label><br/>
-                            <input id="backwardsRateParam" type="text" class="input-medium search-query span4" name="backwardsRateParam" ng-model="searchBackwardsRate" placeholder="0.0">
-                                </div>
-                        <!-- Forward Scale -->
-                        <div class="col-md-4">
-                            <label class="span4">Forward Scale </label><br/>
-                            <input id="forwardScaleParam" type="text" class="input-medium search-query span4" name="forwardScaleParam" ng-model="searchForwardScale" placeholder="0.0">
-                                </div>
-                        <!-- Forward Exponent -->
-                        <div class="col-md-4">
-                            <label class="span4">Forward Exponent </label><br/>
-                            <input id="forwardExponentParam" type="text" class="input-medium search-query span4" name="forwardExponentParam" ng-model="searchForwardExponent" placeholder="0.0">
-                                </div>
-                    </div>
-                    <!-- Tau Long Term Positive -->
-                    <div class="row">
-                        <!-- Tau Scale -->
-                        <div class="col-md-4">
-                            <label class="span4">Tau Scale </label>
-                            <br/>
-                            <input id="tauScaleParam" type="text" class="input-medium search-query span4" name="tauScaleParam" ng-model="searchTauScale" placeholder="0.0">
-                                </div>
-                        
-                    </div><!-- End row -->
-                    
-                    
-                    <br/>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button id="SearchSubmit" type="submit" class="btn" >Search</button>
-                        </div>
-                        
-                    </div><!-- End row -->
-                </div><!-- End Container -->
-            </form>
-        </div>
-    </div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> M</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="M Initial">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> R</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Reverse Potential">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> C</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Conductance">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> B</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Backwards Rate">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> FS</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Forward Scale">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> FE</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Forward Exponent">
+	</div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="IzhA" class="col-md-1 control-label"> T</label>
+	<div class="col-md-9">
+		<input type="email" class="form-control input-sm" id="InputName" placeholder="Tau Scale">
+	</div>
 </div>
