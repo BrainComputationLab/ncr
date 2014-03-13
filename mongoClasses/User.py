@@ -11,15 +11,14 @@ class UserInfo(Document):
         'First_Name': basestring,
         'Last_Name': basestring,
         'Password': basestring,
-        'Time_Created': datetime,
-        'Last_Activity': datetime,
+        'Time_Created': basestring,
+        'Last_Activity': basestring,
         'Login_Site': basestring, 
         'Lab': basestring,
         'Rank': basestring,
         'Username': basestring, #email
         'Session_ID': int,
-        'Subscription' : datetime
+        'Subscription' : basestring,
+        'Security_Question' : basestring,
+        'Security_Answer' : basestring,
     }
-
-connection = Connection(host="mongodb://braintest:braintest@ds041167.mongolab.com:41167/brainlab_test", port=27017)
-connection.register([UserInfo])
