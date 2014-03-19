@@ -7,9 +7,8 @@
             
         </tr>
     </thead>
-   <!-- Katie's Table 
     <tbody>
-        {% for model in db %}
+        {% for model in dbmodels %}
         <tr>
             <td>{{ model._id }}</td>
             <td>{{ model.author }}</td>
@@ -17,8 +16,9 @@
         </tr>
         {% endfor %}
     </tbody>
-    -->
-    
+
+    <!-- Katie's Table 
+
     <tbody>		
         <tr data-ng-repeat="model in dbmodels | startFrom:currentPage*pageSize | limitTo:pageSize">               
             <td>{{ '{{ model._id }}' }}</td>
@@ -26,6 +26,7 @@
             <td>{{ '{{ model.entity_type }}' }}</td>
             <td>{{ '{{ model.description }}' }}</td>
         </tr>
+        -->
         <!-- Keep table at minimum 10 rows. -->
         <tr ng-repeat="n in [] | range: currentPage*pageSize+pageSize - dbmodels.length">      
             <td>&nbsp;</td>

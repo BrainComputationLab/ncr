@@ -1,26 +1,26 @@
 <!-- Model Info Modal -->
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelModal">
-Details</button>
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelModalVGC">
+Voltage Gated Channel Details</button>
 
 <!-- Modal -->
-<div class="modal fade" id="modelModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="modelModalVGC" tabindex="-1" role="dialog" aria-labelledby="modalTitleVGC" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modalTitle">Model ID: {{db[5]._id}}</h4>
+                <h4 class="modal-title" id="modalTitleVGC">Model Name : </h4>
                                 
             </div>
             <div class="modal-body">
     <!-- BODY OF MODAL -->
                 <h3>Description</h3>
-                <p> {{db[5].description}} </p>
+                <p> </p>
                 
                 <h3>Author</h3>
-                <p> {{db[5].author}} </p>
+                <p> </p>
                 
                 
-                {% include 'pages/database/components/izhDetails.html' %}
+                {% include 'pages/database/components/vgcDetails.html' %}
 
             </div>
             <div class="modal-footer">
