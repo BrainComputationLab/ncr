@@ -1,0 +1,58 @@
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Forward Scale</th>
+            <th>Conductance</th>
+            <th>Reversal Potential</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].channel_parameters.forward_scale.type}} : {{ db[5].channel_parameters.forward_scale.value}}</td>
+            <td>  {{db[5].channel_parameters.conductance.type}},
+                {{ db[5].channel_parameters.conductance.value}}</td>
+            <td>  {{db[5].channel_parameters.reversal_potential.type}},
+                {{ db[5].channel_parameters.reversal_potential.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Forward Exponent</th>
+            <th>Tau Scale</th>
+            <th>M Power</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{db[5].channel_parameters.forward_exponent.type}},
+                {{ db[5].channel_parameters.forward_exponent.value}}</td>
+            <td>  {{db[5].channel_parameters.tau_scale.type}},
+                {{ db[5].channel_parameters.tau_scale.value}}</td>
+            <td>  {{db[5].channel_parameters.m_power.type}},
+                {{ db[5].channel_parameters.m_power.value}}</td> 
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>M Initial</th>
+            <th>Backwards Rate</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{db[5].channel_parameters.m_intial.type}},
+                {{ db[5].channel_parameters.m_initial.value}}</td>        
+            <td>  {{db[5].channel_parameters.backwards_rate.type}},
+                {{ db[5].channel_parameters.backwards_rate.value}}</td>
+        </tr>
+    </tbody>
+</table>

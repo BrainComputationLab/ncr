@@ -1,0 +1,51 @@
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Conductance</th>
+            <th>Reversal Potential</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].channel_parameters.conductance.type}} : {{ db[5].channel_parameters.conductance.value}}</td>
+            <td>  {{db[5].channel_parameters.reversal_potential.type}},
+                {{ db[5].channel_parameters.reversal_potential.value}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- Particles -->
+<h1>Particles</h1>
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>X Initial</th>
+            <th>Power</th>
+            <th>Alpha</th>
+            <th>Beta</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for particle in particles %}
+        <tr>
+            <td>{{ db[5].channel_parameters.particles.x_initial}}</td>
+            <td>{{ db[5].channel_parameters.particles.power}}</td>
+            <td>"a" : {{ db[5].channel_parameters.particles.alpha.a}}, 
+            "b" : {{ db[5].channel_parameters.particles.alpha.b}}
+            "c" : {{ db[5].channel_parameters.particles.alpha.c}}
+            "d" : {{ db[5].channel_parameters.particles.alpha.d}}
+            "f" : {{ db[5].channel_parameters.particles.alpha.f}}
+            "h" : {{ db[5].channel_parameters.particles.alpha.g}</td>
+            <td>"a" : {{ db[5].channel_parameters.particles.beta.a}}, 
+                "b" : {{ db[5].channel_parameters.particles.beta.b}}
+                "c" : {{ db[5].channel_parameters.particles.beta.c}}
+                "d" : {{ db[5].channel_parameters.particles.beta.d}}
+                "f" : {{ db[5].channel_parameters.particles.beta.f}}
+                "h" : {{ db[5].channel_parameters.particles.beta.g}}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>

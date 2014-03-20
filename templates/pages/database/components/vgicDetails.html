@@ -1,0 +1,61 @@
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Activation Slope</th>
+            <th>Conductance</th>
+            <th>Deactivation Slope</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].channel_parameters.activation_slope.type}} : {{ db[5].channel_parameters.activation_slope.value}}</td>
+            <td>  {{db[5].channel_parameters.conductance.type}},
+                {{ db[5].channel_parameters.conductance.value}}</td>
+            <td>  {{db[5].channel_parameters.deactivation_slope.type}},
+                {{ db[5].channel_parameters.deactivation_slope.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Reversal Potential</th>
+            <th>Equilibrium Slope</th>
+            <th>V Half Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{db[5].channel_parameters.reversal_potential.type}},
+                {{ db[5].channel_parameters.reversal_potential.value}}</td>        
+            <td>  {{db[5].channel_parameters.equilibrium_slope.type}},
+                {{ db[5].channel_parameters.equilibrium_slope.value}}</td>
+            <td>  {{db[5].channel_parameters.v_half_active.type}},
+                {{ db[5].channel_parameters.v_half_active.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>M Power</th>
+            <th>Transaction Rate</th>
+            <th>M Initial</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{db[5].channel_parameters.m_power.type}},
+                {{ db[5].channel_parameters.m_power.value}}</td>        
+            <td>  {{db[5].channel_parameters.transaction_rate.type}},
+                {{ db[5].channel_parameters.transaction_rate.value}}</td>
+            <td>  {{db[5].channel_parameters.m_initial.type}},
+                {{ db[5].channel_parameters.m_initial.value}}</td>
+        </tr>
+    </tbody>
+</table>
