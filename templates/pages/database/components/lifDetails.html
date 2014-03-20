@@ -9,9 +9,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.threshhold}}</td>
-            <td>{{ db[5].specification.parameters.resting_potential.type}} : {{ db[5].specification.parameters.resting_potential.min}} , {{ db[5].specification.parameters.resting_potential.max}}</td>
-            <td>{{ db[5].specification.parameters.r_membrane}}</td>
+            <td>{{ db[5].specification.threshhold}}</td>
+            <td>{{ db[5].specification.resting_potential.type}} : {{ db[5].specification.resting_potential.min}} , {{ db[5].specification.resting_potential.max}}</td>
+            <td>{{ db[5].specification.r_membrane}}</td>
 
         </tr>
     </tbody>
@@ -28,8 +28,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.calcium_spike_increment}}</td>
-            <td>{{ db[5].specification.parameters.tau_calcium}}</td>
+            <td>{{ db[5].specification.calcium_spike_increment}}</td>
+            <td>{{ db[5].specification.tau_calcium}}</td>
         </tr>
     </tbody>
 </table>
@@ -43,9 +43,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.calcium.standard_deviation}}</td>
-            <td>{{ db[5].specification.parameters.calcium.type}}</td>
-            <td>{{ db[5].specification.parameters.calcium.mean}}</td>
+            <td>{{ db[5].specification.calcium.standard_deviation}}</td>
+            <td>{{ db[5].specification.calcium.type}}</td>
+            <td>{{ db[5].specification.calcium.mean}}</td>
         </tr>
     </tbody>
 </table>
@@ -61,9 +61,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.leak_conductance}}</td>
-            <td>{{ db[5].specification.parameters.tau_membrane}}</td>
-            <td>{{ db[5].specification.parameters.leak_reversal_potential}}</td>
+            <td>{{ db[5].specification.leak_conductance}}</td>
+            <td>{{ db[5].specification.tau_membrane}}</td>
+            <td>{{ db[5].specification.leak_reversal_potential}}</td>
         </tr>
     </tbody>
 </table>
@@ -77,7 +77,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{db[5].specification.parameters.spikeshape}}</td>
+            <td>{{db[5].specification..spikeshape}}</td>
         </tr>
     </tbody>
 </table>
@@ -91,7 +91,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for channel in db[5].specification.parameters.channels %}
+        {% for channel in db[5].specification.channels %}
         <tr>
             <td>{{channel}}</td>
         </tr>

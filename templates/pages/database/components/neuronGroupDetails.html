@@ -10,9 +10,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>  {{db[5].geometry.width}}</td>
-            <td>  {{db[5].geometry.depth}}</td>
-            <td>  {{db[5].geometry.height}}</td>
+            <td>  {{db[5].specification.geometry.width}}</td>
+            <td>  {{db[5].specification.geometry.depth}}</td>
+            <td>  {{db[5].specification.geometry.height}}</td>
         </tr>
     </tbody>
 </table>
@@ -30,7 +30,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for connection in db[5].connections %}
+        {% for connection in db[5].specification.connections %}
         <tr>
             <td>  {{connection.synapse}}</td>
             <td>  {{connection.recurrent}}</td>
@@ -54,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for group in db[5].neuron_groups %}
+        {% for group in db[5].specification.neuron_groups %}
         <tr>
             <td>  {{group.label}}</td>        
             <td>  {{group.neuron}}</td>        
@@ -78,10 +78,10 @@
         </tr>
     </thead>
     <tbody>
-        {% for subgroup in db[5].subgroups %}
+        {% for subgroup in db[5].specification.subgroups %}
         <tr>
             <td>  {{subgroup.label}}</td>        
-            <td>  {{subgroup.model_id}}</td>        
+            <td>  {{subgroup.group}}</td>        
             <td>  x : {{subgroup.location.x}}, y : {{subgroup.location.y}}, z : {{subgroup.location.z}}</td>        
             
         </tr>

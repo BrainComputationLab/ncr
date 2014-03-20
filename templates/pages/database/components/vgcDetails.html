@@ -1,3 +1,6 @@
+
+<!-- Noted as type: hh_voltage_gated_ion -->
+
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
@@ -8,9 +11,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].channel_parameters.conductance.type}} : {{ db[5].channel_parameters.conductance.value}}</td>
-            <td>  {{db[5].channel_parameters.reversal_potential.type}},
-                {{ db[5].channel_parameters.reversal_potential.value}}</td>
+            <td>{{ db[5].specification.conductance}}</td>
+            <td>  {{db[5].specification.reversal_potential}}</td>
 
         </tr>
     </tbody>
@@ -31,20 +33,20 @@
     <tbody>
         {% for particle in particles %}
         <tr>
-            <td>{{ db[5].channel_parameters.particles.x_initial}}</td>
-            <td>{{ db[5].channel_parameters.particles.power}}</td>
-            <td>"a" : {{ db[5].channel_parameters.particles.alpha.a}}, 
-            "b" : {{ db[5].channel_parameters.particles.alpha.b}}
-            "c" : {{ db[5].channel_parameters.particles.alpha.c}}
-            "d" : {{ db[5].channel_parameters.particles.alpha.d}}
-            "f" : {{ db[5].channel_parameters.particles.alpha.f}}
-            "h" : {{ db[5].channel_parameters.particles.alpha.g}</td>
-            <td>"a" : {{ db[5].channel_parameters.particles.beta.a}}, 
-                "b" : {{ db[5].channel_parameters.particles.beta.b}}
-                "c" : {{ db[5].channel_parameters.particles.beta.c}}
-                "d" : {{ db[5].channel_parameters.particles.beta.d}}
-                "f" : {{ db[5].channel_parameters.particles.beta.f}}
-                "h" : {{ db[5].channel_parameters.particles.beta.g}}</td>
+            <td>{{ particle.x_initial}}</td>
+            <td>{{ particle.power}}</td>
+            <td>"a" : {{particle.alpha.a}}, 
+                "b" : {{particle.alpha.b}}
+                "c" : {{particle.alpha.c}}
+                "d" : {{particle.alpha.d}}
+                "f" : {{particle..alpha.f}}
+                "h" : {{particle.alpha.g}}</td>
+            <td>"a" : {{particle.beta.a}}, 
+                "b" : {{particle.beta.b}}
+                "c" : {{particle.beta.c}}
+                "d" : {{particle.beta.d}}
+                "f" : {{particle.beta.f}}
+                "h" : {{particle.beta.g}}</td>
         </tr>
         {% endif %}
     </tbody>

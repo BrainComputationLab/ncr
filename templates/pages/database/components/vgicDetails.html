@@ -1,3 +1,5 @@
+<!-- Noted as lif_voltage_gated_ion-->
+
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
@@ -9,11 +11,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].channel_parameters.activation_slope.type}} : {{ db[5].channel_parameters.activation_slope.value}}</td>
-            <td>  {{db[5].channel_parameters.conductance.type}},
-                {{ db[5].channel_parameters.conductance.value}}</td>
-            <td>  {{db[5].channel_parameters.deactivation_slope.type}},
-                {{ db[5].channel_parameters.deactivation_slope.value}}</td>
+            <td>{{ db[5].specification.activation_slope}}</td>
+            <td>  {{db[5].specification.conductance}}</td>
+            <td>  {{db[5].specification.deactivation_slope}}</td>
         </tr>
     </tbody>
 </table>
@@ -29,12 +29,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>  {{db[5].channel_parameters.reversal_potential.type}},
-                {{ db[5].channel_parameters.reversal_potential.value}}</td>        
-            <td>  {{db[5].channel_parameters.equilibrium_slope.type}},
-                {{ db[5].channel_parameters.equilibrium_slope.value}}</td>
-            <td>  {{db[5].channel_parameters.v_half_active.type}},
-                {{ db[5].channel_parameters.v_half_active.value}}</td>
+            <td>  {{db[5].specification.reversal_potential}}</td>        
+            <td>  {{db[5].specification.equilibrium_slope}}</td>
+            <td>  {{db[5].specification.v_half}}</td>
         </tr>
     </tbody>
 </table>
@@ -50,12 +47,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>  {{db[5].channel_parameters.m_power.type}},
-                {{ db[5].channel_parameters.m_power.value}}</td>        
-            <td>  {{db[5].channel_parameters.transaction_rate.type}},
-                {{ db[5].channel_parameters.transaction_rate.value}}</td>
-            <td>  {{db[5].channel_parameters.m_initial.type}},
-                {{ db[5].channel_parameters.m_initial.value}}</td>
+            <td>  {{db[5].specification.m_power}}</td>        
+            <td>  {{db[5].specification.r}}</td>
+            <td>  {{db[5].specification.m_initial}}</td>
         </tr>
     </tbody>
 </table>
