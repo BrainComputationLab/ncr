@@ -3,15 +3,16 @@
         <tr>
             <th>Threshold</th>
             <th>Resting Potential</th>
-            <th>Leak Reversal Potential</th>
+            <th>R Membrane</th>
 
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.threshhold.type}} : {{ db[5].specification.parameters.threshhold.value}}</td>
+            <td>{{ db[5].specification.parameters.threshhold}}</td>
             <td>{{ db[5].specification.parameters.resting_potential.type}} : {{ db[5].specification.parameters.resting_potential.min}} , {{ db[5].specification.parameters.resting_potential.max}}</td>
-            <td>{{ db[5].specification.parameters.leak_reversal_potential.type}} : {{ db[5].specification.parameters.leak_reversal_potential.value}}</td>
+            <td>{{ db[5].specification.parameters.r_membrane}}</td>
+
         </tr>
     </tbody>
 </table>
@@ -21,16 +22,30 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
-            <th>InitialCalcium</th>
             <th>Calcium Spike Increment</th>
             <th>Tau Calcium</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.initial_calcium.mean}}</td>
-            <td>{{ db[5].specification.parameters.calcium_spike_increment.type}} : {{ db[5].specification.parameters.calcium_spike_increment.value}}</td>
-            <td>{{ db[5].specification.parameters.tau_calcium.type}} : {{ db[5].specification.parameters.tau_calcium.value}}</td>
+            <td>{{ db[5].specification.parameters.calcium_spike_increment}}</td>
+            <td>{{ db[5].specification.parameters.tau_calcium}}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Calcium Standard Deviation</th>
+            <th>Calcium Type</th>
+            <th>Calcium Mean </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.parameters.calcium.standard_deviation}}</td>
+            <td>{{ db[5].specification.parameters.calcium.type}}</td>
+            <td>{{ db[5].specification.parameters.calcium.mean}}</td>
         </tr>
     </tbody>
 </table>
@@ -41,14 +56,14 @@
         <tr>
             <th>Leak Conductance</th>
             <th>Tau Membrane</th>
-            <th>Membrane Resistance</th>
+            <th>Leak Reversal Potential</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.parameters.leak_conductance.type}} : {{ db[5].specification.parameters.leak_conductance.value}}</td>
-            <td>{{ db[5].specification.parameters.tau_membrane.type}} : {{ db[5].specification.parameters.tau_membrane.value}}</td>
-            <td>{{ db[5].specification.parameters.membrane_resistance.type}} : {{ db[5].specification.parameters.membrane_resistance.value}}</td>
+            <td>{{ db[5].specification.parameters.leak_conductance}}</td>
+            <td>{{ db[5].specification.parameters.tau_membrane}}</td>
+            <td>{{ db[5].specification.parameters.leak_reversal_potential}}</td>
         </tr>
     </tbody>
 </table>
@@ -62,7 +77,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>0.0, 0.0, 0.0, 0.0, 0.0, 0.0</td>
+            <td>{{db[5].specification.parameters.spikeshape}}</td>
         </tr>
     </tbody>
 </table>
@@ -73,13 +88,13 @@
     <thead>
         <tr>
             <th></th>
-            <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
+        {% for channel in db[5].specification.parameters.channels %}
         <tr>
-            <td></td>
+            <td>{{channel}}</td>
         </tr>
+        {% endfor %}
     </tbody>
 </table>

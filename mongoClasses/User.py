@@ -7,7 +7,6 @@ class UserInfo(Document):
     __collection__ = 'Users'
     __database__ = 'brainlab_test'
     structure = {
-        '_id': basestring,
         'First_Name': basestring,
         'Last_Name': basestring,
         'Password': basestring,
