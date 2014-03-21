@@ -1,0 +1,53 @@
+
+<!-- Noted as type: hh_voltage_gated_ion -->
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Conductance</th>
+            <th>Reversal Potential</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.conductance}}</td>
+            <td>  {{db[5].specification.reversal_potential}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- Particles -->
+<h1>Particles</h1>
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>X Initial</th>
+            <th>Power</th>
+            <th>Alpha</th>
+            <th>Beta</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for particle in particles %}
+        <tr>
+            <td>{{ particle.x_initial}}</td>
+            <td>{{ particle.power}}</td>
+            <td>"a" : {{particle.alpha.a}}, 
+                "b" : {{particle.alpha.b}}
+                "c" : {{particle.alpha.c}}
+                "d" : {{particle.alpha.d}}
+                "f" : {{particle..alpha.f}}
+                "h" : {{particle.alpha.g}}</td>
+            <td>"a" : {{particle.beta.a}}, 
+                "b" : {{particle.beta.b}}
+                "c" : {{particle.beta.c}}
+                "d" : {{particle.beta.d}}
+                "f" : {{particle.beta.f}}
+                "h" : {{particle.beta.g}}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
