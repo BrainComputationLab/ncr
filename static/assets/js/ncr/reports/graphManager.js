@@ -5,6 +5,7 @@
 
 
 var createGraphManager = function(){
+
 	var domsArray = new Array();
 	var graphID = 0;
 
@@ -19,6 +20,7 @@ var createGraphManager = function(){
 
 	var intervals = [];
 
+	var dataInterval=300;
 	
 
 
@@ -70,12 +72,25 @@ var createGraphManager = function(){
 		var graphPrefix = "graph"+graphID;
 		var buttonSuffix;
 
-		$('#sortable-left').append(
-			elementPntr = $('<li id="'+graphPrefix+'-container" class="panel panel-default" style="position:relative;height:220px;"></li>')
+		if(putGraphsOnTop){
+			$('#sortable-column'+activeReportingColumn).prepend(
+				elementPntr = $('<li class="portlet_handle"></li>')
+			);
+		}
+		else{
+			$('#sortable-column'+activeReportingColumn).append(
+				elementPntr = $('<li class="portlet_handle"></li>')
+			);
+		}
+		
+		
+
+		elementPntr.append(
+			elementPntr = $('<div id="'+graphPrefix+'-container" class="panel panel-default graph-unit" style="position:relative;height:auto;"></div>')
 		);
 		
 		elementPntr.append(
-			'<div id="'+graphPrefix+'-panel" class="panel-heading" style="position:relative;height:40px"></div>' +
+			'<div id="'+graphPrefix+'-panel" class="panel-heading" style="position:relative;height:auto;display:flex;padding: 5px 5px;"></div>' +
 			'<div id="'+graphPrefix+'-body" class="panel-body" style="width:100%;height:180px;"></div>'
 		);
 		
@@ -131,19 +146,22 @@ var createGraphManager = function(){
 
 		
 		elementPntr.append(
-			'<p style="font-size: 1.2em; position:relative;width:30%;">Graph ' + graphID +'</p>'
+
 		);
 		
 		/*
 		 * button toolbar to hold buttons
 		 */
-
+//top:-42px;left:130px;
+//top:-30px;left:95px;
 		elementPntr.append(
-			'<div class="btn-toolbar" id='+graphPrefix+'-button_toolbar style="position:relative;height:100%;top:-42px;left:130px;">'+
+			'<span style="font-size: 1.2em;position:relative; padding:5px 10px 5px 5px">Graph ' + graphID +'</span>'+
+			'<div class="btn-toolbar" id='+graphPrefix+'-button_toolbar style="position:relative;">'+
+
 				'<div class="btn-group button_list" id="'+graphPrefix+'-cell_button_list"></div>'+
 				'<div class="btn-group button_list" id="'+graphPrefix+'-scale_button_list"></div>'+
 				'<div class="btn-group button_list" id="'+graphPrefix+'-playback_button_list"></div>'+
-			'<div>'
+			'</div>'
 		);
 
 		$('#'+graphPrefix+'-cell_button_list').append(
@@ -222,12 +240,6 @@ var createGraphManager = function(){
 		elementPntr.append('<button id="'+graphPrefix+'-scale_button_up" class="btn btn-default">^</button>');
 		elementPntr.append('<button id="'+graphPrefix+'-scale_button_down" class="btn btn-default">v</button>');
 		
-		elementPntr = $("#"+graphPrefix+"-playback_button_list");
-		elementPntr.append('<button id="'+graphPrefix+'-playback_button-play" class="btn btn-default" type="button">></button>');
-		elementPntr.append('<button id="'+graphPrefix+'-playback_button-pause" class="btn btn-default" type="button">||</button>');
-		elementPntr.append('<button id="'+graphPrefix+'-playback_button-gotoend" class="btn btn-default" type="button">>></button>');
-		elementPntr.append('<button id="'+graphPrefix+'-playback_button-record" class="btn btn-default" type="button">Rec</button>');
-		
 		// jquery functionallity for menu. Help found here:
 		// http://jqueryui.com/button/#splitbutton
 
@@ -270,7 +282,26 @@ var createGraphManager = function(){
 			}
 		});
 		
-		$("#"+graphPrefix+"-playback_button-record").click(function(){
+		elementPntr = $("#"+graphPrefix+"-playback_button_list");
+		elementPntr.append('<button id="'+graphPrefix+'-playback_button-play" class="btn btn-default" type="button">></button>');
+		elementPntr.append('<button id="'+graphPrefix+'-playback_button-pause" class="btn btn-default" type="button">||</button>');
+		elementPntr.append('<button id="'+graphPrefix+'-playback_button-gotoend" class="btn btn-default" type="button">>></button>');
+		elementPntr.append('<button id="'+graphPrefix+'-playback_button-record" class="btn btn-default" type="button">Rec</button>');
+		
+		$("#"+graphPrefix+"-playback_button-play").click(function(){
+			var graph = parseInt($(this).attr('id').split("graph")[1]);
+			lineGraph[graph].zoomOut();
+		})
+		.next()
+		.click(function(){
+		})
+		.next()
+		.click(function(){
+			var graph = parseInt($(this).attr('id').split("graph")[1]);
+			lineGraph[graph].goToEnd();
+		})
+		.next()
+		.click(function(){
 			var graph = parseInt($(this).attr('id').split("graph")[1]);
 			
 			if(rasterPlot!=undefined)
@@ -281,7 +312,7 @@ var createGraphManager = function(){
 			
 			global_flag = true;
 			
-			lineGraph[graph].record();
+			lineGraph[graph].startRecording();
 
 			var wait = setInterval(function(){
 				if(global_flag==false){
@@ -292,7 +323,7 @@ var createGraphManager = function(){
 					});
 					clearInterval(wait);
 				}
-			}, 300);
+			}, 1000);
 		});
 		
 		$("#positionSlider" + graphID).slider();
@@ -305,7 +336,6 @@ var createGraphManager = function(){
 		var graphPrefix = "graph"+graphID;
 
 		var id = graphPrefix+buttonSuffix; // essentially, id = graph#-cell_button#
-
 		
 		$("#"+graphPrefix+"-cell_button_list").append(		
 			'<div id="'+id+'-cell-container" class="btn-group">'+
@@ -316,6 +346,7 @@ var createGraphManager = function(){
 				'</ul>'+
 			'</div>'
 		);
+		
 		/*
 		$('#'+id+'-cell-edit').click(function () {
 			var str = prompt("Replace with (cell#): ","");
@@ -351,11 +382,8 @@ var createGraphManager = function(){
 			activeCell = cell;
 			activeGraph = graph;
 		})
-		
-
-
-//		angular.element('#'+id+'-cell-menu').scope()
-//				.add('#'+id+'-cell-menu',id);
+		scope = angular.element('#'+id+'-cell-menu').scope();
+		scope.add('#'+id+'-cell-menu',id);
 
 	}
 
@@ -395,7 +423,7 @@ var createGraphManager = function(){
 			dataSetFront[i]=temp;
 			dataSet[i].push(temp);
 		}
-	},300);
+	},dataInterval);
 
 	var lineGraph=[];
 	var runningIntervals=[]
@@ -410,27 +438,31 @@ var createGraphManager = function(){
 		
 		runningIntervals[graphId]=setInterval(function(){
 			lineGraph[graphID].slideData(dataSet[promptInputArr[0]][0]);
-		}, 300);*/
+		}, dataInterval);*/
 	}
 
 
-
+	var time = 0;
 	var runningGraphs = setInterval(function(){
 
 		var cells;
 		var appendDataSet;
+		
+		time++;
 
 		lineGraph.forEach(function(d,i){
 			cells = d.getReportingCells();
 			appendDataSet = [];
-			
+
 			cells.forEach(function(d,i){
-				appendDataSet.push(dataSetFront[d]);
+				appendDataSet.push([time, dataSetFront[d]]);
 			});
-			
+
+
+
 			d.slideData(appendDataSet);
 		});
-	},300);
+	},dataInterval);
 
 
 
@@ -441,12 +473,14 @@ var createGraphManager = function(){
 	var rasterPlot;
 
 	var createPlot = function(){
-		$("#sortable-right").append(
-			'<li id="plot-container" class="panel panel-default" style="position:relative;width:100%;height:220px;">'+
-				'<div class="panel-heading" style="position:relative;height:40px">'+
-					'<p style="font-size: 1.2em;">Raster Plot</p>'+
+		$("#sortable-column"+activeReportingColumn).append(
+			'<li class="portlet_handle">'+
+				'<div id="plot-container" class="panel panel-default graph-unit" style="position:relative;width:100%;height:220px;">'+
+					'<div class="panel-heading" style="position:relative;height:40px">'+
+						'<p style="font-size: 1.2em;">Raster Plot</p>'+
+					'</div>'+
+					'<div class="panel-body" id="raster" style="width:100%;height:220px;"></div>'+
 				'</div>'+
-				'<div class="panel-body" id="raster" style="width:100%;height:220px;"></div>'+
 			'</li>');
 			
 		rasterPlot = new createRasterPlot("#raster");
@@ -460,6 +494,6 @@ var createGraphManager = function(){
 		
 		setInterval(function(){
 			rasterPlot.slideData(dataSetFront);
-		}, 300);
+		}, dataInterval);
 	}
 }

@@ -19,6 +19,10 @@ function createRasterPlot(containerName) {
 	
 	var data = [];
 	var g;
+	/*
+	var graphID = parseInt(containerName.split("graph")[1])
+	var svgID = "graph"+graphID+"_SVG";
+	*/
 	
 	var transitionDuration=300;
 	
@@ -63,13 +67,11 @@ function createRasterPlot(containerName) {
 
 		svg.append("g")
 			.attr("class", "axis xaxis")
+			.attr("id", "#raster-xaxis")
 			.attr("transform", "translate(0, "+(height-marginBottom)+")")
 			.call(xAxis);
 		
-		svg.append("g")
-			.attr("class", "axis yaxis")
-			.attr("transform", "translate("+(marginLeft-yAxisBuffer)+", 0)")
-			.call(yAxis);
+
 		
 
 
@@ -86,8 +88,16 @@ function createRasterPlot(containerName) {
 				.attr("cy", function (d) { return yDomain(d[1]); } )
 				.attr("r", 2);
 
+		svg.append("rect")
+			.attr("id", "raster_whiteBgYaxisLeft")
+			.attr("width", (marginLeft-yAxisBuffer)+"px")
+			.attr("height", "80%")
+			.attr("fill", "white");
 
-
+		svg.append("g")
+			.attr("class", "axis yaxis")
+			.attr("transform", "translate("+(marginLeft-yAxisBuffer)+", 0)")
+			.call(yAxis);
 
 
 		svgDocument = d3.selectAll(".raster_SVG")[0][0];
@@ -155,14 +165,14 @@ function createRasterPlot(containerName) {
 		
 			svg.selectAll(".rasterData")
 				.transition()
-					.duration(300)
+					.duration(transitionDuration)
 					.ease("linear")
 					.attr("cx", function (d) { return xDomain(d[0]); } )
 					.attr("cy", function (d) { return yDomain(d[1]); } );
 
 			svg.selectAll(".xaxis")
 				.transition()
-					.duration(300)
+					.duration(transitionDuration)
 					.ease("linear")
 					.call(xAxis);
 		}		
@@ -274,7 +284,15 @@ function createRasterPlot(containerName) {
 			}
 		});
 		
+		
+		for(var k=0;$("#raster-xaxis").children().length>20;k++){
+			$("#raster-xaxis g:first-child").remove();
+		}
+		
 		redrawXAxis();
 	}
+	
+
+	
 	init();
 };
