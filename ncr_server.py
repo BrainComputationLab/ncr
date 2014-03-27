@@ -42,14 +42,8 @@ def uploaded_file(filename):
 @app.route('/', methods=['GET'])
 def mainPage():
     year = datetime.datetime.now().year
-    modelList =  list(db.Neuron.find() )
-    modelList.extend( list(db.Channels.find()) )
-    return render_template('index.html', year = year, mcount = len( modelList), db =  modelList )
-
-def getmodels():
-    modelsdb = db.sampleIzh
-    models = list(modelsdb.find())  
-    return json_util.dumps(models)
+    modelList =  list(db.Channels.find() ) #.extend( list(db.Channels.find()) )
+    return render_template('index.html', year = year, dbmodels =  modelList )
 
 def displayResults():
     return render_template('index.html', year = year, returned = izhCollection.find_one( {"entity_type": "neuron"} ), count = 48)#numResults)
@@ -79,8 +73,7 @@ def search_scopes():
 
 @app.route('/get_db', methods = ['GET'])
 def get_db():
-	modelsdb = db.sampleIzh
-	returnedModels = list(modelsdb.find())
+	returnedModels = list(db.Channels.find()).extend(list(db.Neuron.find()))
 	return json_util.dumps(returnedModels)
 
 @app.route('/search_scope', methods =['GET'])
@@ -105,8 +98,14 @@ def search_scope():
     #Get list of users included
     #Get models with those users into the list
     #Return the list
-    return render_template('index.html', year = 2014, mcount = len(modelList), db = modelList )
+    return render_template('index.html', year = 2014, dbmodels = modelList )
 
+def getAllCollections():
+    totalList = []
+    collectionList = ['Channels', 'Neuron', 'Neuron_Group', 'Stimulus', 'Synapse']
+    for collectionName in collectionList:
+        totalList.extend(  list(  db.collectionName.find() ) )
+    return totalList
 
 # Serves static resources like css, js, images, etc.
 @app.route('/assets/<path:resource>')
