@@ -1,0 +1,33 @@
+<!-- Model Info Modal -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelModalLIF">
+LIF Details</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modelModalLIF" tabindex="-1" role="dialog" aria-labelledby="modalTitleLIF" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalTitleLIF">Model Name : {{db[5].entity_name}}</h4>
+                                
+            </div>
+            <div class="modal-body">
+    <!-- BODY OF MODAL -->
+                <h3>Description</h3>
+                <p>{{db[5].description}} </p>
+                
+                <h3>Author</h3>
+                <p>{{db[5].author}} </p>
+                
+                
+                {% include 'pages/database/components/detailComponents/detailTables/lifDetails.html' %}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Promote<span class="glyphicon glyphicon-star"></span></button>
+                <button type="button" class="btn btn-primary">Select</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
