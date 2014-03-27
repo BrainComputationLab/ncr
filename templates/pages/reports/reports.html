@@ -1,125 +1,144 @@
-<div id="reports" class="container page" ng-controller="">
-    <div class="page-header">
-        <h3> NCR Reports Testing </h3>
-    </div>
+<!doctype html>
+<html lang="en" ng-app="myApp">
+	<head>
+		<meta charset="utf-8">
+		<title>NCR Reports testing</title>
 
-	<div id="reports-start" ng-app="myApp" ng-controller="colorController" style="height:1000px">
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="jqueryui.js"></script>
+
+		<script src="angular.min.js"></script>
+		<script src="angular-route.min.js"></script>
+		
+		<script src="bootstrap.min.js"></script>
+		<script src="bootstrap-colorpicker-module.js"></script>
+		
+		<script type="text/javascript" src="d3.min.js"></script>
+		
+		<!-- needed for Graph Capture -->
+			<!-- used for Canvas to Gif -->
+			<script src="LZWEncoder.js"></script>
+			<script src="NeuQuant.js"></script>
+			<script src="GIFEncoder.js"></script>
+			
+			<script src="b64.js"></script>
+			
+			<!-- used for  SVG to Canvas -->
+			<script src="rgbcolor.js"></script> 
+			<script src="StackBlur.js"></script>
+			<script src="canvg.js"></script> 
+		
+		<!-- personal includes -->
+		<script src="graphManager.js"></script> 
+		<script src="lineLib.js"></script> 
+		<script src="graphLib.js"></script> 
+		<script src="sample_data.js"></script>
+
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="colorpicker.css">
+
+	</head>
+	
+	<style>
+
+	</style>
+
+	<body ng-controller="colorController">
 
 		<canvas id="canvasExample"></canvas>
 
 
-
-			<!-- control panel-->
-			<div class="control_panel-container">
-				<div class="control_panel-main">
-					<div class="control_panel-left">
-						<h3>Control Panel</h3>
-						<div class="btn-group control_panel-button_list">
-							<button id="createGraphButton" class="btn btn-default">Add Line Graph</button>
-							<button id="createPlotButton" class="btn btn-default">Add Raster Plot</button>
-						</div>
-						<br/>
-						<div class="btn-group control_panel-button_list">
-							<button class="btn btn-default" data-toggle="modal" data-target="#modal-settings">Settings</button>
-						</div>
-						<p>Note: Don't run these graphs for too long. There's an SVG memory leak that I know how to treat but I don't know how to fix yet. Colorpicker has been removed due to angular issues. Todo: [Play/Pause/Gotoend, Position slider, customized gif capture, interface w/ NCS, other small things]. Interesting cells to look at are [5,6,8,9,13,21,24,...]</p>
-					</div>
-					<div class="control_panel-right">
-						<p style="font-size:20px;">
-						Reporting Status: <span id="simulationStatusLabel" class="label label-success">Live</span>
-						</p>
-						<p id="control_panel-report-time_of_last"></p>
-						<p>
-						Currently reporting cells in range: <span>0 to 50</span>
-						</p>
-					</div>
-				</div>
-			</div>
 		
-			<!-- html for hidden settings modal -->
-			<div id="modal-settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-						</div>
-						<div class="modal-body">
-							<button type="button" class="btn btn-default close" data-dismiss="modal" aria-hidden="true">test</button>
-							modal text - body
-						</div>
+		<!-- control panel-->
+		 <div class="control_panel-container">
+			<div class="control_panel-main">
+				<div class="control_panel-left">
+					<h3>Control Panel</h3>
+					<div class="btn-group control_panel-button_list">
+						<button id="createGraphButton" class="btn btn-default">Add Line Graph</button>
+						<button id="createPlotButton" class="btn btn-default">Add Raster Plot</button>
+					</div>
+					<br/>
+					<div class="btn-group control_panel-button_list">
+						<button class="btn btn-default" data-toggle="modal" data-target="#modal-settings">Settings</button>
+					</div>
+				</div>
+				<div class="control_panel-right">
+					<p style="font-size:20px;">
+					Reporting Status: <span id="simulationStatusLabel" class="label label-success">Live</span>
+					</p>
+					<p id="control_panel-report-time_of_last"></p>
+					<p>
+					Currently reporting cells in range: <span>0 to 50</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<!-- html for hidden settings modal -->
+		<div id="modal-settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						<button type="button" class="btn btn-default close" data-dismiss="modal" aria-hidden="true">test</button>
+						modal text - body
 					</div>
 				</div>
 			</div>
+		</div>
 
 		
 
-			<div class="mega_container" style="position:relative;">
-				<div class="mega_container-div" style="left:0;">
-					<ul id="sortable-left" class="sortable"></ul>
-				</div>
-				<div class="mega_container-div" style="right:0;">
-					<ul id="sortable-right" class="sortable"></ul>
-				</div>
+		<div class="mega_container" style="position:relative;">
+			<div class="mega_container-div" style="left:0;">
+				<ul id="sortable-left" class="sortable"></ul>
 			</div>
-
-	</div>
-    
-    
-    <script>
-
-
+			<div class="mega_container-div" style="right:0;">
+				<ul id="sortable-right" class="sortable"></ul>
+			</div>
+		</div>
+	</body>
 
 
-
-	var activeGraph, activeCell;
-	var global_flag, scope="TEST";
-
-	var myApp, graphManager;
-
-
-
-
-	// temporary fix
-	var temp = setTimeout(function(){
-		reports_init();
-	}, 1500);
-
-	var reports_init = function(){
-
-		$("#canvasExample").hide();
-
-		$( ".sortable" ).sortable();
-		$( ".sortable" ).disableSelection();
-
-		graphManager = new createGraphManager();
-
-		myApp = angular.module("myApp",['colorpicker.module']);
-
-		myApp.controller("colorController", ['$scope', '$compile', '$window', function($scope,$compile,$window){
-			$scope.color = '';
-
-			$scope.$watch('color', function(){
-
-				var lineId = "#line-"+$window.activeGraph + "-" + $window.activeCell;
-				var buttonId = "#graph"+$window.activeGraph + "-cell_button" + $window.activeCell + "-cell-button";
-				$(buttonId).css("color", $scope.color);
-				$(lineId).css("stroke", $scope.color);
-			});
+	<script>
 	
-			$scope.add = function(element,id){
-				$(element).append(
-					$compile('<li><a id="'+id+'-change_color" colorpicker ng-model="color" type="text" href="#" >Change color</a></li>')($scope)
-				);
-				$scope.$apply();
-			};
-		}]);
+	console.log(jQuery.fn.jquery);
 
-	}
+	$("canvas").hide();
+	$( ".sortable" ).sortable();
+	$( ".sortable" ).disableSelection();
+	
+	var activeGraph, activeCell;
+	var global_flag;
+	
+	var graphManager = new createGraphManager();
 
+	var myApp = angular.module("myApp",['colorpicker.module']);
 
+	myApp.controller("colorController", ['$scope', '$compile', '$window', function($scope,$compile,$window){
+		$scope.color = '';
 
+		$scope.$watch('color', function(){
 
-        </script>
-    
-    
-</div>
+			var lineId = "#line-"+$window.activeGraph + "-" + $window.activeCell;
+			var buttonId = "#graph"+$window.activeGraph + "-cell_button" + $window.activeCell + "-cell-button";
+			$(buttonId).css("color", $scope.color);
+			$(lineId).css("stroke", $scope.color);
+		});
+		
+		$scope.add = function(element,id){
+			$(element).append(
+				$compile(
+				'<li><a id="'+id+'-change_color" colorpicker ng-model="color" type="text" href="#" >Change color</a></li>'
+				)($scope)
+			);
+			$scope.$apply();
+		};
+	}]);
+
+	</script>
+</html>
