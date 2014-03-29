@@ -1,13 +1,7 @@
 <form class="form-horizontal" role="form">
-<<<<<<< HEAD
 <div class="checkbox" ng-model="checked">
 	<label>
 		<input type="checkbox" ng-model="izhBinary" ng-change="filterModels()"> 
-=======
-<div class="checkbox">
-	<label>
-		<input type="checkbox" ng-model="izhBinary"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#izhoptions">Izhikevich</a>
 		</div>  
@@ -18,11 +12,7 @@
 </div>         
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="HHBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#hhoptions">Hodgkin Huxley</a>
 		</div>  
@@ -33,11 +23,7 @@
 </div>
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="NCRBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#ncsoptions">NCS</a>
 		</div>  
@@ -48,11 +34,7 @@
 </div>
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="VGBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#vgoptions">Voltage Gated</a>
 		</div>  
@@ -63,11 +45,7 @@
 </div>   	
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="VGPBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#vgpoptions">Voltage Gated Particle</a>      
 		</div>  
@@ -78,11 +56,7 @@
 </div> 
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="VGIBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#vgioptions">Voltage Gated Ion</a>
 		</div>  
@@ -93,11 +67,7 @@
 </div>    
 <div class="checkbox">
 	<label>
-<<<<<<< HEAD
 		<input type="checkbox" ng-model="CDBinary" ng-change="filterModels()"> 
-=======
-		<input type="checkbox"> 
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 		<div class="size collapse-group">
 			<a data-toggle="collapse" data-target="#cdoptions">Calcium Dependent</a>
 		</div>  
@@ -105,7 +75,6 @@
 </div>
 <div class="collapse" id="cdoptions">
 	{% include 'pages/database/components/channeltypes/CalciumDependentChannelCollapse.html' %}
-<<<<<<< HEAD
 </div>    
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="FilterName" class="col-md-3 control-label" > Name</label>
@@ -126,25 +95,6 @@
 	<div class="col-md-9">
 		<input type="search" class="form-control input-sm" id="FilterDetails" ng-model="detailsFilter" 
 		placeholder="input details & notes"  ng-change="filterModelsByString()">
-=======
-</div>     
-<div class="form-group">
-	<label for="InputName" class="col-md-3 control-label"> Name</label>
-	<div class="col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="input model name">
-	</div>
-</div>
-<div class="form-group">
-	<label for="InputName" class="col-md-3 control-label"> Author</label>
-	<div class="col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="input model author">
-	</div>
-</div>
-<div class="form-group">
-	<label for="InputName" class="col-md-3 control-label"> Details</label>
-	<div class="col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="input details & notes">
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 	</div>
 </div>
 </form>

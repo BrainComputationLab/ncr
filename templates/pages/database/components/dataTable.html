@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -21,47 +20,10 @@
         </tr>
         <!-- Keep table at minimum 10 rows. -->
         <tr ng-repeat="n in [] | range: currentPage*pageSize+pageSize - dbdisplay.length">      
-=======
-<table class="table table-bordered table-hover" data-ng-controller="DBController">
-    <thead>
-        <tr>
-            <th>Model ID</th>
-            <th>Author</th>
-            <th>Description</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        {% for model in dbmodels %}
-        <tr>
-            <td>{{ model._id }}</td>
-            <td>{{ model.author }}</td>
-            <td>{{ model.description }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-
-    <!-- Katie's Table 
-
-    <tbody>		
-        <tr data-ng-repeat="model in dbmodels | startFrom:currentPage*pageSize | limitTo:pageSize">               
-            <td>{{ '{{ model._id }}' }}</td>
-            <td>{{ '{{ model.author }}' }}</td>
-            <td>{{ '{{ model.entity_type }}' }}</td>
-            <td>{{ '{{ model.description }}' }}</td>
-        </tr>
-        -->
-        <!-- Keep table at minimum 10 rows. -->
-        <tr ng-repeat="n in [] | range: currentPage*pageSize+pageSize - dbmodels.length">      
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
     </tbody>
-<<<<<<< HEAD
-=======
-    
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 </table>
