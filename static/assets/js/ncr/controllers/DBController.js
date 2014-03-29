@@ -72,6 +72,24 @@ function DBController($scope, $resource) {
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
+            else if($scope.dbmodels[i].specification.type == "izhikevich")
+			{
+				if($scope.IZHBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}
+            else if($scope.dbmodels[i].specification.type == "hh")
+			{
+				if($scope.HHBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}            
+            else if($scope.dbmodels[i].specification.type == "ncs")
+			{
+				if($scope.NCSBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}
 
 		}		
 		$scope.dbsecondary = tmp;
