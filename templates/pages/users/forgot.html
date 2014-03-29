@@ -1,0 +1,45 @@
+<!--
+ Group: #3 - Neo-Cortical Repository
+ Class: CS 425
+ Date: 12/12/2013
+ 
+ This page uses the form to help those who have lost or forgotten their passwords. -->
+<div class="container page" ng-show="route=='forgot'">
+	<h3>Forgot Your Password?</h3>
+	<h5>If you forgot your password, please enter your email into the form below and answer the security question. If your 
+	security answer matches up with the email on file, we will send a your password to your email address. Take note 
+	that your security answer is not case sensitive.</h5>	
+    <form class="form-horizontal" role="form" id="forgotForm" name="forgot" ng-submit="forgotPassword()" novalidate>
+			<!-- Create a new account with info 
+			 Form data sent to python, packaged, and put in db -->
+			<div ng-hide="securityQuestion" class="form-group">
+				<label for="forgotEmail" class="col-md-2 control-label">Email</label>
+				<div class="col-md-10">
+					<input id="forgotEmail" type="email" name="email" class="form-control" ng-model="emailQuery" placeholder="Your email address will also serve to identify your account." required>
+					<div class="error" ng-show="forgot.email.$dirty && forgot.email.$invalid">
+						Error: <span class="error" ng-show="forgot.email.$error.required">You must enter your email.</span>
+					</div>
+				</div>
+				<div class="btn-group pull-right">
+					<button type="button" class="btn btn-warning" ng-disabled="forgot.email.$error.required" ng-click="querySecurityQuestion()">Query This Email</button>
+				</div>
+			</div>
+			<div ng-show="securityQuestion">
+				<h4>Security Question: {{'{{securityQuestion}}'}}</h4>
+				<div class="form-group">
+					<label for="forgotSecurityAnswer" class="col-md-2 control-label">Security Answer</label>
+					<div class="col-md-10">
+						<input id="forgotSecurityAnswer" name="securityAnswer" type="password" class="form-control" 
+						data-ng-model="securityAnswer" placeholder="What is your answer to the security question?" required>
+						<div class="error" ng-show="forgot.securityAnswer.$dirty && forgot.securityAnswer.$invalid">
+							Error: <span class="error" ng-show="forgot.securityAnswer.$error.required">You must enter your security answer.</span>
+						</div>
+					</div>	
+				</div>
+				<div class="btn-group pull-right">
+					<button type="submit" class="btn btn-primary" ng-disabled="forgot.$invalid">Submit Answer</button>
+				</div>
+			</div>
+        </form>
+    </div>
+</div>

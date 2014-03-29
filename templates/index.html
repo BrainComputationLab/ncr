@@ -1,0 +1,66 @@
+<!-- 
+ Group: #3 - Neo-Cortical Repository
+ Class: CS 425
+ Date: 12/12/2013
+
+ This document supplied by the NCB team and altered for independent purposes by the NCR team 
+ -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="University of Nevada Brain Computation Lab">
+
+        <title>Neo-Cortical Repository</title>
+
+        <link rel="icon" type="image/png" href="/assets/ico/ncs_favicon.png">
+        
+        <!-- NCR Stylesheets -->
+        <link rel="stylesheet" href="assets/css/ncr/styles_reports.css" type="text/css">
+        <!-- End NCR Stylesheets -->
+                
+        <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/ncb/main.css" rel="stylesheet">
+        <link href="assets/css/ncb/modelbuilder.css" rel="stylesheet">
+    </head>
+	<body style="margin-top: 80px;" ng-controller="UserController"><!-- spacing prevents navbar, a "fixed" element from covering content -->
+        {% include 'global/header.html' %}
+		{% include 'pages/database/database.html' %} 
+		{% include 'pages/reports/reports.html' %}
+		{% include 'pages/users/registration.html' %}
+		{% include 'pages/users/activation.html' %}
+		{% include 'pages/users/forgot.html' %}
+		{% include 'pages/users/mail.html' %}
+		{% include 'pages/users/preferences.html' %}
+		<div class="container footer">
+			<p>© University of Nevada {{ year }}</p>
+		</div>
+		<!-- Load -->
+		<script type="text/javascript" src="assets/js/lib/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/lib/underscore.js"></script>
+		<script type="text/javascript" src="assets/js/lib/async.js"></script>
+		<script type="text/javascript" src="assets/js/lib/angular.js"></script>
+		<script type="text/javascript" src="assets/js/lib/angular-resource.js"></script>
+		<script type="text/javascript" src="assets/js/lib/bootstrap.js"></script>
+		<script type="text/javascript" src="assets/js/lib/respond.js"></script>
+		<script type="text/javascript" src="assets/js/lib/store.js"></script>
+		<script type="text/javascript" src="assets/js/lib/html5shiv.js"></script>
+		<script type="text/javascript" src="assets/js/ncb/init.js"></script>
+		<!-- Load Controllers -->
+		<script type="text/javascript" src="assets/js/ncr/controllers/DBController.js"></script>
+		<script type="text/javascript" src="assets/js/ncr/controllers/UserController.js"></script>
+		<!-- Load Managers -->
+		<script type="text/javascript" src="assets/js/ncr/DBManager.js"></script>
+		<script type="text/javascript" src="assets/js/ncr/UserManager.js"></script>
+		<!-- Report Scripts -->
+		<script type="text/javascript" src="assets/js/ncr/reports/sample_data.js"></script>
+		<script type="text/javascript" src="assets/js/ncr/reports/line-graph.js"></script>
+		<script>
+			angular.element(document).ready(function() {
+			angular.bootstrap(document, ['UserManager', 'DBManager']);
+			});
+		</script>
+	</body>
+</html>
