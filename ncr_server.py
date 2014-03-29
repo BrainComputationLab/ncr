@@ -80,7 +80,7 @@ def handleDBRequest(username):
 @app.route('/dbmodels', methods = ['GET'])
 def getDBModels():
 	dbmodels = list( db.Channels.find() ) 
-	dbmodels.extend(  list(db.Neuron_Group.find() )  )
+	dbmodels.extend(  list(db.Neuron.find() )  )
 	return json_util.dumps(dbmodels)
 
 

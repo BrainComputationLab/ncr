@@ -8,12 +8,11 @@ function DBController($scope, $resource) {
     //search form variables
     $scope.izhBinary = true;
     $scope.HHBinary = true;
-    $scope.NCRBinary = true;
-    $scope.VGBinary = true;
-    $scope.VGParams = ["", "", ""];// Particles, Conductance, ReversePotential
-    $scope.VGPBinary = true;
-    $scope.VGIBinary = true;
-    $scope.CDBinary = true;
+    $scope.NCSBinary = true;
+    $scope.HHVGIBinary = true;
+    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"",""];// Alpha, Beta, Power, X-Initial
+    $scope.LIFVGIBinary = true;
+    $scope.LIFCDBinary = true;
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";
@@ -48,33 +47,62 @@ function DBController($scope, $resource) {
 		{
 			if($scope.dbmodels[i].specification.type == "hh_voltage_gated_ion") //includes particles
 			{
-				if($scope.VGBinary == true)
+				if($scope.HHVGIBinary == true)
 				{
-					//if($scope.VGParams == ["","",""])//bypass--params inactive
+					//also do HHVGIParams[0]
+					//also do HHVGIParams[1]
+					if($scope.HHVGIParams[2] == "")
+						tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+						if($scope.HHVGIParams[2].search("-") == -1)//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[2]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[2] = ""+parseFloat($scope.HHVGIParams[2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.power != parseFloat($scope.HHVGIParams[2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[2] = "";//clear garbage
+						}
+						else//range value filter
+						{
+							var range = $scope.HHVGIParams[2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.power < parseFloat(range[0]) || 
+								$scope.dbmodels[i].specification.particles.power > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[2] = "";//clear garbage
+						}
+						//also do HHVGIParams[3]
+						//made it this far! passed all filters!
 						tmp.push($scope.dbmodels[i]);
-					//else//scrutinize parameters
-					//{
-						//.channel_parameters.
-						
-					//}
+					}
 				}
 				//else false
 			}
 			else if($scope.dbmodels[i].specification.type == "lif_voltage_gated_ion")
 			{
-				if($scope.VGIBinary == true)
+				if($scope.LIFVGIBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
 			else if($scope.dbmodels[i].specification.type == "lif_calcium_dependant")
 			{
-				if($scope.CDBinary == true)
+				if($scope.LIFCDBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
             else if($scope.dbmodels[i].specification.type == "izhikevich")
 			{
-				if($scope.IZHBinary == true)
+				if($scope.izhBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
