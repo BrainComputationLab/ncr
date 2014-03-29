@@ -74,7 +74,7 @@ function DBController($scope, $resource) {
 			}
             else if($scope.dbmodels[i].specification.type == "izhikevich")
 			{
-				if($scope.izhBinary == true)
+				if($scope.IZHBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
