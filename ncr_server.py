@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿from flask import Flask, render_template, send_from_directory, redirect, request, url_for, jsonify
 from werkzeug import secure_filename
 import datetime, os, bson, json, pymongo, random, string, crypt
@@ -6,7 +5,6 @@ from pymongo import MongoClient
 from bson import json_util
 from bson.json_util import dumps
 from flask.ext.mail import Mail, Message
-from Crypto.Cipher import AES
 
 app = Flask(__name__)
 app.debug = True 
@@ -351,4 +349,3 @@ def serveStaticResource(resource):
 
 if __name__ == '__main__':
     app.run()
->>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
