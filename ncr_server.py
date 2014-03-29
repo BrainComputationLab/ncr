@@ -4,8 +4,8 @@ import datetime, os, bson, json, pymongo, random, string, crypt
 from pymongo import MongoClient
 from bson import json_util
 from bson.json_util import dumps
-from flask.ext.mail import Mail, Message
-from Crypto.Cipher import AES
+#from flask.ext.mail import Mail, Message
+#from Crypto.Cipher import AES
 
 app = Flask(__name__)
 app.debug = True 
