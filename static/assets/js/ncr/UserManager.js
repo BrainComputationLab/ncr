@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿//New Angular module for our UserManager application.
 var UserManager = angular.module('UserManager', ['ngResource']);
 //Register the controller with the module.
@@ -31,3 +32,9 @@ UserManager.directive('equals', function() {
     }
   }
 });
+=======
+﻿//Creates a new Angular module for our UserManager application.
+var UserManager = angular.module('UserManager', ['ngResource']);
+//Register the controller with the module.
+UserManager = UserManager.controller('UserController', UserController);
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9

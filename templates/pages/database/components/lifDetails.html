@@ -3,15 +3,26 @@
         <tr>
             <th>Threshold</th>
             <th>Resting Potential</th>
+<<<<<<< HEAD
             <th>Leak Reversal Potential</th>
+=======
+            <th>R Membrane</th>
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
 
         </tr>
     </thead>
     <tbody>
         <tr>
+<<<<<<< HEAD
             <td>{{ db[5].specification.parameters.threshhold.type}} : {{ db[5].specification.parameters.threshhold.value}}</td>
             <td>{{ db[5].specification.parameters.resting_potential.type}} : {{ db[5].specification.parameters.resting_potential.min}} , {{ db[5].specification.parameters.resting_potential.max}}</td>
             <td>{{ db[5].specification.parameters.leak_reversal_potential.type}} : {{ db[5].specification.parameters.leak_reversal_potential.value}}</td>
+=======
+            <td>{{ db[5].specification.parameters.threshhold}}</td>
+            <td>{{ db[5].specification.parameters.resting_potential.type}} : {{ db[5].specification.parameters.resting_potential.min}} , {{ db[5].specification.parameters.resting_potential.max}}</td>
+            <td>{{ db[5].specification.parameters.r_membrane}}</td>
+
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </tr>
     </tbody>
 </table>
@@ -21,16 +32,40 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
+<<<<<<< HEAD
             <th>InitialCalcium</th>
+=======
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
             <th>Calcium Spike Increment</th>
             <th>Tau Calcium</th>
         </tr>
     </thead>
     <tbody>
         <tr>
+<<<<<<< HEAD
             <td>{{ db[5].specification.parameters.initial_calcium.mean}}</td>
             <td>{{ db[5].specification.parameters.calcium_spike_increment.type}} : {{ db[5].specification.parameters.calcium_spike_increment.value}}</td>
             <td>{{ db[5].specification.parameters.tau_calcium.type}} : {{ db[5].specification.parameters.tau_calcium.value}}</td>
+=======
+            <td>{{ db[5].specification.parameters.calcium_spike_increment}}</td>
+            <td>{{ db[5].specification.parameters.tau_calcium}}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Calcium Standard Deviation</th>
+            <th>Calcium Type</th>
+            <th>Calcium Mean </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ db[5].specification.parameters.calcium.standard_deviation}}</td>
+            <td>{{ db[5].specification.parameters.calcium.type}}</td>
+            <td>{{ db[5].specification.parameters.calcium.mean}}</td>
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </tr>
     </tbody>
 </table>
@@ -41,14 +76,24 @@
         <tr>
             <th>Leak Conductance</th>
             <th>Tau Membrane</th>
+<<<<<<< HEAD
             <th>Membrane Resistance</th>
+=======
+            <th>Leak Reversal Potential</th>
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </tr>
     </thead>
     <tbody>
         <tr>
+<<<<<<< HEAD
             <td>{{ db[5].specification.parameters.leak_conductance.type}} : {{ db[5].specification.parameters.leak_conductance.value}}</td>
             <td>{{ db[5].specification.parameters.tau_membrane.type}} : {{ db[5].specification.parameters.tau_membrane.value}}</td>
             <td>{{ db[5].specification.parameters.membrane_resistance.type}} : {{ db[5].specification.parameters.membrane_resistance.value}}</td>
+=======
+            <td>{{ db[5].specification.parameters.leak_conductance}}</td>
+            <td>{{ db[5].specification.parameters.tau_membrane}}</td>
+            <td>{{ db[5].specification.parameters.leak_reversal_potential}}</td>
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </tr>
     </tbody>
 </table>
@@ -62,7 +107,11 @@
     </thead>
     <tbody>
         <tr>
+<<<<<<< HEAD
             <td>0.0, 0.0, 0.0, 0.0, 0.0, 0.0</td>
+=======
+            <td>{{db[5].specification.parameters.spikeshape}}</td>
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </tr>
     </tbody>
 </table>
@@ -73,6 +122,7 @@
     <thead>
         <tr>
             <th></th>
+<<<<<<< HEAD
             <th></th>
             <th></th>
         </tr>
@@ -81,5 +131,15 @@
         <tr>
             <td></td>
         </tr>
+=======
+        </tr>
+    </thead>
+    <tbody>
+        {% for channel in db[5].specification.parameters.channels %}
+        <tr>
+            <td>{{channel}}</td>
+        </tr>
+        {% endfor %}
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
     </tbody>
 </table>

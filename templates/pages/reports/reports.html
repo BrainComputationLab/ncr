@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="http://d3js.org/d3.v2.js"></script>
@@ -332,6 +333,129 @@
         }
         
         initMenu();
+=======
+<div id="reports" class="container page" ng-controller="">
+    <div class="page-header">
+        <h3> NCR Reports Testing </h3>
+    </div>
+
+	<div id="reports-start" ng-app="myApp" ng-controller="colorController" style="height:1000px">
+
+		<canvas id="canvasExample"></canvas>
+
+
+
+			<!-- control panel-->
+			<div class="control_panel-container">
+				<div class="control_panel-main">
+					<div class="control_panel-left">
+						<h3>Control Panel</h3>
+						<div class="btn-group control_panel-button_list">
+							<button id="createGraphButton" class="btn btn-default">Add Line Graph</button>
+							<button id="createPlotButton" class="btn btn-default">Add Raster Plot</button>
+						</div>
+						<br/>
+						<div class="btn-group control_panel-button_list">
+							<button class="btn btn-default" data-toggle="modal" data-target="#modal-settings">Settings</button>
+						</div>
+						<p>Note: Don't run these graphs for too long. There's an SVG memory leak that I know how to treat but I don't know how to fix yet. Colorpicker has been removed due to angular issues. Todo: [Play/Pause/Gotoend, Position slider, customized gif capture, interface w/ NCS, other small things]. Interesting cells to look at are [5,6,8,9,13,21,24,...]</p>
+					</div>
+					<div class="control_panel-right">
+						<p style="font-size:20px;">
+						Reporting Status: <span id="simulationStatusLabel" class="label label-success">Live</span>
+						</p>
+						<p id="control_panel-report-time_of_last"></p>
+						<p>
+						Currently reporting cells in range: <span>0 to 50</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		
+			<!-- html for hidden settings modal -->
+			<div id="modal-settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<button type="button" class="btn btn-default close" data-dismiss="modal" aria-hidden="true">test</button>
+							modal text - body
+						</div>
+					</div>
+				</div>
+			</div>
+
+		
+
+			<div class="mega_container" style="position:relative;">
+				<div class="mega_container-div" style="left:0;">
+					<ul id="sortable-left" class="sortable"></ul>
+				</div>
+				<div class="mega_container-div" style="right:0;">
+					<ul id="sortable-right" class="sortable"></ul>
+				</div>
+			</div>
+
+	</div>
+    
+    
+    <script>
+
+
+
+
+
+	var activeGraph, activeCell;
+	var global_flag, scope="TEST";
+
+	var myApp, graphManager;
+
+
+
+
+	// temporary fix
+	var temp = setTimeout(function(){
+		reports_init();
+	}, 1500);
+
+	var reports_init = function(){
+
+		$("#canvasExample").hide();
+
+		$( ".sortable" ).sortable();
+		$( ".sortable" ).disableSelection();
+
+		graphManager = new createGraphManager();
+
+		myApp = angular.module("myApp",['colorpicker.module']);
+
+		myApp.controller("colorController", ['$scope', '$compile', '$window', function($scope,$compile,$window){
+			$scope.color = '';
+
+			$scope.$watch('color', function(){
+
+				var lineId = "#line-"+$window.activeGraph + "-" + $window.activeCell;
+				var buttonId = "#graph"+$window.activeGraph + "-cell_button" + $window.activeCell + "-cell-button";
+				$(buttonId).css("color", $scope.color);
+				$(lineId).css("stroke", $scope.color);
+			});
+	
+			$scope.add = function(element,id){
+				$(element).append(
+					$compile('<li><a id="'+id+'-change_color" colorpicker ng-model="color" type="text" href="#" >Change color</a></li>')($scope)
+				);
+				$scope.$apply();
+			};
+		}]);
+
+	}
+
+
+
+
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         </script>
     
     

@@ -1,6 +1,7 @@
 function DBController($scope, $resource) {
 	//display page sorting
 	$scope.currentPage = 0;
+<<<<<<< HEAD
 	$scope.pageOffset = 0;
     $scope.pageSize = 10;
     $scope.predicateSort = "_id";
@@ -96,12 +97,30 @@ function DBController($scope, $resource) {
 		}	
 		$scope.dbdisplay = tmp;
 	} 
+=======
+    $scope.pageSize = 10;
+    //search form variables
+    $scope.izhBinary = false;
+    $scope.HHBinary = false;
+    $scope.NCRBinary = false;
+    $scope.VGBinary = false;
+    $scope.VGPBinary = false;
+    $scope.VGIBinary = false;
+    $scope.CDBinary = false;
+    
+ 	//compute the number of pages of models based on the total models
+    $scope.numberOfPages=function(){
+        return Math.ceil($scope.dbmodels.length/$scope.pageSize);                
+    }
+       
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
     //define a model resource
     var DBModel = $resource('/dbmodels/:dbmodelname', { modelname: '@dbmodelname' },
         { save: { method: 'PUT', url: '/dbmodels/:dbmodelname' } }
         );
     //This is for getting all models
     var DBModels = $resource('/dbmodels');
+<<<<<<< HEAD
     $scope.dbmodels = [];//all models
     $scope.dbsecondary = [];//models from dbmodels that match up with types and ranges
     $scope.dbdisplay = [];//models from dbsecondary that match up with name, author, and description filters
@@ -111,6 +130,14 @@ function DBController($scope, $resource) {
         DBModels.query({}, function (result) {
             $scope.dbmodels = result;
             $scope.filterModels();
+=======
+    $scope.dbmodels = [];
+    //loads all models from the server and updates the scopes
+    
+    function updateDBModels() {
+        DBModels.query({}, function (result) {
+            $scope.dbmodels = result;
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
         });
     }
     //delete a model and update the display
@@ -127,6 +154,10 @@ function DBController($scope, $resource) {
         dbmodel.$save();
         updateDBModels();
     };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 209097c3af7672b5f43ba068fe5702b08b4583e9
     //update the models outright
     updateDBModels();
 }

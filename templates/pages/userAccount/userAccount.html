@@ -1,0 +1,120 @@
+<!--
+ Group: #3 - Neo-Cortical Repository
+ Class: CS 425
+ Date: 12/12/2013
+ 
+ This page uses the form to send and get user data from the web application. -->
+
+<div id="userAccount" class="container page" data-ng-controller="UserController">
+    <form id="newAccountForm" data-ng-submit="addUpdateUser">
+    <div class="row span6" >
+        <div class="col-md-6">
+        <!-- Create a new account with info 
+         Form data sent to python, packaged, and put in db -->
+            <div class="jumbotron">
+                <h3>Create a New Account </h3>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">First Name</span>
+                    <input type="text" class="form-control" data-ng-model="firstName">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Last Name</span>
+                    <input type="text" class="form-control" data-ng-model="lastName">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Email</span>
+                    <input type="email" class="form-control" data-ng-model="newUserEmail">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Choose  Password</span>
+                    <input type="password" class="form-control" data-ng-model="choosePassword">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Confirm Password</span>
+                    <input type="password" class="form-control" data-ng-model="confirmPassword">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="btn-group btn-input clearfix">
+                    <button class="btn dropdown-toggle btn-default form-control" type="button" data-toggle="dropdown">
+                        <span data-bind="securityLabel">Choose a Security Question</span> <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" data-ng-model="securityQuestion">
+                        <li role="presentation"><a href="#">Who was your best childhood Friend?</a></li>
+                        <li role="presentation"><a href="#">What was the name of your first pet?</a></li>
+                        <li role="presentation"><a href="#">Who was your favorite teacher?</a></li>
+                        <li role="presentation"><a href="#">What city were you born in?</a></li>
+                        <li role="presentation"><a href="#">What is your favorite TV show?</a></li>
+                    </ul>
+                        
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Answer</span>
+                    <input type="text" class="form-control" data-ng-model="securityAnswer">
+                </div>                
+            </div>
+            
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Affiliated Organization</span>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Short Personal Description</span>
+                    <input type="text" class="form-control">
+                </div>
+                
+            </div>
+            <button class="btn btn-success" type="submit" value="Add User">Sign Up!</button>
+
+        </div>
+        </form>
+
+                
+                
+                <div class="col-md-6">
+                    <!-- Log in to existing account -->
+                    <div class="jumbotron">
+                        <h3>Already a member?</h3>
+                        <form id="loginForm" data-ng-submit="loginUser">
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Email" data-ng-model="email">
+                                    <input type="password" class="form-control" placeholder="Password" data-ng-model="password">
+                            </div>
+                            <button type="submit" class="btn btn-default">Login</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" href="#forgotPasswordModal">Forgot your password?</button>
+                        </form>
+                    </div>
+                </div>
+        
+        
+        
+        <div class="modal" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="titleForgotPW" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="titleForgotPW">Password Help</h4>
+                    </div>
+                    <form id="forgotPasswordForm" data-ng-submit="forgotPasswordSubmit">
+                    <div class="modal-body">
+                        <h2>Forgot your Password?</h2>
+                        <h3>Enter your email and we will send you a link to reset your password.</h3>
+                        <div class="input-group">
+                            <span class="input-group-addon">Email Address</span>
+                            <input type="email" class="form-control" data-ng-model="forgotPasswordEmail">
+                        </div>
+                        <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>                                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+                
+                
+    </div>
+</div>
