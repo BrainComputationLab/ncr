@@ -1,18 +1,15 @@
 <div class="row">
 	<div class= "col-md-9 col-md-offset-2">
 		<ul class="pagination">
-			<li ng-class="{disabled: currentPage == 0}"><a ng-click="currentPage=currentPage-1">Previous</a></li>
-			<li ng-class="{active: currentPage == 0}"><a ng-click="currentPage=0">1</a></li>
-			<li ng-class="{active: currentPage == 1}"><a ng-click="currentPage=1">2</a></li>
-			<li ng-class="{active: currentPage == 2}"><a ng-click="currentPage=2">3</a></li>
-			<li ng-class="{active: currentPage == 3}"><a ng-click="currentPage=3">4</a></li>
-			<li ng-class="{active: currentPage == 4}"><a ng-click="currentPage=4">5</a></li>
-			<li ng-class="{active: currentPage == 5}"><a ng-click="currentPage=5">6</a></li>
-			<li ng-class="{active: currentPage == 6}"><a ng-click="currentPage=6">7</a></li>
-			<li ng-class="{active: currentPage == 7}"><a ng-click="currentPage=7">8</a></li>
-			<li ng-class="{active: currentPage == 8}"><a ng-click="currentPage=8">9</a></li>
-			<li ng-class="{active: currentPage == 9}"><a ng-click="currentPage=9">10</a></li>
-			<li ng-class="{disabled: currentPage >= dbmodels.length/pageSize-1}"><a ng-click="currentPage=currentPage+1">Next</a></li>
+			<li ng-class="{disabled: currentPage == 0}"><a href="" ng-click="goToPage(0)">
+				<span class="glyphicon glyphicon-fast-backward"></span></a></li>
+			<li ng-class="{disabled: currentPage == 0}"><a href="" ng-click="goToPage(currentPage-1)">
+				<span class="glyphicon glyphicon-chevron-left"></span></a></li>
+			<li ng-repeat="n in [] | range:15" ng-class="{active: currentPage == n+pageOffset, disabled: n+pageOffset > numberOfPages()-1}"</li><a href="" ng-click="goToPage(n+pageOffset)">{{ '{{n+pageOffset+1}}' }}</a></li>
+			<li ng-class="{disabled: currentPage >= numberOfPages()-1}"><a href="" ng-click="goToPage(currentPage+1)">
+				<span class="glyphicon glyphicon-chevron-right"></span></a></li>
+			<li ng-class="{disabled: currentPage >= numberOfPages()-1}"><a href="" ng-click="goToPage(numberOfPages()-1)">
+				<span class="glyphicon glyphicon-fast-forward"></span></a></li>
 		</ul>
 	</div>
 </div>

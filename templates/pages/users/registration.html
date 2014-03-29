@@ -1,0 +1,83 @@
+<!--
+ Group: #3 - Neo-Cortical Repository
+ Class: CS 425
+ Date: 12/12/2013
+ 
+ This page uses the form to send and get user data from the web application. -->
+<div class="container page" ng-show="route=='registration'">
+	<h3>Account Registration Form</h3>
+	<h5>As a registered neuroscientist, you will be able to run brain simulations and interact with your community's existing models. 
+	Please enter the following information. All fields are mandatory. Upon creating an account, you will receive an email requesting 
+	confirmation. Please check your email inbox and click the link in order to activate your account.</h5>	
+    <form class="form-horizontal" role="form" id="registrationForm" name="registration" ng-submit="registerUser()" novalidate>
+			<!-- Create a new account with info 
+			 Form data sent to python, packaged, and put in db -->
+			<div class="form-group">
+				<label for="inputEmail" class="col-md-2 control-label">Email</label>
+				<div class="col-sm-10">
+					<input id="inputEmail" type="email" name="uemail" class="form-control" ng-model="email" placeholder="Your email address will also serve to identify your account." required>
+					<div class="error" ng-show="registration.uemail.$dirty && registration.uemail.$invalid">
+						Error: <span class="error" ng-show="registration.uemail.$error.required">You must enter your email.</span>
+						<span class="error" ng-show="registration.uemail.$error.email">This is an invalid email format.</span>
+					</div>
+				</div>
+				<label for="inputFirstName" class="col-md-2 control-label">First Name</label>
+				<div class="col-sm-10">
+					<input id="inputFirstName" name="ufirstName" type="text" class="form-control" data-ng-model="firstName" required>
+					<div class="error" ng-show="registration.ufirstName.$dirty && registration.ufirstName.$invalid">
+						Error: <span class="error" ng-show="registration.ufirstName.$error.required">You must enter your first name.</span>
+					</div>
+				</div>
+				<label for="inputLastName" class="col-md-2 control-label">Last Name</label>
+				<div class="col-sm-10">
+					<input id="inputLastName" name="ulastName" type="text" class="form-control" data-ng-model="lastName" required>
+					<div class="error" ng-show="registration.ulastName.$dirty && registration.ulastName.$invalid">
+						Error: <span class="error" ng-show="registration.ulastName.$error.required">You must enter your last name.</span>
+					</div>
+				</div>
+				<label for="inputPassword" class="col-md-2 control-label">Proposed Password</label>
+				<div class="col-sm-10">
+					<input id="inputPassword" name="upassword" type="password" class="form-control" ng-model="password" 
+					ng-minlength="8" placeholder="A password must consist of at least 8 characters." equals="{{'{{confirm}}'}}" required>
+					<div class="error" ng-show="registration.upassword.$dirty && registration.upassword.$invalid">
+						<span class="error" ng-show="registration.upassword.$error.required">Error: You must enter your password. </span>
+						<span class="error" ng-show="registration.upassword.$error.minlength">Error: Your password must be at least 8 characters.</span>
+					</div>
+				</div>	
+				<label for="inputConfirm" class="col-md-2 control-label">Confirm Password</label>
+				<div class="col-sm-10">
+					<input id="inputConfirm" name="uconfirm" type="password" class="form-control" ng-model="confirm" 
+					placeholder="Re-enter your password here." equals="{{'{{password}}'}}" required>
+					<div class="error" ng-show="registration.uconfirm.$dirty && registration.uconfirm.$invalid">
+						Error: <span class="error" ng-show="registration.uconfirm.$error.required">You must confirm your password. </span>
+						<span class="error" ng-show="registration.uconfirm.$error.equals">This does not match up with your password.</span>
+					</div>
+				</div>	
+				<label for="selectSecurityQuestion" class="col-md-2 control-label">Security Question</label>
+				<div class="col-sm-10">
+					<select id="selectSecurityQuestion" name="usecurityQuestion" class="form-control" data-ng-model="securityQuestion" required>
+						<option value="Who was your best childhood Friend?">Who was your best childhood Friend?</option>
+						<option value="What was the name of your first pet?">What was the name of your first pet?</option>
+						<option value="Who was your favorite teacher?">Who was your favorite teacher?</option>
+						<option value="What city were you born in?">What city were you born in?</option>
+						<option value="What is your favorite TV show?">What is your favorite TV show?</option>
+					</select>
+					<div class="error" ng-show="registration.usecurityQuestion.$invalid">
+						Attention: <span class="error" ng-show="registration.usecurityQuestion.$error.required">You must select a security question.</span>
+					</div>
+				</div>						
+				<label for="inputSecurityAnswer" class="col-md-2 control-label">Security Answer</label>
+				<div class="col-sm-10">
+					<input id="inputSecurityAnswer" name="usecurityAnswer" type="password" class="form-control" 
+					data-ng-model="securityAnswer" placeholder="What is your answer to the security question?" required>
+					<div class="error" ng-show="registration.usecurityAnswer.$dirty && registration.usecurityAnswer.$invalid">
+						Error: <span class="error" ng-show="registration.usecurityAnswer.$error.required">You must enter your security answer.</span>
+					</div>
+				</div>	
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="registration.$invalid">Sign up!</button>
+			</div>
+        </form>
+    </div>
+</div>

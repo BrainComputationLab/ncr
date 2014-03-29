@@ -1,16 +1,14 @@
-    <!-- Template for the application menu bar -->
-<div class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar-wrapper navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <span class="navbar-brand">NCS</span>
+            <span class="navbar-brand">NCS </span>
         </div>
         <div class="navbar-collapse collapse">
-            <ul id="mainNav" class="nav navbar-nav">
-                <li><a href="#model"><span class="glyphicon glyphicon-pencil"></span> Model Builder</a></li>
-                <li><a href="#simulation"><span class="glyphicon glyphicon-th"></span> Simulation Builder</a></li>
-                <li><a href="#reports"><span class="glyphicon glyphicon-stats"></span> Reports</a></li>
-                <li class="active"><a href="#database"><span class="glyphicon glyphicon-hdd"></span> Model Database</a></li>
-                <li><a href="#userAccount"><span class="glyphicon glyphicon-user"></span> User</a></li>
+            <ul class="nav navbar-nav">
+                <li ng-class="{active: route=='model'}"><a href="#model" ng-click="route='model'"><span class="glyphicon glyphicon-pencil"></span> Model Builder</a></li>
+                <li ng-class="{active: route=='simulation'}"><a href="#simulation" ng-click="route='simulation'"><span class="glyphicon glyphicon-th"></span> Simulation Builder</a></li>
+                <li ng-class="{active: route=='reports'}"><a href="#reports" ng-click="route='reports'"><span class="glyphicon glyphicon-stats"></span> Reports</a></li>
+                <li ng-class="{active: route=='database'}"><a href="#database" ng-click="route='database'"><span class="glyphicon glyphicon-hdd"></span> Model Database</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="http://cse.unr.edu/brain" target="_blank">Documentation</a></li>
@@ -18,4 +16,34 @@
             </ul>
         </div>
     </div>
-</div>
+    <div class="container">
+		<ul class="nav navbar-nav" ng-hide="sessionID!= 0">
+			<form class="form-inline navbar-form" role="form" id="loginForm" name="login" ng-submit="loginUser()" novalidate>
+				<!-- Create a new account with info 
+				 Form data sent to python, packaged, and put in db -->
+				<div class="form-group">
+					<input type="email" name="luser" class="form-control input-sm" ng-model="userLogin" placeholder="Email..." required>
+				</div>
+				<div class="form-group">
+					<input name="lpassword" type="password" class="form-control input-sm" ng-model="passwdLogin" 
+					placeholder="Password..." required>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-success btn-sm" ng-disabled="login.$invalid">Log In</button>
+				</div>
+			</form>
+		</ul>
+		<ul class="nav navbar-nav navbar-right" ng-hide="sessionID!=0">
+            <li><a href="#forgot" ng-click="route='forgot'">Forgot Your Password?</a></li>
+            <li><a href="#register" ng-click="route='registration'">Register New Account?</a></li>
+        </ul>
+		<ul class="nav navbar-nav" ng-show="sessionID!= 0">
+           <ul class="nav navbar-nav">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span>You are logged in as: {{'{{logged}}'}}</a></li>
+                <li ng-class="{active: route=='preferences'}"><a href="#preferences" ng-click="route='preferences'"><span class="glyphicon glyphicon-dashboard"></span> Preferences</a></li>
+                <li ng-class="{active: route=='mail'}"><a href="#mail" ng-click="route='mail'"><span class="glyphicon glyphicon-envelope"></span> Mail</a></li>
+                <li><a href="#logout" ng-click="logoutUser()"><span class="glyphicon glyphicon-minus"></span> Log Out</a></li>
+            </ul>
+		</ul>
+	</div>
+</nav>

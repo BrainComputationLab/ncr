@@ -15,7 +15,7 @@ function DBController($scope, $resource) {
     $scope.VGIBinary = true;
     $scope.CDBinary = true;
     $scope.nameFilter = "";
-    $scope.detailFilter = "";
+    $scope.detailsFilter = "";
     $scope.authorFilter = "";
 
     //----------------model display handlers---------------------------------------------------------------------
