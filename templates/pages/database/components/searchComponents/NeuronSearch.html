@@ -1,0 +1,45 @@
+<div class="size collapse-group">
+    <button class="btn-group-justified btn-primary" data-toggle="collapse" data-target="#neuronTypes">
+        Neurons
+    </button>
+    
+    <div class="collapse" id="neuronTypes">
+    <div class="checkbox" ng-model="checked">
+        <label>
+            <input type="checkbox" ng-model="IZHBinary" ng-change="filterModels()"> 
+                <div class="size collapse-group">
+                    <a data-toggle="collapse" data-target="#izhoptions">Izhikevich</a>
+                </div>  
+                </label>
+    </div>
+    <div class="collapse" id="izhoptions">
+        {% include 'pages/database/components/searchComponents/neurontypes/IZHNeuronCollapse.html' %}
+    </div>         
+    <div class="checkbox" ng-model="checked">
+        <label>
+            <input type="checkbox" ng-model="HHBinary" ng-change="filterModels()"> 
+                <div class="size collapse-group">
+                    <a data-toggle="collapse" data-target="#hhoptions">Hodgkin Huxley</a>
+                </div>  
+                </label>
+    </div>
+    <div class="collapse" id="hhoptions">
+        {% include 'pages/database/components/searchComponents/neurontypes/HHNeuronCollapse.html' %}
+    </div>
+    <div class="checkbox" ng-model="checked">
+        <label>
+            <input type="checkbox" ng-model="NCSBinary" ng-change="filterModels()"> 
+                <div class="size collapse-group">
+                    <a data-toggle="collapse" data-target="#ncsoptions">NCS</a>
+                </div>  
+                </label>
+    </div>
+    <div class="collapse" id="ncsoptions">
+        {% include 'pages/database/components/searchComponents/neurontypes/NCSNeuronCollapse.html' %}
+    </div>
+    </div>
+    
+    
+    
+    
+</div>
