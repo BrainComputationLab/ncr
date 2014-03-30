@@ -11,9 +11,10 @@ function DBController($scope, $resource) {
     $scope.NCSBinary = true;
     $scope.HHVGIBinary = true;
     $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"",""] //, "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
-    $scope.LIFVGIParams = ["","","","","","","",""];
     $scope.LIFVGIBinary = true;
+    $scope.LIFVGIParams = ["","","","","","","",""]; //VHalf, 
     $scope.LIFCDBinary = true;
+    $scope.LIFCDIParams = ["","","","","","",""]; //VHalf, 
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";
@@ -54,7 +55,7 @@ function DBController($scope, $resource) {
 				if($scope.HHVGIBinary == true)
 				{
 					if($scope.HHVGIParams[2] == ""  && $scope.HHVGIParams[3] == "" && $scope.HHVGIParams[0] == "" && $scope.HHVGIParams[1] == "")
-                    tmp.push($scope.dbmodels[i]);					
+                        tmp.push($scope.dbmodels[i]);					
 					else//test filter
 					{
                         
@@ -195,18 +196,16 @@ function DBController($scope, $resource) {
 				if($scope.LIFVGIBinary == true)
                 {
                     if( $scope.LIFVGIParams[0] == "" && $scope.LIFVGIParams[1] == "" && $scope.LIFVGIParams[2] == "" && $scope.LIFVGIParams[3] == "" && $scope.LIFVGIParams[4] == "" && $scope.LIFVGIParams[5] == "" && $scope.LIFVGIParams[6] == "" && $scope.LIFVGIParams[7] == "")
-                    { 
                         tmp.push($scope.dbmodels[i]);
-                    }
                     
                     else
                     {
                         ////////////////////////
                         // V Half           ////
                         ////////////////////////
-                        if($scope.LIFVGIParams[0].search("-") == -1)//single value filter
+                        if($scope.LIFVGIParams[0].search("-") == -1 && $scope.LIFVGIParams[0] != "")//single value filter
                         {
-                            if(parseFloat($scope.LIFVGIParams[0]) != null)
+                            if(parseFloat($scope.LIFVGIParams[0]) != null )
                             {//okay to filter	
                                 $scope.LIFVGIParams[0] = ""+parseFloat($scope.LIFVGIParams[0]);//cleans up in the event some is garbage
                                 if($scope.dbmodels[i].specification.v_half != parseFloat($scope.LIFVGIParams[0]))
@@ -216,7 +215,7 @@ function DBController($scope, $resource) {
                             else//is garbage, don't filter
                                 $scope.LIFVGIParams[0] = "";//clear garbage
                         }
-                        if($scope.LIFVGIParams[0].search("-") != -1)//range value filter
+                        else if($scope.LIFVGIParams[0].search("-") != -1 && $scope.LIFVGIParams[0] != "")//range value filter
                         {
                             var range = $scope.LIFVGIParams[0].split("-");
                             if(parseFloat(range[0]) && parseFloat(range[1]))
@@ -228,9 +227,220 @@ function DBController($scope, $resource) {
                                 //else, continue
                             }
                             else//is garbage, don't filter
-                                $scope.HHVGIParams[0] = "";//clear garbage
+                                $scope.LIFVGIParams[0] = "";//clear garbage
                         }
                         
+                        ////////////////////////
+                        // Transition Rate  ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[1].search("-") == -1 && $scope.LIFVGIParams[1] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[1]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[1] = ""+parseFloat($scope.LIFVGIParams[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.r != parseFloat($scope.LIFVGIParams[1]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[1] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[1].search("-") != -1 && $scope.LIFVGIParams[1] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[1].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.r < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.r> parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[1] = "";//clear garbage
+                        }
+                        
+                        ////////////////////////
+                        // Activation Slope ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[2].search("-") == -1 && $scope.LIFVGIParams[2] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[2]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[2] = ""+parseFloat($scope.LIFVGIParams[2]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.activation_slope != parseFloat($scope.LIFVGIParams[2]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[2] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[2].search("-") != -1 && $scope.LIFVGIParams[2] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[2].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.activation_slope < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.activation_slope > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[2] = "";//clear garbage
+                        }
+                        
+                        ////////////////////////
+                        // DeActivation Slope //
+                        ////////////////////////
+                        if($scope.LIFVGIParams[3].search("-") == -1 && $scope.LIFVGIParams[3] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[3]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[3] = ""+parseFloat($scope.LIFVGIParams[3]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.deactivation_slope != parseFloat($scope.LIFVGIParams[3]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[3] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[3].search("-") != -1 && $scope.LIFVGIParams[3] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[3].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.deactivation_slope < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.deactivation_slope > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[3] = "";//clear garbage
+                        }
+                        
+                        
+                        ////////////////////////
+                        //Equilibrium Slope ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[4].search("-") == -1 && $scope.LIFVGIParams[4] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[4]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[4] = ""+parseFloat($scope.LIFVGIParams[4]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.equilibrium_slope != parseFloat($scope.LIFVGIParams[4]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[4] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[4].search("-") != -1 && $scope.LIFVGIParams[4] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[4].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.equilibrium_slope < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.equilibrium_slope > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[4] = "";//clear garbage
+                        }
+                        
+                        ////////////////////////
+                        // Conductance      ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[5].search("-") == -1 && $scope.LIFVGIParams[5] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[5]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[5] = ""+parseFloat($scope.LIFVGIParams[5]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.conductance != parseFloat($scope.LIFVGIParams[5]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[5] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[5].search("-") != -1 && $scope.LIFVGIParams[5] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[5].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.conductance < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.conductance > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[5] = "";//clear garbage
+                        }
+                        
+                        
+                        //////////////////////////
+                        // Reversal Potential ////
+                        //////////////////////////
+                        if($scope.LIFVGIParams[6].search("-") == -1 && $scope.LIFVGIParams[6] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[6]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[6] = ""+parseFloat($scope.LIFVGIParams[0]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.reversal_potential != parseFloat($scope.LIFVGIParams[6]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[6] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[6].search("-") != -1 && $scope.LIFVGIParams[6] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[6].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[6] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.reversal_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.reversal_potential > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[6] = "";//clear garbage
+                        }
+                        
+                        ////////////////////////
+                        // M Initial        ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[7].search("-") == -1 && $scope.LIFVGIParams[7] != "")//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[7]) != null )
+                            {//okay to filter	
+                                $scope.LIFVGIParams[7] = ""+parseFloat($scope.LIFVGIParams[7]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.m_initial != parseFloat($scope.LIFVGIParams[7]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[7] = "";//clear garbage
+                        }
+                        else if($scope.LIFVGIParams[7].search("-") != -1 && $scope.LIFVGIParams[7] != "")//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[7].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[7] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.m_initial < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.m_initial > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[7] = "";//clear garbage
+                        }
                     }
                 }
 				//else false
@@ -239,7 +449,142 @@ function DBController($scope, $resource) {
 			else if($scope.dbmodels[i].specification.type == "lif_calcium_dependant")
 			{
 				if($scope.LIFCDBinary == true)
-					tmp.push($scope.dbmodels[i]);
+                {
+					if($scope.LIFCDParams[2] == ""  && $scope.LIFCDParams[3] == "" && $scope.LIFCDParams[0] == "" && $scope.LIFCDParams[1] == "" && $scope.LIFCDParams[4] == "" && $scope.LIFCDParams[5] == "" && $scope.LIFCDParams[6] == ""  && $scope.LIFCDParams[7] == "")
+                        tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // M Initial        ////
+                        ////////////////////////
+						if($scope.LIFCDParams[0].search("-") == -1 && $scope.LIFCDParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.LIFCDParams[0]) != null)
+							{//okay to filter	
+								$scope.LIFCDParams[0] = ""+parseFloat($scope.LIFCDParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.m_initial != parseFloat($scope.LIFCDParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.LIFCDParams[0] = "";//clear garbage
+						}
+						else if($scope.LIFCDParams[0].search("-") != -1 && $scope.LIFCDParams[0] != "")//range value filter
+						{
+							var range = $scope.LIFCDParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.LIFCDParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.m_initial < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.m_initial > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.LIFCDParams[0] = "";//clear garbage
+						}
+						
+                        ////////////////////////
+                        // Reversal Potential //
+                        ////////////////////////
+						if($scope.LIFCDParams[1].search("-") == -1 && $scope.LIFCDParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.LIFCDParams[1]) != null)
+							{//okay to filter	
+								$scope.LIFCDParams[1] = ""+parseFloat($scope.LIFCDParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.reversal_potential != parseFloat($scope.LIFCDParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.LIFCDParams[1] = "";//clear garbage
+						}
+						else if($scope.LIFCDParams[1].search("-") != -1 && $scope.LIFCDParams[1] != "")//range value filter
+						{
+							var range = $scope.LIFCDParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.LIFCDParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.reversal_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.reversal_potential > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.LIFCDParams[1] = "";//clear garbage
+						}
+                        
+                        
+                         ////////////////////////
+                         // Conductance      ////
+                         ////////////////////////
+                         if($scope.LIFCDParams[2].search("-") == -1 && $scope.LIFCDParams[2] != "")//single value filter
+                         {
+                         if(parseFloat($scope.LIFCDParams[2]) != null)
+                         {//okay to filter	
+                         $scope.LIFCDParams[2] = ""+parseFloat($scope.LIFCDParams[4]);//cleans up in the event some is garbage
+                         if($scope.dbmodels[i].specification.conductance != parseFloat($scope.LIFCDParams[2]))
+                         continue;//filtered OUT, does not match
+                         //else, continue
+                         }
+                         else//is garbage, don't filter
+                         $scope.LIFCDParams[2] = "";//clear garbage
+                         }
+                         else if($scope.LIFCDParams[2].search("-") != -1 && $scope.LIFCDParams[2] != "")//range value filter
+                         {
+                         var range = $scope.LIFCDParams[2].split("-");
+                         if(parseFloat(range[0]) && parseFloat(range[1]))
+                         {//okay to filter
+                         $scope.LIFCDParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                         if($scope.dbmodels[i].specification.conductance < parseFloat(range[0]) || 
+                         $scope.dbmodels[i].specification.conductance > parseFloat(range[1]))
+                         continue;//filtered OUT, does not fit in range
+                         //else, continue
+                         }
+                         else//is garbage, don't filter
+                         $scope.LIFCDParams[2] = "";//clear garbage
+                         }
+                         
+                        
+                         ////////////////////////
+                         // Backwards Rate     //
+                         ////////////////////////
+                         if($scope.LIFCDParams[3].search("-") == -1 && $scope.LIFCDParams[3] != "")//single value filter
+                         {
+                             if(parseFloat($scope.LIFCDParams[3]) != null)
+                             {//okay to filter	
+                                 $scope.LIFCDParams[3] = ""+parseFloat($scope.LIFCDParams[3]);//cleans up in the event some is garbage
+                                 if($scope.dbmodels[i].specification.backwards_rate != parseFloat($scope.LIFCDParams[3]))
+                                 continue;//filtered OUT, does not match
+                         //else, continue
+                             }
+                             else//is garbage, don't filter
+                                 $scope.LIFCDParams[3] = "";//clear garbage
+                         }
+                         else if($scope.LIFCDParams[3].search("-") != -1 && $scope.LIFCDParams[3] != "")//range value filter
+                         {
+                             var range = $scope.LIFCDParams[3].split("-");
+                             if(parseFloat(range[0]) && parseFloat(range[1]))
+                             {//okay to filter
+                                 $scope.LIFCDParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                 if($scope.dbmodels[i].specification.backwards_rate < parseFloat(range[0]) || 
+                                    $scope.dbmodels[i].specification.backwards_rate > parseFloat(range[1]))
+                                     continue;//filtered OUT, does not fit in range
+                         //else, continue
+                             }
+                             else//is garbage, don't filter
+                                 $scope.LIFCDParams[3] = "";//clear garbage
+                         }
+                          
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+					}                }
 				//else false
 			}
             else if($scope.dbmodels[i].specification.type == "izhikevich")
