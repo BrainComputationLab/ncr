@@ -1,0 +1,43 @@
+<div class="size collapse-group">
+    <button class="btn-group-justified btn-primary" data-toggle="collapse" data-target="#neuronGroupParameters">
+        Neuron Groups
+    </button>
+ <div class="collapse" id="neuronGroupParameters">
+    <div class="size collapse-group">
+                    <a data-toggle="collapse" data-target="#geometry">Geometry</a>
+                </div>  
+    <div class="collapse" id="geometry">
+        {% include 'pages/database/components/searchComponents/neurongrouptypes/GeometryCollapse.html' %}
+    </div> 
+    
+    <div class="size collapse-group">
+        <a data-toggle="collapse" data-target="#synapticAliases">Synaptic Aliases</a>
+    </div>  
+    <div class="collapse" id="synapticAliases">
+        {% include 'pages/database/components/searchComponents/neurongrouptypes/SynapticAliasesCollapse.html' %}
+    </div> 
+    
+    <div class="size collapse-group">
+        <a data-toggle="collapse" data-target="#connections">Connections</a>
+    </div>  
+    <div class="collapse" id="connections">
+        {% include 'pages/database/components/searchComponents/neurongrouptypes/ConnectionsCollapse.html' %}
+    </div> 
+    
+   <div class="size collapse-group">
+        <a data-toggle="collapse" data-target="#neuronAliases">Neuron Aliases</a>
+    </div>  
+    <div class="collapse" id="neuronAliases">
+        {% include 'pages/database/components/searchComponents/neurongrouptypes/NeuronAliasesCollapse.html' %}
+    </div> 
+    
+    <div class="size collapse-group">
+        <a data-toggle="collapse" data-target="#subgroups">Sub Groups</a>
+    </div>  
+    <div class="collapse" id="subgroups">
+        {% include 'pages/database/components/searchComponents/neurongrouptypes/SubGroupsCollapse.html' %}
+    </div> 
+    
+    
+</div>
+</div> 
