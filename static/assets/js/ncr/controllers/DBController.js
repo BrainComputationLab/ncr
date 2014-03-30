@@ -14,7 +14,7 @@ function DBController($scope, $resource) {
     $scope.LIFVGIBinary = true;
     $scope.LIFVGIParams = ["","","","","","","",""]; //VHalf, 
     $scope.LIFCDBinary = true;
-    $scope.LIFCDIParams = ["","","","","","",""]; //VHalf, 
+    $scope.LIFCDParams = ["","","","","","",""]; //VHalf, 
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";

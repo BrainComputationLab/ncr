@@ -1,0 +1,20 @@
+<div class="size collapse-group">
+    <button class="btn-group-justified btn-primary" data-toggle="collapse" data-target="#stimulusParameters">
+        Stimuli
+    </button>
+<div class="collapse" id="stimulusParameters">
+
+    
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="RCStimBinary" ng-change="filterModels()"> 
+                <div class="size collapse-group">
+                    <a data-toggle="collapse" data-target="#stimulusRectangularCurrentOptions">Rectangular Current</a>
+                </div>  
+                </label>
+    </div>		
+    <div class="collapse" id="stimulusRectangularCurrentOptions">
+        {% include 'pages/database/components/searchComponents/stimulustypes/RectangularCurrentCollapse.html' %}
+    </div> 
+</div>
+</div>

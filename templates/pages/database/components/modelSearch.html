@@ -2,27 +2,6 @@
     {% include 'pages/database/components/searchComponents/NeuronSearch.html' %}
     {% include 'pages/database/components/searchComponents/ChannelSearch.html' %}
     {% include 'pages/database/components/searchComponents/SynapseSearch.html' %}
-
-    <!-- Author, Email, Description, etc. -->
-    <div class="form-group" style="margin-bottom: 0px;">
-        <label for="FilterName" class="col-md-3 control-label" > Name</label>
-        <div class="col-md-9">
-            <input type="search" class="form-control input-sm" id="FilterName" ng-model="nameFilter" 
-                placeholder="input model name" ng-change="filterModelsByString()">
-                </div>
-    </div>
-    <div class="form-group" style="margin-bottom: 0px;">
-        <label for="FilterAuthor" class="col-md-3 control-label"> Author</label>
-        <div class="col-md-9">
-            <input type="search" class="form-control input-sm" id="FilterAuthor" ng-model="authorFilter" 
-                placeholder="input model author"  ng-change="filterModelsByString()">
-                </div>
-    </div>
-    <div class="form-group" style="margin-bottom: 0px;">
-        <label for="FilterDetails" class="col-md-3 control-label"> Details</label>
-        <div class="col-md-9">
-            <input type="search" class="form-control input-sm" id="FilterDetails" ng-model="detailsFilter" 
-                placeholder="input details & notes"  ng-change="filterModelsByString()">
-                </div>
-    </div> 
+    {% include 'pages/database/components/searchComponents/StimulusSearch.html' %}
+    {% include 'pages/database/components/searchComponents/GeneralSearch.html' %}
 </form>

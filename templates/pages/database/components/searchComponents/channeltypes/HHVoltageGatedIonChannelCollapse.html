@@ -1,19 +1,30 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="HHVGIInputAlpha" class="col-md-1 control-label"> A</label>
-	<div class="col-md-8">
+	<div class="input-group col-md-9">
 		<input type="text" class="form-control input-sm" id="HHVGIInputAlpha" ng-model="HHVGIParams[0]" placeholder="Alpha">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
 	</div>
 </div>
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="HHVGIInputBeta" class="col-md-1 control-label"> B</label>
-	<div class="col-md-8">
+	<div class="input-group col-md-9">
 		<input type="text" class="form-control input-sm" id="HHVGIInputBeta" ng-model="HHVGIParams[1]" placeholder="Beta">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
 	</div>
 </div>
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="HHVGIInputPower" class="col-md-1 control-label"> P</label>
 	<div class="input-group col-md-9">
 		<input type="text" class="form-control input-sm" id="HHVGIInputPower" ng-model="HHVGIParams[2]" placeholder="Power">
+            
 		<span class="input-group-btn">
 			<button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
 				<span class="glyphicon glyphicon-search"></span>
