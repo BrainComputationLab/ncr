@@ -6,11 +6,12 @@ function DBController($scope, $resource) {
     $scope.predicateSort = "_id";
     $scope.reverseSort = false;
     //search form variables
-    $scope.izhBinary = true;
+    $scope.IZHBinary = true;
     $scope.HHBinary = true;
     $scope.NCSBinary = true;
     $scope.HHVGIBinary = true;
-    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"",""];// Alpha, Beta, Power, X-Initial
+    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"",""] //, "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
+    $scope.LIFVGIParams = ["","","","","","","",""];
     $scope.LIFVGIBinary = true;
     $scope.LIFCDBinary = true;
     $scope.nameFilter = "";
@@ -47,15 +48,20 @@ function DBController($scope, $resource) {
 		{
 			if($scope.dbmodels[i].specification.type == "hh_voltage_gated_ion") //includes particles
 			{
+                //////
+                // TODO : Alpha and Beta Parameter Filters
+                //////
 				if($scope.HHVGIBinary == true)
 				{
-					//also do HHVGIParams[0]
-					//also do HHVGIParams[1]
-					if($scope.HHVGIParams[2] == "")
-						tmp.push($scope.dbmodels[i]);					
+					if($scope.HHVGIParams[2] == ""  && $scope.HHVGIParams[3] == "" && $scope.HHVGIParams[0] == "" && $scope.HHVGIParams[1] == "")
+                    tmp.push($scope.dbmodels[i]);					
 					else//test filter
 					{
-						if($scope.HHVGIParams[2].search("-") == -1)//single value filter
+                        
+                        ////////////////////////
+                        // POWER            ////
+                        ////////////////////////
+						if($scope.HHVGIParams[2].search("-") == -1 && $scope.HHVGIParams[2] != "")//single value filter
 						{
 							if(parseFloat($scope.HHVGIParams[2]) != null)
 							{//okay to filter	
@@ -67,7 +73,7 @@ function DBController($scope, $resource) {
 							else//is garbage, don't filter
 								$scope.HHVGIParams[2] = "";//clear garbage
 						}
-						else//range value filter
+						else if($scope.HHVGIParams[2].search("-") != -1 && $scope.HHVGIParams[2] != "")//range value filter
 						{
 							var range = $scope.HHVGIParams[2].split("-");
 							if(parseFloat(range[0]) && parseFloat(range[1]))
@@ -82,6 +88,102 @@ function DBController($scope, $resource) {
 								$scope.HHVGIParams[2] = "";//clear garbage
 						}
 						//also do HHVGIParams[3]
+                        ////////////////////////
+                        // X-Initial        ////
+                        ////////////////////////
+						if($scope.HHVGIParams[3].search("-") == -1 && $scope.HHVGIParams[3] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[3]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[3] = ""+parseFloat($scope.HHVGIParams[3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.x_initial != parseFloat($scope.HHVGIParams[3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[3] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[3].search("-") != -1 && $scope.HHVGIParams[3] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.x_initial < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.x_initial > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[3] = "";//clear garbage
+						}
+                        
+                        /*
+                        ////////////////////////
+                        // Conductance      ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[4].search("-") == -1)//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[4]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[4] = ""+parseFloat($scope.HHVGIParams[4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.conductance != parseFloat($scope.HHVGIParams[4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[4] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[4].search("-") != -1)//range value filter
+						{
+							var range = $scope.HHVGIParams[4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.conductance < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.conductance > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[4] = "";//clear garbage
+						}
+                         
+                        ////////////////////////
+                        // Reversal Potential //
+                        ////////////////////////
+                        if($scope.HHVGIParams[5].search("-") == -1)//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[5]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[5] = ""+parseFloat($scope.HHVGIParams[5]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.reversal_potential != parseFloat($scope.HHVGIParams[5]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[5] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[5].search("-") != -1)//range value filter
+						{
+							var range = $scope.HHVGIParams[5].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.reversal_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.reversal_potential > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[5] = "";//clear garbage
+						}
+                        */ 
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
 						//made it this far! passed all filters!
 						tmp.push($scope.dbmodels[i]);
 					}
@@ -91,8 +193,48 @@ function DBController($scope, $resource) {
 			else if($scope.dbmodels[i].specification.type == "lif_voltage_gated_ion")
 			{
 				if($scope.LIFVGIBinary == true)
-					tmp.push($scope.dbmodels[i]);
+                {
+                    if( $scope.LIFVGIParams[0] == "" && $scope.LIFVGIParams[1] == "" && $scope.LIFVGIParams[2] == "" && $scope.LIFVGIParams[3] == "" && $scope.LIFVGIParams[4] == "" && $scope.LIFVGIParams[5] == "" && $scope.LIFVGIParams[6] == "" && $scope.LIFVGIParams[7] == "")
+                    { 
+                        tmp.push($scope.dbmodels[i]);
+                    }
+                    
+                    else
+                    {
+                        ////////////////////////
+                        // V Half           ////
+                        ////////////////////////
+                        if($scope.LIFVGIParams[0].search("-") == -1)//single value filter
+                        {
+                            if(parseFloat($scope.LIFVGIParams[0]) != null)
+                            {//okay to filter	
+                                $scope.LIFVGIParams[0] = ""+parseFloat($scope.LIFVGIParams[0]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.v_half != parseFloat($scope.LIFVGIParams[0]))
+                                    continue;//filtered OUT, does not match
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.LIFVGIParams[0] = "";//clear garbage
+                        }
+                        if($scope.LIFVGIParams[0].search("-") != -1)//range value filter
+                        {
+                            var range = $scope.LIFVGIParams[0].split("-");
+                            if(parseFloat(range[0]) && parseFloat(range[1]))
+                            {//okay to filter
+                                $scope.LIFVGIParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                if($scope.dbmodels[i].specification.v_half < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.v_half > parseFloat(range[1]))
+                                    continue;//filtered OUT, does not fit in range
+                                //else, continue
+                            }
+                            else//is garbage, don't filter
+                                $scope.HHVGIParams[0] = "";//clear garbage
+                        }
+                        
+                    }
+                }
 				//else false
+
 			}
 			else if($scope.dbmodels[i].specification.type == "lif_calcium_dependant")
 			{
@@ -102,7 +244,7 @@ function DBController($scope, $resource) {
 			}
             else if($scope.dbmodels[i].specification.type == "izhikevich")
 			{
-				if($scope.izhBinary == true)
+				if($scope.IZHBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}

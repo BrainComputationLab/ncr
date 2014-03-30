@@ -7,36 +7,36 @@
     
     <div class="checkbox">
         <label>
-            <input type="checkbox" ng-model="VGBinary" ng-change="filterModels()"> 
+            <input type="checkbox" ng-model="HHVGIBinary" ng-change="filterModels()"> 
                 <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#vgpoptions">HH Voltage Gated Ion</a>
                 </div>  
                 </label>
     </div>		
     <div class="collapse" id="vgpoptions">
-        {% include 'pages/database/components/searchComponents/channeltypes/VoltageGatedParticleChannelCollapse.html' %}
+        {% include 'pages/database/components/searchComponents/channeltypes/HHVoltageGatedIonChannelCollapse.html' %}
     </div> 
     <div class="checkbox">
         <label>
-            <input type="checkbox" ng-model="VGIBinary" ng-change="filterModels()"> 
+            <input type="checkbox" ng-model="LIFVGIBinary" ng-change="filterModels()"> 
                 <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#vgioptions">LIF Voltage Gated Ion</a>
                 </div>  
                 </label>
     </div>
     <div class="collapse" id="vgioptions">
-        {% include 'pages/database/components/searchComponents/channeltypes/VoltageGatedIonChannelCollapse.html' %}
+        {% include 'pages/database/components/searchComponents/channeltypes/LIFVoltageGatedIonChannelCollapse.html' %}
     </div>    
     <div class="checkbox">
         <label>
-            <input type="checkbox" ng-model="CDBinary" ng-change="filterModels()"> 
+            <input type="checkbox" ng-model="LIFCDBinary" ng-change="filterModels()"> 
                 <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#cdoptions">LIF Calcium Dependent</a>
                 </div>  
                 </label>
     </div>
     <div class="collapse" id="cdoptions">
-        {% include 'pages/database/components/searchComponents/channeltypes/CalciumDependentChannelCollapse.html' %}
+        {% include 'pages/database/components/searchComponents/channeltypes/LIFCalciumDependentChannelCollapse.html' %}
     </div>    
     </div>
 </div>
