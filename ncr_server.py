@@ -79,9 +79,12 @@ def handleDBRequest(username):
 #This route returns all models in the database
 @app.route('/dbmodels', methods = ['GET'])
 def getDBModels():
-	dbmodels = list( db.Channels.find() ) 
-	dbmodels.extend(  list(db.Neuron.find() )  )
-	return json_util.dumps(dbmodels)
+    dbmodels = list( db.Channels.find() ) 
+    dbmodels.extend(  list(db.Neuron.find() )  )
+    dbmodels.extend( list( db.Stimulus.find() ) )
+    dbmodels.extend( list( db.Synapse.find() ) )
+
+    return json_util.dumps(dbmodels)
 
 
 # This route returns all the users in the database

@@ -605,6 +605,24 @@ function DBController($scope, $resource) {
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
+            else if($scope.dbmodels[i].specification.type == "rectangular_current") //Stimulus
+			{
+				if($scope.RCStimBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}
+            else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "flat")
+			{
+				if($scope.SFBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}
+            else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
+			{
+				if($scope.SNCSBinary == true)
+					tmp.push($scope.dbmodels[i]);
+				//else false
+			}
 
 		}		
 		$scope.dbsecondary = tmp;
@@ -615,7 +633,7 @@ function DBController($scope, $resource) {
 		var tmp = [];
 		for (var i=0; i<$scope.dbsecondary.length; i++)
 		{
-			if( (($scope.nameFilter == "") || ($scope.dbsecondary[i]._id.search($scope.nameFilter) != -1)) &&
+			if( (($scope.nameFilter == "") || ($scope.dbsecondary[i].entity_name.search($scope.nameFilter) != -1)) &&
 			(($scope.authorFilter == "") || ($scope.dbsecondary[i].author.search($scope.authorFilter) != -1)) &&
 			(($scope.detailsFilter == "") || ($scope.dbsecondary[i].description.search($scope.detailsFilter) != -1)) )
 				tmp.push($scope.dbsecondary[i]);
