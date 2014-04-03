@@ -1,0 +1,99 @@
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Threshold</th>
+            <th>Resting Potential</th>
+            <th>R Membrane</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.threshhold}}'}}</td>
+            <td>{{'{{ selectedModel.specification.resting_potential.type}}'}} : {{'{{ selectedModel.specification.resting_potential.min}}'}} , 
+            {{'{{ selectedModel.specification.resting_potential.max}}'}}</td>
+            <td>{{'{{ selectedModel.specification.r_membrane}}'}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- CALCIUM -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Calcium Spike Increment</th>
+            <th>Tau Calcium</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.calcium_spike_increment}}'}}</td>
+            <td>{{'{{ selectedModel.specification.tau_calcium}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Calcium Standard Deviation</th>
+            <th>Calcium Type</th>
+            <th>Calcium Mean </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.calcium.standard_deviation}}'}}</td>
+            <td>{{'{{ selectedModel.specification.calcium.type}}'}}</td>
+            <td>{{'{{ selectedModel.specification.calcium.mean}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Last Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Leak Conductance</th>
+            <th>Tau Membrane</th>
+            <th>Leak Reversal Potential</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.leak_conductance}}'}}</td>
+            <td>{{'{{ selectedModel.specification.tau_membrane}}'}}</td>
+            <td>{{'{{ selectedModel.specification.leak_reversal_potential}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Spike Shape Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Spike Shape</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.spikeshape}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Channels </h3>
+<!-- Channels Table -->
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       <tr data-ng-repeat="channel in selectedModel.specification.channels">
+            <td>{{'{{channel}}'}}</td>
+       </tr>
+    </tbody>
+</table>

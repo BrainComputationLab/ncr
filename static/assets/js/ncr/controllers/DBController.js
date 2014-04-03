@@ -669,6 +669,15 @@ function DBController($scope, $resource) {
         dbmodel.$save();
         updateDBModels();
     };
+    
+    $scope.showDetails = function(model) {
+		$scope.selectedModel = model;
+	}
+ 
+     $scope.hideDetails = function(model) {
+		$scope.selectedModel = 0;
+	}
+    
     //update the models outright
     updateDBModels();
 }

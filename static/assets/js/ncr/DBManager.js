@@ -20,3 +20,4 @@ DBManager.filter('range', function()
     return input;
   };
 });
+

@@ -1,0 +1,118 @@
+<h2>Geometry</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Width</th>
+            <th>Depth</th>
+            <th>Height</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{'{{ selectedModel.specification.geometry.width}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.geometry.depth}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.geometry.height}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Connections</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Synapse ID</th>
+            <th>Recuurent</th>
+            <th>Post Synaptic</th>
+            <th>Probability</th>
+            <th>Presynaptic</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="connection in selectedModel.specification.connections">
+            <td>  {{'{{connection.synapse}}'}}</td>
+            <td>  {{'{{connection.recurrent}}'}}</td>
+            <td>  {{'{{connection.postsynaptic}}'}}</td>
+            <td>  {{'{{connection.probability}}'}}</td>
+            <td>  {{'{{connection.presynaptic}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Neuron Groups</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th>Neuron ID</th>
+            <th>Geometry</th>
+            <th>Location</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="group in selectedModel.specification.neuron_groups">
+            <td>  {{'{{group.label}}'}}</td>        
+            <td>  {{'{{group.neuron}}'}}</td>        
+            <td>  width : {{'{{group.geometry.width}}'}}, depth : {{'{{group.geometry.depth}}'}}, height : {{'{{group.geometry.height}}'}}</td>        
+            <td>  x : {{'{{group.location.x}}'}}, y : {{'{{group.location.y}}'}}, z : {{'{{group.location.z}}'}}</td>        
+        </tr>
+    </tbody>
+</table>
+
+
+<h2>Sub Groups</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th>Model ID</th>
+            <th>Location</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="subgroup in selectedModel.specification.sub_groups">
+            <td>  {{'{{subgroup.label}}'}}</td>        
+            <td>  {{'{{subgroup.group}}'}}</td>        
+            <td>  x : {{'{{subgroup.location.x}}'}}, y : {{'{{subgroup.location.y}}'}}, z : {{'{{subgroup.location.z}}'}}</td>        
+        </tr>
+    </tbody>
+</table>
+
+<h2>TODO: Aliases</h2>
+<h2> Model Aliases </h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Alias</th>
+            <th>Labels</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  </td>        
+            <td>  </td>        
+            
+        </tr>
+    </tbody>
+</table>
+
+
+<h2> Synaptic Aliases </h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Alias</th>
+            <th>Labels</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  </td>        
+            <td>  </td>        
+            
+        </tr>
+    </tbody>
+</table>
