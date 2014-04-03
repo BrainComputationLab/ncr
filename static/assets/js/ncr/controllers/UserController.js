@@ -156,7 +156,7 @@ function UserController($scope, $resource) {
 		request.done(function(response, textStatus, jqXHR) {
 			if(response.success)
 			{
-				$scope.securityQuestion = response.question;
+				$scope.securityQuestionQueried = response.question;
 				$scope.$apply;
 			}
 			else
