@@ -6,8 +6,6 @@ function UserController($scope, $resource) {
 	$scope.logged = 0;
 	$scope.route = '';
 	$scope.securityQuestion = 0;
-	
-    // forgot password
 
 	$scope.registerUser = function () {
 		finished = false;
