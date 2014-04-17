@@ -1,0 +1,40 @@
+<!-- Modal -->
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" aria-hidden="true" ng-click="hideDetails()">&times;</button>
+		<h4 class="modal-title">Model Name : {{'{{selectedModel.entity_name}}'}}</h4>		
+	</div>
+	<div class="modal-body">
+<!-- BODY OF MODAL -->
+		<h3>Description</h3>
+		<p> {{'{{selectedModel.description}}'}} </p>
+		<h3>Author</h3>
+		<p> {{'{{selectedModel.author}}'}} </p>
+		<div ng-show="selectedModel.specification.type == 'izhikevich'">
+			{% include 'pages/database/components/detailComponents/detailTables/izhDetails.html' %}
+		</div>
+		<div ng-show="selectedModel.specification.type == 'hh'">
+			{% include 'pages/database/components/detailComponents/detailTables/hhDetails.html' %}
+		</div>
+		<div ng-show="selectedModel.specification.type == 'ncs'">
+			{% include 'pages/database/components/detailComponents/detailTables/ncsDetails.html' %}
+		</div>
+		<div ng-show="selectedModel.specification.type == 'lif_calcium_dependant'">
+			{% include 'pages/database/components/detailComponents/detailTables/LIFCDDetails.html' %}
+		</div>
+		<div ng-show="selectedModel.specification.type == 'lif_voltage_gated_ion'">
+			{% include 'pages/database/components/detailComponents/detailTables/LIFVGIDetails.html' %}
+		</div>
+		<div ng-show="selectedModel.specification.type == 'hh_voltage_gated_ion'">
+			{% include 'pages/database/components/detailComponents/detailTables/HHVGIDetails.html' %}
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" ng-click="promoteModel()">Add Details<span class="glyphicon glyphicon-star"></span></button>
+		<button type="button" class="btn btn-primary" ng-click="promoteModel()">Select/Change<span class="glyphicon glyphicon-star"></span></button>
+		<button type="button" class="btn btn-success" ng-click="promoteModel()">Promote<span class="glyphicon glyphicon-star"></span></button>
+		<button type="button" class="btn btn-danger" ng-click="demoteModel()">Demote<span class="glyphicon glyphicon-minus"></span></button>
+		<button type="button" class="btn btn-warning" ng-click="editModel()">Edit</button>
+		<button type="button" class="btn btn-default" ng-click="hideDetails()">Close</button>
+	</div>
+</div><!-- /.modal-content -->

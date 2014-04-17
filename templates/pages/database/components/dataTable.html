@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" ng-hide="selectedModel">
     <thead>
         <tr>
             <th><a href="" ng-click="predicateSort = '_id'; reverseSort=false">ID</a>
@@ -13,7 +13,7 @@
     </thead>
     <tbody>		
         <tr data-ng-repeat="model in dbdisplay | orderBy:predicateSort:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize">
-            <td class="col-md-2">{{ '{{ model.entity_name }}' }}</td>
+            <td class="col-md-2"><a href="#" ng-click="showDetails(model)">{{ '{{ model.entity_name }}' }}</a></td>
             <td class="col-md-2">{{ '{{ model.author }}' }}</td>
             <td class="col-md-1">{{ '{{ model.entity_type }}' }}</td>
             <td class="col-md-7">{{ '{{ model.description }}' }}</td>
@@ -27,3 +27,6 @@
         </tr>
     </tbody>
 </table>
+<div ng-show="selectedModel">
+	{% include 'pages/database/components/detailComponents/modelInfo.html' %}
+</div>

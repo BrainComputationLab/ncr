@@ -12,20 +12,21 @@
     <form class="form-horizontal" role="form" id="forgotForm" name="forgot" ng-submit="forgotPassword()" novalidate>
 			<!-- Create a new account with info 
 			 Form data sent to python, packaged, and put in db -->
-			<div ng-hide="securityQuestion" class="form-group">
+			<div ng-hide="securityQuestionQueried" class="form-group">
 				<label for="forgotEmail" class="col-md-2 control-label">Email</label>
 				<div class="col-md-10">
 					<input id="forgotEmail" type="email" name="email" class="form-control" ng-model="emailQuery" placeholder="Your email address will also serve to identify your account." required>
 					<div class="error" ng-show="forgot.email.$dirty && forgot.email.$invalid">
 						Error: <span class="error" ng-show="forgot.email.$error.required">You must enter your email.</span>
+						<span class="error" ng-show="forgot.email.$error.email">This is an invalid email format.</span>
 					</div>
 				</div>
 				<div class="btn-group pull-right">
 					<button type="button" class="btn btn-warning" ng-disabled="forgot.email.$error.required" ng-click="querySecurityQuestion()">Query This Email</button>
 				</div>
 			</div>
-			<div ng-show="securityQuestion">
-				<h4>Security Question: {{'{{securityQuestion}}'}}</h4>
+			<div ng-show="securityQuestionQueried">
+				<h4>Security Question: {{'{{securityQuestionQueried}}'}}</h4>
 				<div class="form-group">
 					<label for="forgotSecurityAnswer" class="col-md-2 control-label">Security Answer</label>
 					<div class="col-md-10">

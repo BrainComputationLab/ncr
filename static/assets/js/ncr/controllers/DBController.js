@@ -10,7 +10,7 @@ function DBController($scope, $resource) {
     $scope.HHBinary = true;
     $scope.NCSBinary = true;
     $scope.HHVGIBinary = true;
-    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"",""] //, "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
+    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"","", "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
     $scope.LIFVGIBinary = true;
     $scope.LIFVGIParams = ["","","","","","","",""]; //VHalf, 
     $scope.LIFCDBinary = true;
@@ -88,7 +88,6 @@ function DBController($scope, $resource) {
 							else//is garbage, don't filter
 								$scope.HHVGIParams[2] = "";//clear garbage
 						}
-						//also do HHVGIParams[3]
                         ////////////////////////
                         // X-Initial        ////
                         ////////////////////////
@@ -119,11 +118,10 @@ function DBController($scope, $resource) {
 								$scope.HHVGIParams[3] = "";//clear garbage
 						}
                         
-                        /*
                         ////////////////////////
                         // Conductance      ////
                         ////////////////////////
-                        if($scope.HHVGIParams[4].search("-") == -1)//single value filter
+                        if($scope.HHVGIParams[4].search("-") == -1 && $scope.HHVGIParams[4] != "")//single value filter
 						{
 							if(parseFloat($scope.HHVGIParams[4]) != null)
 							{//okay to filter	
@@ -135,7 +133,7 @@ function DBController($scope, $resource) {
 							else//is garbage, don't filter
 								$scope.HHVGIParams[4] = "";//clear garbage
 						}
-						else if($scope.HHVGIParams[4].search("-") != -1)//range value filter
+						else if($scope.HHVGIParams[4].search("-") != -1 && $scope.HHVGIParams[4] != "")//range value filter
 						{
 							var range = $scope.HHVGIParams[4].split("-");
 							if(parseFloat(range[0]) && parseFloat(range[1]))
@@ -153,7 +151,7 @@ function DBController($scope, $resource) {
                         ////////////////////////
                         // Reversal Potential //
                         ////////////////////////
-                        if($scope.HHVGIParams[5].search("-") == -1)//single value filter
+                        if($scope.HHVGIParams[5].search("-") == -1 && $scope.HHVGIParams[5] != "")//single value filter
 						{
 							if(parseFloat($scope.HHVGIParams[5]) != null)
 							{//okay to filter	
@@ -165,7 +163,7 @@ function DBController($scope, $resource) {
 							else//is garbage, don't filter
 								$scope.HHVGIParams[5] = "";//clear garbage
 						}
-						else if($scope.HHVGIParams[5].search("-") != -1)//range value filter
+						else if($scope.HHVGIParams[5].search("-") != -1 && $scope.HHVGIParams[5] != "")//range value filter
 						{
 							var range = $scope.HHVGIParams[5].split("-");
 							if(parseFloat(range[0]) && parseFloat(range[1]))
@@ -179,7 +177,6 @@ function DBController($scope, $resource) {
 							else//is garbage, don't filter
 								$scope.HHVGIParams[5] = "";//clear garbage
 						}
-                        */ 
                         
                         ///////////////////////////
                         // End Of filters!      ///
@@ -672,6 +669,15 @@ function DBController($scope, $resource) {
         dbmodel.$save();
         updateDBModels();
     };
+    
+    $scope.showDetails = function(model) {
+		$scope.selectedModel = model;
+	}
+ 
+     $scope.hideDetails = function(model) {
+		$scope.selectedModel = 0;
+	}
+    
     //update the models outright
     updateDBModels();
 }

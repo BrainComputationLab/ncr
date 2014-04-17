@@ -6,8 +6,6 @@ function UserController($scope, $resource) {
 	$scope.logged = 0;
 	$scope.route = '';
 	$scope.securityQuestion = 0;
-	
-    // forgot password
 
 	$scope.registerUser = function () {
 		finished = false;
@@ -156,7 +154,7 @@ function UserController($scope, $resource) {
 		request.done(function(response, textStatus, jqXHR) {
 			if(response.success)
 			{
-				$scope.securityQuestion = response.question;
+				$scope.securityQuestionQueried = response.question;
 				$scope.$apply;
 			}
 			else

@@ -1,7 +1,6 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
-            <th>Model</th>
             <th>A</th>
             <th>B</th>
             <th>C</th>
@@ -9,21 +8,17 @@
             <th>U</th>
             <th>V</th>
             <th>Threshold</th>
-
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td></td>
-            <td>{{ db[5].specification.a}}</td>
-            <td>{{ db[5].specification.b}}</td>
-            <td>{{ db[5].specification.c}}</td>
-            <td>{{ db[5].specification.d}}</td>
-            <td>{{ db[5].specification.u}}</td>
-            <td>{{ db[5].specification.v}}</td>
-
-            <td>{{ db[5].specification.threshold}}</td>
-
+            <td class="col-md-3">{{'{{ selectedModel.specification.a}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.b}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.c}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.d}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.u}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.v}}'}}</td>
+            <td class="col-md-1">{{'{{ selectedModel.specification.threshold}}'}}</td>
         </tr>
     </tbody>
 </table>

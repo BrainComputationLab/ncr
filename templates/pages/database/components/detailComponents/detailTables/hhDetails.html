@@ -9,9 +9,11 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.threshhold}}</td>
-            <td>{{ db[5].specification.resting_potential.type}} : {{ db[5].specification.resting_potential.min}} , {{ db[5].specification.resting_potential.max}}</td>
-            <td>{{ db[5].specification.capacitance}}</td>
+            <td>{{'{{ selectedModel.specification.threshhold}}'}}</td>
+            <td>{{'{{ selectedModel.specification.resting_potential.type}}'}} : 
+            {{'{{ selectedModel.specification.resting_potential.min}}'}} , 
+            {{'{{ selectedModel.specification.resting_potential.max}}'}}</td>
+            <td>{{'{{ selectedModel.specification.capacitance}}'}}</td>
 
         </tr>
     </tbody>
@@ -27,7 +29,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{db[5].specification.channels}}</td>
+            <td>{{'{{ selectedModel.specification.channels}}'}}</td>
         </tr>
     </tbody>
 </table>

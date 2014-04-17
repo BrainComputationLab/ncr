@@ -1,24 +1,20 @@
 <!-- Noted as lif_voltage_gated_ion-->
-
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
             <th>Activation Slope</th>
             <th>Conductance</th>
             <th>Deactivation Slope</th>
-
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.activation_slope}}</td>
-            <td>  {{db[5].specification.conductance}}</td>
-            <td>  {{db[5].specification.deactivation_slope}}</td>
+            <td>{{'{{ selectedModel.specification.activation_slope}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.conductance}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.deactivation_slope}}'}}</td>
         </tr>
     </tbody>
 </table>
-
-
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
@@ -29,14 +25,12 @@
     </thead>
     <tbody>
         <tr>
-            <td>  {{db[5].specification.reversal_potential}}</td>        
-            <td>  {{db[5].specification.equilibrium_slope}}</td>
-            <td>  {{db[5].specification.v_half}}</td>
+            <td>  {{'{{ selectedModel.specification.reversal_potential}}'}}</td>        
+            <td>  {{'{{ selectedModel.specification.equilibrium_slope}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.v_half}}'}}</td>
         </tr>
     </tbody>
 </table>
-
-
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
@@ -47,9 +41,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>  {{db[5].specification.m_power}}</td>        
-            <td>  {{db[5].specification.r}}</td>
-            <td>  {{db[5].specification.m_initial}}</td>
+            <td>  {{'{{ selectedModel.specification.m_power}}'}}</td>        
+            <td>  {{'{{ selectedModel.specification.r}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.m_initial}}'}}</td>
         </tr>
     </tbody>
 </table>

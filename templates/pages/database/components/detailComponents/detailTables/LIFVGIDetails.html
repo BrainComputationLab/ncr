@@ -9,9 +9,10 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.threshhold}}</td>
-            <td>{{ db[5].specification.resting_potential.type}} : {{ db[5].specification.resting_potential.min}} , {{ db[5].specification.resting_potential.max}}</td>
-            <td>{{ db[5].specification.r_membrane}}</td>
+            <td>{{'{{ selectedModel.specification.threshhold}}'}}</td>
+            <td>{{'{{ selectedModel.specification.resting_potential.type}}'}} : {{'{{ selectedModel.specification.resting_potential.min}}'}} , 
+            {{'{{ selectedModel.specification.resting_potential.max}}'}}</td>
+            <td>{{'{{ selectedModel.specification.r_membrane}}'}}</td>
 
         </tr>
     </tbody>
@@ -28,8 +29,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.calcium_spike_increment}}</td>
-            <td>{{ db[5].specification.tau_calcium}}</td>
+            <td>{{'{{ selectedModel.specification.calcium_spike_increment}}'}}</td>
+            <td>{{'{{ selectedModel.specification.tau_calcium}}'}}</td>
         </tr>
     </tbody>
 </table>
@@ -43,9 +44,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.calcium.standard_deviation}}</td>
-            <td>{{ db[5].specification.calcium.type}}</td>
-            <td>{{ db[5].specification.calcium.mean}}</td>
+            <td>{{'{{ selectedModel.specification.calcium.standard_deviation}}'}}</td>
+            <td>{{'{{ selectedModel.specification.calcium.type}}'}}</td>
+            <td>{{'{{ selectedModel.specification.calcium.mean}}'}}</td>
         </tr>
     </tbody>
 </table>
@@ -61,9 +62,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ db[5].specification.leak_conductance}}</td>
-            <td>{{ db[5].specification.tau_membrane}}</td>
-            <td>{{ db[5].specification.leak_reversal_potential}}</td>
+            <td>{{'{{ selectedModel.specification.leak_conductance}}'}}</td>
+            <td>{{'{{ selectedModel.specification.tau_membrane}}'}}</td>
+            <td>{{'{{ selectedModel.specification.leak_reversal_potential}}'}}</td>
         </tr>
     </tbody>
 </table>
@@ -77,7 +78,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{db[5].specification..spikeshape}}</td>
+            <td>{{'{{ selectedModel.specification.spikeshape}}'}}</td>
         </tr>
     </tbody>
 </table>
@@ -91,10 +92,8 @@
         </tr>
     </thead>
     <tbody>
-        {% for channel in db[5].specification.channels %}
-        <tr>
-            <td>{{channel}}</td>
-        </tr>
-        {% endfor %}
+       <tr data-ng-repeat="channel in selectedModel.specification.channels">
+            <td>{{'{{channel}}'}}</td>
+       </tr>
     </tbody>
 </table>
