@@ -4,6 +4,7 @@ import datetime, os, bson, json, pymongo, random, string, crypt
 from pymongo import MongoClient
 from bson import json_util
 from bson.json_util import dumps
+#from flaskext.mail import Mail, Message
 #from flask.ext.mail import Mail, Message
 #from Crypto.Cipher import AES
 
@@ -18,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = uploadFolder
 app.config.update(dict(
     DEBUG = True,
     MAIL_SERVER = 'smtp.gmail.com',
-    MAIL_PORT = 587,
+    MAIL_PORT = 465,
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_USERNAME = 'falconiarmie@gmail.com',
