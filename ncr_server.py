@@ -14,6 +14,8 @@ allowedFileExtension = set(['json','py'])
 client = MongoClient("mongodb://braintest:braintest@ds041167.mongolab.com:41167/brainlab_test")
 db = client.brainlab_test
 app.config['UPLOAD_FOLDER'] = uploadFolder
+GlobalThreshold = 0;#number of promotions needed to elevate model to global
+RegionalThreshold = 0;#number of promotions needed to elevate model to next region
 
 app.config.update(dict(
     DEBUG = True,
@@ -122,13 +124,14 @@ def handleUserRequest(sessionID):
 		pw = crypt.crypt(request.form['lpassword'], '$6$' + check[0]['Secret'] + '$')
 		check = db.Users.find({'Username': request.form['luser'].lower(), 'Password': pw});
 		if not check.count():
-			return jsonify({"success" : False, "error": "Invalid username and/or password."});					
+			return jsonify({"success" : False, "error": "Invalid username and/or password."});	
+		check = list(check);				
 		# Success! Create session ID		
 		session = "".join([random.choice(string.ascii_letters + string.digits) for n in xrange(16)])
 		# Update the user with the new data
 		db.Users.update({'Username': request.form['luser']}, { "$set": {'Session_ID' : session, 'Last_Activity': str(datetime.datetime.now()),  'Login_Site': request.remote_addr} });
 		# Return session id
-		return jsonify({"success" : True, "session_id" : session, "logged": request.form['luser'], "activation": list(check)[0]['Activate']});
+		return jsonify({"success" : True, "session_id" : session, "logged": request.form['luser'], "rank": check[0]["Rank"], "activation": check[0]['Activate']});
 	# If adding a user
 	elif request.method == 'POST':
 		# Hardcheck for existing user		
@@ -227,7 +230,206 @@ def handleForgetRequest():
 		msg.body = "We are sorry that you forgot your password. We have randomly generated a new password for you, please take the time to update your password after logging in by selecing 'Preferences' from the navigation bar and following the appropriate prompts. Enclosed is your new password: "+password+"\nIf you have not requested a password recovery, please take steps to maximize your account security.";
 		mail.send(msg);
 		return jsonify({"success" : True}); 
+		
+@app.route('/promote/<model>', methods=['POST', 'DELETE'])
+def handlePromoteRequest(model):    
+	sessionID = int(request.form['sessionID']);
+	user = request.form['logged'];	
+	#Check user logged in
+	if sessionID == 0:
+		return jsonify({"success": False, "error": "User must be logged in."});
+	#Use sessionID to get user
+	check =  db.Users.find({'SessionID': sessionID, 'Logged': user});
+	if not check.count():
+		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
+	else:
+		lab = list(check).Lab;
+		check = db.Labs.find({'Lab': lab});
+		region = check.list().Region;
 
+	if request.method == 'POST':
+		#Check if user already promoted this model
+		check =  db.Channels.find({'_id.$oid': model});
+		if not check.count():
+			check = db.Neurons.find({'_id.$oid': model});
+			if not check.count():
+				return jsonify({"success" : False, "error": "Model id does not match any models on file."});				
+			else:
+				votes = list(check).votes;
+				if user in votes:
+					return jsonify({"success" : False, "error": "User has already promoted this model."});			
+				else:
+					votes = votes.append(user);
+					# Compare against thresholds to see if model elevates
+					elev = eventElevate(len(votes));
+					if elev == 2:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': 'global'} });
+						return jsonify({"success" : True, 'scope': 'global', "update": votes}); 
+					elif elev == 1:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': region} });					
+						return jsonify({"success" : True, 'scope': region, "update": votes}); 
+					else:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': lab} });
+						return jsonify({"success" : True, "update": votes}); 
+		else:
+			votes = list(check).votes;
+			if user in votes:
+				return jsonify({"success" : False, "error": "User has already promoted this model."});			
+			else:			
+				votes = votes.append(user);
+				# Compare against thresholds to see if model elevates
+				elev = canElevate(len(votes), scope);
+				if elev == 2:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': 'global'} });
+					return jsonify({"success" : True, 'scope': 'global', "update": votes}); 
+				elif elev == 1:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': region} });					
+					return jsonify({"success" : True, 'scope': region, "update": votes}); 
+				else:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes} });		
+					return jsonify({"success" : True, "update": votes}); 
+	elif request.method == 'DELETE':
+		#Check if user has not promoted this model
+		check =  db.Channels.find({'_id.$oid': model});
+		if not check.count():
+			check = db.Neurons.find({'_id.$oid': model});
+			if not check.count():
+				return jsonify({"success" : False, "error": "Model id does not match any models on file."});				
+			else:
+				votes = list(check).votes;
+				if user in votes:
+					votes = votes.remove(user);
+					# Compare against thresholds to see if model elevates
+					elev = canElevate(len(votes), scope);
+					if elev == 2:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': 'global'} });
+						return jsonify({"success" : True, 'scope': 'global', "update": votes}); 
+					elif elev == 1:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': region} });					
+						return jsonify({"success" : True, 'scope': region, "update": votes}); 
+					else:
+						db.Neurons.update({'_id.$oid': model}, { "$set": {'votes' : votes} });				
+						return jsonify({"success" : True, "update": votes}); 
+				else:
+					return jsonify({"success" : False, "error": "User has not promoted this model."});			
+		else:
+			votes = list(check).votes;
+			if user in votes:
+				votes = votes.remove(user);
+				# Compare against thresholds to see if model elevates
+				elev = canElevate(len(votes), scope);
+				if elev == 2:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': 'global'} });
+					return jsonify({"success" : True, 'scope': 'global', "update": votes}); 
+				elif elev == 1:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes, 'scope': region} });					
+					return jsonify({"success" : True, 'scope': region, "update": votes}); 
+				else:
+					db.Channels.update({'_id.$oid': model}, { "$set": {'votes' : votes} });				
+					return jsonify({"success" : True, "update": votes}); 
+			else:
+				return jsonify({"success" : False, "error": "User has not promoted this model."});			
+
+# Update the promotion thresholds periodically
+def updateThresholds():
+	#check = db.Users.find();#the threshold may someday be based on the total number of users
+	RegionThreshold = 25;#check.count()/20+1;
+	GlobalThreshold = 5;#check.count()/5+1;
+
+# Update the promotion thresholds periodically
+def canElevate(votes):
+	updateThresholds();#periodic check to see if we should update thresholds
+	if votes >= GlobalThreshold:
+		return 2
+	elif votes >= RegionThreshold:
+		return 1;
+	else: 
+		return 0;
+		
+@app.route('/region', methods=['POST', 'DELETE'])
+def handleRegions():  
+	#check sessionID and Logged
+	sessionID = int(request.form['sessionID']);
+	user = request.form['logged'];	
+	#Check user logged in
+	if sessionID == 0:
+		return jsonify({"success": False, "error": "User must be logged in."});
+	#Use sessionID to get user
+	check =  db.Users.find({'SessionID': sessionID, 'Username': user});
+	if not check.count():
+		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
+	else:
+		if check[0]["Rank"] != "admin":
+			return jsonify({"success" : False, "error": "This user is not an admin."});
+	if request.method == 'POST':
+		#If region already exists, error
+		check =  db.Regions.find({'Name': request.form['regionAdd']});
+		if not check.count():
+			db.Regions.insert({'Name': request.form['regionAdd']});
+			return jsonify({"success" : True}); 
+		else:
+			return jsonify({"success" : False, "error": "This region already exists. Duplicates not permitted."});				
+	elif request.method == 'DELETE':
+		#If region does not exist, error
+		check =  db.Regions.find({'Name': request.form['regionRemove']});
+		if check.count():
+			db.Regions.delete({'Name': request.form['regionRemove']});
+			return jsonify({"success" : True}); 
+		else:
+			return jsonify({"success" : False, "error": "This region does not exist. Cannot delete what does not exist."});
+
+@app.route('/lab', methods=['POST', 'DELETE', 'PUT'])
+def handleLabs():  
+	#check sessionID and Logged
+	sessionID = int(request.form['sessionID']);
+	user = request.form['logged'];	
+	#Check user logged in
+	if sessionID == 0:
+		return jsonify({"success": False, "error": "User must be logged in."});
+	#Use sessionID to get user
+	check =  db.Users.find({'SessionID': sessionID, 'Username': user});
+	if not check.count():
+		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
+	else:
+		if request.method != "PUT": #verify is lab manager
+			if check[0]["Rank"] != "admin": #otherwise must be admin to add and remove labs
+				return jsonify({"success" : False, "error": "This user is not an admin."});
+	if request.method == 'POST':
+		#If lab already exists, error
+		check =  db.Labs.find({'Name': request.form['labAdd']});
+		if not check.count():
+			db.Labs.insert({'Name': request.form['labAdd'], 'Region': request.form['region']});
+			return jsonify({"success" : True}); 
+		else:
+			return jsonify({"success" : False, "error": "This lab already exists. Duplicates not permitted."});				
+	elif request.method == 'DELETE':
+		#If lab does not exist, error
+		check =  db.Labs.find({'Name': request.form['labRemove']});
+		if check.count():
+			db.Labs.delete({'Name': request.form['labAdd']});
+			return jsonify({"success" : True}); 
+		else:
+			return jsonify({"success" : False, "error": "This lab does not exist. Cannot delete what does not exist."});
+	elif request.method == 'PUT':
+		check =  db.Labs.find({'Manager': user});
+		#If the lab does not exist, error
+		if not check.count():
+			return jsonify({"success" : False, "error": "This user does not manage any labs."});
+		else:
+			lab = list(check)[0]["Name"]; #Get the lab the user manages
+		#If the target user does not exist, error
+		check = db.Users.find({'Username': request.form['labTarget']});
+		if not check.count():
+			return jsonify({"success" : False, "error": "Target user cannot be added because the user does not exist. "});
+		else:
+			#If the target user already has a lab, error--ask the user to resign from their lab
+			if list(check)[0]["Lab"] != 0:
+				return jsonify({"success" : False, "error": "Target user cannot be added because the user is already in a lab. "});
+		db.Users.update({'Username': request.form['labTarget']}, { "$set": {'Lab' : lab} });				
+	#Code to allow users to abandon labs necessary
+	#need code to set manager of lab, might as well fork this code off
+	#deletion of region when labs exist under it; deletion of labs when users are in it
+	
 # Serves static resources like css, js, images, etc.
 @app.route('/assets/<path:resource>')
 def serveStaticResource(resource):

@@ -1,29 +1,29 @@
 <table class="table table-bordered table-hover" ng-hide="selectedModel">
     <thead>
         <tr>
-            <th><a href="" ng-click="predicateSort = '_id'; reverseSort=false">ID</a>
-            <a href="" ng-show="predicateSort=='_id'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
+            <th><a href="" ng-click="predicateSort = 'entity_name'; reverseSort=false">ID</a>
+            <a href="" ng-show="predicateSort=='entity_name'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
             <th><a href="" ng-click="predicateSort = 'author'; reverseSort=false">Author</a>
             <a href="" ng-show="predicateSort=='author'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
-            <th><a href="" ng-click="predicateSort = 'type'; reverseSort=false">Type</a>
-            <a href="" ng-show="predicateSort=='type'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
+            <th><a href="" ng-click="predicateSort = 'entity_type'; reverseSort=false">Type</a>
+            <a href="" ng-show="predicateSort=='entity_type'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
             <th><a href="" ng-click="predicateSort = 'description'; reverseSort=false">Description</a>
             <a href="" ng-show="predicateSort=='description'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
         </tr>
     </thead>
     <tbody>		
         <tr data-ng-repeat="model in dbdisplay | orderBy:predicateSort:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize">
-            <td class="col-md-2"><a href="#" ng-click="showDetails(model)">{{ '{{ model.entity_name }}' }}</a></td>
+            <td class="col-md-3"><a href="#" ng-click="showDetails(model)">{{ '{{ model.entity_name }}' }}</a></td>
             <td class="col-md-2">{{ '{{ model.author }}' }}</td>
             <td class="col-md-1">{{ '{{ model.entity_type }}' }}</td>
-            <td class="col-md-7">{{ '{{ model.description }}' }}</td>
+            <td class="col-md-6">{{ '{{ model.description }}' }}</td>
         </tr>
         <!-- Keep table at minimum 10 rows. -->
         <tr ng-repeat="n in [] | range: currentPage*pageSize+pageSize - dbdisplay.length">      
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="col-md-3">&nbsp;</td>
+            <td class="col-md-2">&nbsp;</td>
+            <td class="col-md-1">&nbsp;</td>
+            <td class="col-md-6">&nbsp;</td>
         </tr>
     </tbody>
 </table>
