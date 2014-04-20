@@ -1,17 +1,17 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
-            <th>Forward Scale</th>
-            <th>Conductance</th>
-            <th>Reversal Potential</th>
+            <th>Tau Membrane</th>
+            <th>Leak Conductance</th>
+            <th>Leak Reversal Potential</th>
 
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{'{{ selectedModel.specification.forward_scale}}'}}</td>
-            <td>{{'{{ selectedModel.specification.conductance}}'}}</td>
-            <td>{{'{{ selectedModel.specification.reversal_potential}}'}}</td>
+            <td>{{'{{ selectedModel.specification.tau_membrane}}'}}</td>
+            <td>{{'{{ selectedModel.specification.leak_conductance}}'}}</td>
+            <td>{{'{{ selectedModel.specification.leak_reversal_potential}}'}}</td>
         </tr>
     </tbody>
 </table>
@@ -20,16 +20,33 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
-            <th>Forward Exponent</th>
-            <th>Tau Scale</th>
-            <th>M Power</th>
+            <th>Calcium Spike Increment</th>
+            <th>Spikeshape</th>
+            <th>Tau Calcium</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>  {{'{{ selectedModel.specification.forward_exponent}}'}}</td>
-            <td>  {{'{{ selectedModel.specification.tau_scale}}'}}</td>
-            <td>  {{'{{ selectedModel.specification.m_power}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.calcium_spike_increment}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.spikeshape}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.tau_calcium}}'}}</td> 
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Calcium Type</th>
+            <th>Standard Deviation</th>
+            <th>Mean</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{'{{ selectedModel.specification.calcium.type}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.calcium.standard_deviation}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.calcium.mean}}'}}</td> 
         </tr>
     </tbody>
 </table>
@@ -38,14 +55,47 @@
 <table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
     <thead>
         <tr>
-            <th>M Initial</th>
-            <th>Backwards Rate</th>
+            <th>R Membrane </th>
+            <th>Threshold</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>  {{'{{ selectedModel.specification.m_intial.type}}'}}</td>        
-            <td>  {{'{{ selectedModel.specification.backwards_rate}}'}}</td>
+            <td>  {{'{{ selectedModel.specification.r_membrane}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.threshhold}}'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Resting Potential Type </th>
+            <th>Maximum</th>
+            <th>Minimum</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{'{{ selectedModel.specification.resting_potential.type}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.resting_potential.max}}'}}</td> 
+            <td>  {{'{{ selectedModel.specification.resting_potential.min}}'}}</td> 
+
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
+    <thead>
+        <tr>
+            <th>Channels</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>  {{'{{ selectedModel.specification.channels}}'}}</td>
         </tr>
     </tbody>
 </table>
