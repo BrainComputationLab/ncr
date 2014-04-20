@@ -3,9 +3,75 @@
  Class: CS 425
  Date: 12/12/2013
  
- This page uses the form to send and get mail messages. -->
+ This page uses the form to administrate labs, regions, and user account details.
+-->
 <div class="container page" ng-show="route=='preferences'">
 	<h3>Configure Preferences</h3>
-	<h5>[**THIS FEATURE IS NOT YET FINISHED**]This page will handle user preferences.</h5>	
-    </div>
+	<h5>As an admin, this control panel allows you to add and remove labs and regions.</h5>	
+	<h5>As a lab manager, this control panel allows you to join neuroscientists to your lab.</h5>	
+	<h5>You can use this control panel to update your name and password.</h5>	
+	<div class="row">
+		<form class="form-horizontal" role="form" id="regionForm" name="regionAdd" ng-submit="addRegion()" novalidate>
+			<label for="regionAddInput" class="col-md-2 control-label">Add Region</label>
+			<div class="col-md-10">
+				<input id="regionAddInput" name="regionAddInput" type="text" class="form-control" data-ng-model="regionAddX" required>
+				<div class="error" ng-show="regionAdd.regionAddInput.$dirty && regionAdd.regionAddInput.$invalid">
+					Error: <span class="error" ng-show="regionAdd.regionAddInput.$error.required">You must enter the region name.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="regionAdd.$invalid">Submit</button>
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		<form class="form-horizontal" role="form" id="regionForm" name="regionRemove" ng-submit="removeRegion()" novalidate>
+			<label for="regionRemoveSelect" class="col-md-2 control-label">Remove Region</label>
+			<div class="col-md-10">
+				<select id="regionRemoveSelect" name="regionRemoveSelect" data-ng-model="removeLabX">
+				</select>
+				<div class="error" ng-show="regionRemove.regionRemoveSelect.$dirty && regionRemove.regionRemoveSelect.$invalid">
+					Error: <span class="error" ng-show="regionRemove.regionRemoveSelect.$error.required">You must select the region you want to delete.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="regionRemove.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
+ 	<div class="row">
+		<form class="form-horizontal" role="form" id="labForm" name="labAdd" ng-submit="addLab()" novalidate>
+			<label for="labAddInput" class="col-md-2 control-label">Add Lab</label>
+			<div class="col-md-10">
+				<input id="labAddInput" name="labAddInput" type="text" class="form-control" data-ng-model="labAddX" required>
+				<div class="error" ng-show="labAdd.labAddInput.$dirty && labAdd.labAddInput.$invalid">
+					Error: <span class="error" ng-show="labAdd.labAddInput.$error.required">You must enter the lab name.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="regionAdd.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
+ 	<div class="row">
+		<form class="form-horizontal" role="form" id="labForm" name="labRemove" ng-submit="removeLab()" novalidate>
+			<label for="labRemoveSelect" class="col-md-2 control-label">Remove Lab</label>
+			<div class="col-md-10">
+				<select id="labRemoveSelect" name="labRemoveSelect" data-ng-model="removeLabX">
+				</select>
+				<div class="error" ng-show="labRemove.labRemoveSelect.$dirty && labRemove.labRemoveSelect.$invalid">
+					Error: <span class="error" ng-show="labRemove.labRemoveSelect.$error.required">You must select the lab you want to delete.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="labRemove.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
+ 	<!-- Assign Lab Manager -->
+ 	<!-- Invite user to lab -->
+ 	<!-- Resign from lab -->
+ 	<!-- Change name -->
+ 	<!-- Change password -->
+ 	<!-- salt security answer -->
 </div>

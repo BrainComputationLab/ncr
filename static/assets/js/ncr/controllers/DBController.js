@@ -3,7 +3,7 @@ function DBController($scope, $resource) {
 	$scope.currentPage = 0;
 	$scope.pageOffset = 0;
     $scope.pageSize = 10;
-    $scope.predicateSort = "_id";
+    $scope.predicateSort = "entity_name";
     $scope.reverseSort = false;
     //search form variables
     $scope.IZHBinary = true;
@@ -638,10 +638,7 @@ function DBController($scope, $resource) {
 		}	
 		$scope.dbdisplay = tmp;
 	} 
-    //define a model resource
-    var DBModel = $resource('/dbmodels/:dbmodelname', { modelname: '@dbmodelname' },
-        { save: { method: 'PUT', url: '/dbmodels/:dbmodelname' } }
-        );
+
     //This is for getting all models
     var DBModels = $resource('/dbmodels');
     $scope.dbmodels = [];//all models
@@ -657,9 +654,10 @@ function DBController($scope, $resource) {
     }
     //delete a model and update the display
     $scope.deleteDBModel = function (dbmodelname) {
-        DBModel.remove({ dbmodelname: dbmodelname });
-        updateDBModels();
+        dbmodels.remove({ dbmodelname: dbmodelname });
+        $scope.filterModels();
     }
+        
     //create a new model and save as a new record if it doesn't exist, or update if it does
     //this is probably done by NCB, but can still tweak to have it work to promote or alter existing models.
     $scope.addUpdateDBModel = function () {
@@ -672,12 +670,97 @@ function DBController($scope, $resource) {
     
     $scope.showDetails = function(model) {
 		$scope.selectedModel = model;
+		$scope.hasPromoted();
 	}
  
-     $scope.hideDetails = function(model) {
+     $scope.hideDetails = function() {
 		$scope.selectedModel = 0;
 	}
+	
+    $scope.promoteModel = function() {
+		if(!$scope.selectedModel)
+			alert("No model has been selected.");
+		var formData = new FormData();
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+		finished = false;
+		request = $.ajax({
+			url: "/promote/"+$scope.selectedModel._id.$oid,
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				$scope.selectedModel = response.update;
+				$scope.filterModels();
+				$scope.hasPromoted();
+				alert("Model promoted!");			
+			}	
+			else
+				alert("Model promotion failed: "+response.error);
+		});		
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in model promotion:" + error);
+		});
+	}
+
+    $scope.demoteModel = function() {
+		finished = false;
+		$scope.selectedModel = model;
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/demote/"+$scope.selectedModel,
+			type: "POST",
+			data: 0,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				$scope.selectedModel = response.update;
+				$scope.filterModels();
+				$scope.hasPromoted();
+				alert("Model demoted.");	
+			}			
+			else
+				alert("Model demotion failed: "+response.error);
+		});		
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in model demotion:" + error);
+		});
+	}
+	
+	$scope.hasPromoted = function()
+	{
+		//no model selected
+		if(!$scope.selectedModel)
+			return 0;
+		if( $scope.selectedModel.votes && $scope.selectedModel.votes.indexOf(Logged) != -1)
+			$scope.promoted = 1;//found
+		else
+			$scope.promoted = 0;//not found
+	}
+	
+	$scope.canEdit = function() 
+	{
+		//no model selected
+		if(!$scope.selectedModel)
+			return 0;
+		//must be admin or author
+		if (Rank == "admin" || Logged == $scope.selectedModel.author_id)
+			return 1;
+		else
+			return 0;
+	}
     
-    //update the models outright
+    //get the models outright
     updateDBModels();
 }
