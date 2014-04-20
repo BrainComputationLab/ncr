@@ -11,7 +11,7 @@
 		<div ng-show="selectedModel.specification.type == 'hh'">
 			{% include 'pages/database/components/detailComponents/detailTables/hhDetails.html' %}
 		</div>
-		<div ng-show="selectedModel.specification.type == 'ncs'">
+		<div ng-show="selectedModel.specification.type == 'ncs' && selectedModel.entity_type == 'neuron'">
 			{% include 'pages/database/components/detailComponents/detailTables/ncsDetails.html' %}
 		</div>
 		<div ng-show="selectedModel.specification.type == 'lif_calcium_dependant'">
@@ -23,6 +23,18 @@
 		<div ng-show="selectedModel.specification.type == 'hh_voltage_gated_ion'">
 			{% include 'pages/database/components/detailComponents/detailTables/HHVGIDetails.html' %}
 		</div>
+        <div ng-show="selectedModel.specification.type == 'flat'">
+			{% include 'pages/database/components/detailComponents/detailTables/flatSynapseDetails.html' %}
+		</div>
+        
+         <div ng-show="selectedModel.specification.type == 'ncs' && selectedModel.entity_type == 'synapse'">
+			{% include 'pages/database/components/detailComponents/detailTables/ncsSynapseDetails.html' %}
+		</div>
+         
+        <div ng-show="selectedModel.specification.type == 'rectangular_current'">
+			{% include 'pages/database/components/detailComponents/detailTables/stimulusDetails.html' %}
+		</div>
+        
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-success" ng-hide="promoted" ng-click="promoteModel()"><span class="glyphicon glyphicon-star"></span>Promote</button>
