@@ -7,6 +7,7 @@ function DBController($scope, $resource) {
     $scope.reverseSort = false;
     //search form variables
     $scope.IZHBinary = true;
+    $scope.IZHParams = ["", "", "", "", "", "", ""];
     $scope.HHBinary = true;
     $scope.NCSBinary = true;
     $scope.HHVGIBinary = true;
@@ -587,8 +588,241 @@ function DBController($scope, $resource) {
             else if($scope.dbmodels[i].specification.type == "izhikevich")
 			{
 				if($scope.IZHBinary == true)
-					tmp.push($scope.dbmodels[i]);
-				//else false
+                {
+                    if($scope.IZHParams[2] == ""  && $scope.IZHParams[3] == "" && $scope.IZHParams[0] == "" && $scope.IZHParams[1] == "" && $scope.IZHParams[4] == "" && $scope.IZHParams[5] == "" && $scope.IZHParams[6] == "")
+                        tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // A                ////
+                        ////////////////////////
+						if($scope.IZHParams[0].search("-") == -1 && $scope.IZHParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[0]) != null)
+							{//okay to filter	
+								$scope.IZHParams[0] = ""+parseFloat($scope.IZHParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.a != parseFloat($scope.IZHParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[0] = "";//clear garbage
+						}
+						else if($scope.IZHParams[0].search("-") != -1 && $scope.IZHParams[0] != "")//range value filter
+						{
+							var range = $scope.IZHParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.a < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.a > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // B                ////
+                        ////////////////////////
+						if($scope.IZHParams[1].search("-") == -1 && $scope.IZHParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[1]) != null)
+							{//okay to filter	
+								$scope.IZHParams[1] = ""+parseFloat($scope.IZHParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.b != parseFloat($scope.IZHParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[1] = "";//clear garbage
+						}
+						else if($scope.IZHParams[1].search("-") != -1 && $scope.IZHParams[1] != "")//range value filter
+						{
+							var range = $scope.IZHParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.b < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.b > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[1] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // C                ////
+                        ////////////////////////
+						if($scope.IZHParams[2].search("-") == -1 && $scope.IZHParams[2] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[2]) != null)
+							{//okay to filter	
+								$scope.IZHParams[2] = ""+parseFloat($scope.IZHParams[2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.c != parseFloat($scope.IZHParams[2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[2] = "";//clear garbage
+						}
+						else if($scope.IZHParams[2].search("-") != -1 && $scope.IZHParams[2] != "")//range value filter
+						{
+							var range = $scope.IZHParams[2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.c < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.c > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[2] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // D                ////
+                        ////////////////////////
+						if($scope.IZHParams[3].search("-") == -1 && $scope.IZHParams[3] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[3]) != null)
+							{//okay to filter	
+								$scope.IZHParams[3] = ""+parseFloat($scope.IZHParams[3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.d != parseFloat($scope.IZHParams[3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[3] = "";//clear garbage
+						}
+						else if($scope.IZHParams[3].search("-") != -1 && $scope.IZHParams[3] != "")//range value filter
+						{
+							var range = $scope.IZHParams[3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.d < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.d > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[3] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // U                ////
+                        ////////////////////////
+						if($scope.IZHParams[4].search("-") == -1 && $scope.IZHParams[4] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[4]) != null)
+							{//okay to filter	
+								$scope.IZHParams[4] = ""+parseFloat($scope.IZHParams[4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.u != parseFloat($scope.IZHParams[4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[4] = "";//clear garbage
+						}
+						else if($scope.IZHParams[4].search("-") != -1 && $scope.IZHParams[4] != "")//range value filter
+						{
+							var range = $scope.IZHParams[4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.u < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.u > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[4] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // V                ////
+                        ////////////////////////
+						if($scope.IZHParams[5].search("-") == -1 && $scope.IZHParams[5] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[5]) != null)
+							{//okay to filter	
+								$scope.IZHParams[5] = ""+parseFloat($scope.IZHParams[5]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.v != parseFloat($scope.IZHParams[5]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[5] = "";//clear garbage
+						}
+						else if($scope.IZHParams[5].search("-") != -1 && $scope.IZHParams[5] != "")//range value filter
+						{
+							var range = $scope.IZHParams[5].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.v < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.v > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[5] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Threshold        ////
+                        ////////////////////////
+						if($scope.IZHParams[6].search("-") == -1 && $scope.IZHParams[6] != "")//single value filter
+						{
+							if(parseFloat($scope.IZHParams[6]) != null)
+							{//okay to filter	
+								$scope.IZHParams[6] = ""+parseFloat($scope.IZHParams[6]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold != parseFloat($scope.IZHParams[6]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[6] = "";//clear garbage
+						}
+						else if($scope.IZHParams[6].search("-") != -1 && $scope.IZHParams[6] != "")//range value filter
+						{
+							var range = $scope.IZHParams[6].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.IZHParams[6] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.threshold > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.IZHParams[6] = "";//clear garbage
+						}
+                        //else false
+                        
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+                    }
+                }
 			}
             else if($scope.dbmodels[i].specification.type == "hh")
 			{
