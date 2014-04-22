@@ -8,6 +8,7 @@ function UserController($scope, $resource) {
 	$scope.rank = 0;
 	$scope.route = '';
 	$scope.securityQuestion = 0;
+	$scope.cfgPanel = "change password";
 
 	$scope.registerUser = function () {
 		finished = false;
@@ -23,7 +24,10 @@ function UserController($scope, $resource) {
 		});
 		request.done(function(response, textStatus, jqXHR) {
 			if(response.success)
+			{
 				alert("Registration successful! You can now log in using your email and password.");				
+				document.getElementById("registrationForm").reset();
+			}
 			else
 				alert("Registration failed: "+response.error);
 		});
@@ -48,6 +52,7 @@ function UserController($scope, $resource) {
 			if(response.success)
 			{
 				alert("Logged in successfully as: "+response.logged);
+				document.getElementById("loginForm").reset();
 				$scope.sessionID = response.session_id;
 				SessionID = response.session_id;
 				$scope.logged = response.logged; 
@@ -133,7 +138,7 @@ function UserController($scope, $resource) {
 			{
 				alert("Activation successful!");
 				$scope.route = 'preferences';
-				$scope.$apply;
+				$scope.$apply();
 			}
 			else
 				alert("Activation failed: "+response.error);
@@ -158,7 +163,7 @@ function UserController($scope, $resource) {
 			if(response.success)
 			{
 				$scope.securityQuestionQueried = response.question;
-				$scope.$apply;
+				$scope.$apply();
 			}
 			else
 				alert(response.error);
@@ -189,120 +194,4 @@ function UserController($scope, $resource) {
 				alert("Unexpected error in password recovery:" + error);
 			});
 	};  
-	
-	$scope.addRegion = function () {
-		finished = false;
-		var formData = new FormData(document.getElementById("regionForm"));
-		formData.append("sessionID", SessionID);
-		formData.append("logged", Logged);
-
-		request = $.ajax({
-			url: "/regions",
-			type: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		});
-		request.done(function(response, textStatus, jqXHR) {
-			if(response.success)
-				alert("The region "+$scope.regionAdd+" has been added.")
-			else
-				alert(response.error);
-			});        
-			request.fail(function(jqXHR, textStatus, error) {
-				alert("Unexpected error in region add:" + error);
-			});
-	};  
-	
-	$scope.removeRegion = function () {
-		finished = false;
-		var formData = new FormData(document.getElementById("regionForm"));
-		formData.append("sessionID", SessionID);
-		formData.append("logged", Logged);
-		request = $.ajax({
-			url: "/regions",
-			type: "DELETE",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		});
-		request.done(function(response, textStatus, jqXHR) {
-			if(response.success)
-				alert("The region "+$scope.regionRemove+" has been deleted.")
-			else
-				alert(response.error);
-			});        
-			request.fail(function(jqXHR, textStatus, error) {
-				alert("Unexpected error in region delete:" + error);
-			});
-	};
-
-	$scope.addLab = function () {
-		finished = false;
-		var formData = new FormData(document.getElementById("labForm"));
-		request = $.ajax({
-			url: "/labs",
-			type: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		});
-		request.done(function(response, textStatus, jqXHR) {
-			if(response.success)
-				alert("The lab "+$scope.labAdd+" has been added.")
-			else
-				alert(response.error);
-			});        
-			request.fail(function(jqXHR, textStatus, error) {
-				alert("Unexpected error in lab add:" + error);
-			});
-	};
-	
-	$scope.deleteLab = function () {
-		finished = false;
-		var formData = new FormData(document.getElementById("labForm"));
-		request = $.ajax({
-			url: "/labs",
-			type: "DELETE",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		});
-		request.done(function(response, textStatus, jqXHR) {
-			if(response.success)
-				alert("The lab "+$scope.labRemove+" has been deleted.")
-			else
-				alert(response.error);
-			});        
-			request.fail(function(jqXHR, textStatus, error) {
-				alert("Unexpected error in lab delete:" + error);
-			});
-	};
-
-	$scope.joinLab = function () {
-		finished = false;
-		var formData = new FormData(document.getElementById("joinForm"));
-		request = $.ajax({
-			url: "/lab",
-			type: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		});
-		request.done(function(response, textStatus, jqXHR) {
-			if(response.success)
-				alert("The lab "+$scope.labJoin+" has been joined.")
-			else
-				alert(response.error);
-			});        
-			request.fail(function(jqXHR, textStatus, error) {
-				alert("Unexpected error in lab join:" + error);
-			});
-	};
-
 }

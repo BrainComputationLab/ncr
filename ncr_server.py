@@ -4,8 +4,7 @@ import datetime, os, bson, json, pymongo, random, string, crypt
 from pymongo import MongoClient
 from bson import json_util
 from bson.json_util import dumps
-#from flask.ext.mail import Mail, Message
-#from Crypto.Cipher import AES
+from flask.ext.mail import Mail, Message
 
 app = Flask(__name__)
 app.debug = True 
@@ -85,9 +84,17 @@ def getDBModels():
     dbmodels.extend(  list(db.Neuron.find() )  )
     dbmodels.extend( list( db.Stimulus.find() ) )
     dbmodels.extend( list( db.Synapse.find() ) )
-
     return json_util.dumps(dbmodels)
 
+@app.route('/dbregions', methods = ['GET'])
+def getDBRegions():  
+	regions = list(db.Regions.find());
+	return json_util.dumps(regions);
+
+@app.route('/dblabs', methods = ['GET'])
+def getDBLabs():  
+	labs = list(db.Labs.find());
+	return json_util.dumps(labs);
 
 # This route returns all the users in the database
 @app.route('/users', methods=['GET'])
@@ -230,16 +237,41 @@ def handleForgetRequest():
 		msg.body = "We are sorry that you forgot your password. We have randomly generated a new password for you, please take the time to update your password after logging in by selecing 'Preferences' from the navigation bar and following the appropriate prompts. Enclosed is your new password: "+password+"\nIf you have not requested a password recovery, please take steps to maximize your account security.";
 		mail.send(msg);
 		return jsonify({"success" : True}); 
+
+@app.route('/changePassword', methods=['POST'])
+def handleChangePasswordRequest():    
+	#Check user is logged in
+	sessionID = request.form['sessionID'];
+	user = request.form['logged'];	
+	#Check user logged in
+	if sessionID == 0:
+		return jsonify({"success": False, "error": "User must be logged in."});
+	#Check valid password
+	check = db.Users.find({'Username': user});
+	if check.count() < 1:
+		return jsonify({"success" : False, "error": "This user does not exist."});
+	check = list(check);#Get Secret
+	# Check Password
+	check = list(check)
+	secret = check[0]['Secret']
+	pw = crypt.crypt(request.form['changePasswordFromInput'], '$6$' + secret + '$')
+	check = db.Users.find({'Username': user, 'Password': pw});
+	if not check.count():
+		return jsonify({"success" : False, "error": "You must enter the correct password."});	
+	pw = crypt.crypt(request.form['changePasswordToInput'], '$6$' + secret + '$')
+	# Update password and key
+	db.Users.update({'Username': user}, { "$set": {'Password' : pw} });
+	return jsonify({"success" : True}); 
 		
 @app.route('/promote/<model>', methods=['POST', 'DELETE'])
 def handlePromoteRequest(model):    
-	sessionID = int(request.form['sessionID']);
+	sessionID = request.form['sessionID'];
 	user = request.form['logged'];	
 	#Check user logged in
 	if sessionID == 0:
 		return jsonify({"success": False, "error": "User must be logged in."});
 	#Use sessionID to get user
-	check =  db.Users.find({'SessionID': sessionID, 'Logged': user});
+	check =  db.Users.find({'Session_ID': sessionID, 'Logged': user});
 	if not check.count():
 		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
 	else:
@@ -349,13 +381,13 @@ def canElevate(votes):
 @app.route('/region', methods=['POST', 'DELETE'])
 def handleRegions():  
 	#check sessionID and Logged
-	sessionID = int(request.form['sessionID']);
+	sessionID = request.form['sessionID'];
 	user = request.form['logged'];	
 	#Check user logged in
-	if sessionID == 0:
+	if sessionID == "0":
 		return jsonify({"success": False, "error": "User must be logged in."});
 	#Use sessionID to get user
-	check =  db.Users.find({'SessionID': sessionID, 'Username': user});
+	check =  db.Users.find({'Session_ID': sessionID, 'Username': user});
 	if not check.count():
 		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
 	else:
@@ -363,54 +395,99 @@ def handleRegions():
 			return jsonify({"success" : False, "error": "This user is not an admin."});
 	if request.method == 'POST':
 		#If region already exists, error
-		check =  db.Regions.find({'Name': request.form['regionAdd']});
+		check = db.Regions.find({'Name': request.form['regionAddInput']});
 		if not check.count():
-			db.Regions.insert({'Name': request.form['regionAdd']});
+			db.Regions.insert({'Name': request.form['regionAddInput']});
 			return jsonify({"success" : True}); 
 		else:
 			return jsonify({"success" : False, "error": "This region already exists. Duplicates not permitted."});				
 	elif request.method == 'DELETE':
 		#If region does not exist, error
-		check =  db.Regions.find({'Name': request.form['regionRemove']});
+		check =  db.Regions.find({'Name': request.form['regionRemoveSelect']});
 		if check.count():
-			db.Regions.delete({'Name': request.form['regionRemove']});
-			return jsonify({"success" : True}); 
+			check = db.Labs.find({"Region": request.form['regionRemoveSelect']});
+			if check.count():
+				return jsonify({"success": False, "error": "Cannot delete, would leave labs orphaned."});
+			else: 
+				db.Regions.remove({'Name': request.form['regionRemoveSelect']});
+				return jsonify({"success" : True}); 
 		else:
 			return jsonify({"success" : False, "error": "This region does not exist. Cannot delete what does not exist."});
 
 @app.route('/lab', methods=['POST', 'DELETE', 'PUT'])
 def handleLabs():  
 	#check sessionID and Logged
-	sessionID = int(request.form['sessionID']);
+	sessionID = request.form['sessionID'];
 	user = request.form['logged'];	
 	#Check user logged in
-	if sessionID == 0:
+	if sessionID == "0":
 		return jsonify({"success": False, "error": "User must be logged in."});
 	#Use sessionID to get user
-	check =  db.Users.find({'SessionID': sessionID, 'Username': user});
+	check =  db.Users.find({'Session_ID': sessionID, 'Username': user});
 	if not check.count():
 		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
 	else:
-		if request.method != "PUT": #verify is lab manager
+		if request.method != "PUT": 
+			check = list(check);
 			if check[0]["Rank"] != "admin": #otherwise must be admin to add and remove labs
 				return jsonify({"success" : False, "error": "This user is not an admin."});
 	if request.method == 'POST':
 		#If lab already exists, error
-		check =  db.Labs.find({'Name': request.form['labAdd']});
+		check =  db.Labs.find({'Name': request.form['labAddInput']});
 		if not check.count():
-			db.Labs.insert({'Name': request.form['labAdd'], 'Region': request.form['region']});
+			db.Labs.insert({'Name': request.form['labAddInput'], 'Region': request.form['region']});
 			return jsonify({"success" : True}); 
 		else:
 			return jsonify({"success" : False, "error": "This lab already exists. Duplicates not permitted."});				
 	elif request.method == 'DELETE':
 		#If lab does not exist, error
-		check =  db.Labs.find({'Name': request.form['labRemove']});
+		check =  db.Labs.find({'Name': request.form['labRemoveSelect']});
 		if check.count():
-			db.Labs.delete({'Name': request.form['labAdd']});
-			return jsonify({"success" : True}); 
+			check = db.Users.find({"Lab": request.form['labRemoveSelect']});
+			if check.count():
+				return jsonify({"success": False, "error": "Cannot delete, would leave users orphaned."});
+			else: 
+				db.Labs.remove({'Name': request.form['labRemoveSelect']});
+				return jsonify({"success" : True}); 
 		else:
 			return jsonify({"success" : False, "error": "This lab does not exist. Cannot delete what does not exist."});
 	elif request.method == 'PUT':
+		#Assign Manager to Lab
+		check = list(check);
+		if check[0]["Rank"] != "admin": #must be admin to assign managers to labs
+			return jsonify({"success" : False, "error": "This user is not an admin."});
+		#Assign a manager to the lab
+		check =  db.Labs.find({'Name': request.form['lab']});
+		#If the lab does not exist, error
+		if not check.count():
+			return jsonify({"success" : False, "error": "This lab does not exist."});
+		#If the target user does not exist, error
+		check = db.Users.find({'Username': request.form['labAssignInput']});
+		if not check.count():
+			return jsonify({"success" : False, "error": "Target user cannot be added because the user does not exist. "});
+		else:
+			#If the target user already has a lab, error--ask the user to resign from their lab
+			if list(check)[0]["Lab"] != 0:
+				return jsonify({"success" : False, "error": "Target user cannot become manager because the user is already in a lab. "});
+		db.Users.update({'Username': request.form['labAssignInput']}, { "$set": {'Lab' : request.form['lab']} });				
+		db.Labs.update({'Name': request.form['lab']}, { "$set": {'Manager' : user} });				
+		return jsonify({"success": True});
+	
+@app.route('/labAssign', methods=['POST', 'DELETE'])
+def assignLabHandler():  
+	#check sessionID and Logged
+	sessionID = request.form['sessionID'];
+	user = request.form['logged'];	
+	#Check user logged in
+	if sessionID == "0":
+		return jsonify({"success": False, "error": "User must be logged in."});
+	#Use sessionID to get user
+	check =  db.Users.find({'Session_ID': sessionID, 'Username': user});
+	if not check.count():
+		return jsonify({"success" : False, "error": "SessionID does not match any users on file."});
+
+	if request.method == 'POST':
+		#Invite neuroscientist to lab
 		check =  db.Labs.find({'Manager': user});
 		#If the lab does not exist, error
 		if not check.count():
@@ -418,17 +495,22 @@ def handleLabs():
 		else:
 			lab = list(check)[0]["Name"]; #Get the lab the user manages
 		#If the target user does not exist, error
-		check = db.Users.find({'Username': request.form['labTarget']});
+		check = db.Users.find({'Username': request.form['labInviteInput']});
 		if not check.count():
 			return jsonify({"success" : False, "error": "Target user cannot be added because the user does not exist. "});
 		else:
 			#If the target user already has a lab, error--ask the user to resign from their lab
 			if list(check)[0]["Lab"] != 0:
 				return jsonify({"success" : False, "error": "Target user cannot be added because the user is already in a lab. "});
-		db.Users.update({'Username': request.form['labTarget']}, { "$set": {'Lab' : lab} });				
-	#Code to allow users to abandon labs necessary
-	#need code to set manager of lab, might as well fork this code off
-	#deletion of region when labs exist under it; deletion of labs when users are in it
+		db.Users.update({'Username': request.form['labInviteInput']}, { "$set": {'Lab' : lab} });				
+		return jsonify({"success": True});
+	elif request.method == 'DELETE':
+		#Resign from the lab
+		#If the user manages any labs, clear that lab manager
+		db.Labs.update({'Manager': user}, {"$set": {'Manager': 0}});
+		#Remove the user's lab
+		db.Users.update({'Username': user}, { "$set": {'Lab' : 0} });				
+		return jsonify({"success": True});
 	
 # Serves static resources like css, js, images, etc.
 @app.route('/assets/<path:resource>')
