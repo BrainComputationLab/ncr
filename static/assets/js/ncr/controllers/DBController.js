@@ -18,6 +18,7 @@ function DBController($scope, $resource) {
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";
+    $scope.scopeFilter = "any";
 	//scopes
 	$scope.labs = 0;
 	$scope.regions = 0;
@@ -635,7 +636,8 @@ function DBController($scope, $resource) {
 		{
 			if( (($scope.nameFilter == "") || ($scope.dbsecondary[i].entity_name.search($scope.nameFilter) != -1)) &&
 			(($scope.authorFilter == "") || ($scope.dbsecondary[i].author.search($scope.authorFilter) != -1)) &&
-			(($scope.detailsFilter == "") || ($scope.dbsecondary[i].description.search($scope.detailsFilter) != -1)) )
+			(($scope.detailsFilter == "") || ($scope.dbsecondary[i].description.search($scope.detailsFilter) != -1)) &&
+			(($scope.scopeFilter == "any") || ($scope.dbsecondary[i].scope == $scope.scopeFilter))	)
 				tmp.push($scope.dbsecondary[i]);
 			//else does not match
 		}	
@@ -657,6 +659,36 @@ function DBController($scope, $resource) {
             $scope.filterModels();
         });
     }
+    
+    function updateScopes() {
+		var select = document.getElementById("filterScopeSelect");
+		$('#filterScopeSelect').empty();
+		var opt = document.createElement('option');
+		opt.value = "all";
+		opt.innerHTML = "all";
+		select.appendChild(opt);
+		var opt2 = document.createElement('option');
+		opt2.value = "global";
+		opt2.innerHTML = "global";
+		select.appendChild(opt2);
+		//Use javascript to populate Regions select
+		for(var i = 0; i < $scope.dbregions.length; i++)
+		{
+			var opt = document.createElement('option');
+			opt.value = $scope.dbregions[i]['Name']; 
+			opt.innerHTML = $scope.dbregions[i]['Name'];
+			select.appendChild(opt);
+		}
+		for(var i = 0; i < $scope.dblabs.length; i++)
+		{
+			var opt = document.createElement('option');
+			opt.value = $scope.dblabs[i]['Name']; 
+			opt.innerHTML = $scope.dblabs[i]['Name'];
+			select.appendChild(opt);
+		}
+		select.selectedIndex = 0;
+    }
+    
     function updateDBRegions() {
         DBRegions.query({}, function (result) {
             $scope.dbregions = result;
@@ -676,6 +708,7 @@ function DBController($scope, $resource) {
 				opt.innerHTML = $scope.dbregions[i]['Name'];
 				select2.appendChild(opt);
 			}
+			updateDBLabs();
         });
     }
     function updateDBLabs() {
@@ -697,6 +730,7 @@ function DBController($scope, $resource) {
 				opt.innerHTML = $scope.dblabs[i]['Name'];
 				select2.appendChild(opt);
 			}
+			updateScopes();
         });
     }
 
@@ -1032,7 +1066,6 @@ function DBController($scope, $resource) {
 	}
     //get labs and regions
 	updateDBRegions();
-	updateDBLabs();
     //get the models outright
     updateDBModels();
 }

@@ -50,9 +50,10 @@ def uploaded_file(filename):
 
 @app.route('/', methods=['GET'])
 def mainPage():
-    year = datetime.datetime.now().year
-    global response;
-    return render_template('index.html', year = year)
+	year = datetime.datetime.now().year
+	regions = db.Regions.find();
+	labs = db.Labs.find();
+	return render_template('index.html', year = year)
 
 @app.route('/dbmodels/<dbmodel>', methods=['GET', 'PUT', 'DELETE'])
 def handleDBRequest(username):
