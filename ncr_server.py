@@ -7,7 +7,7 @@ from bson.json_util import dumps
 #from flaskext.mail import Mail, Message
 #from flask.ext.mail import Mail, Message
 #from Crypto.Cipher import AES
-from flask.ext.mail import Mail, Message
+#from flask.ext.mail import Mail, Message
 
 app = Flask(__name__)
 app.debug = True 

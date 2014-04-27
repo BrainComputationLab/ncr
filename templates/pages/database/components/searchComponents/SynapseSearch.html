@@ -11,21 +11,28 @@
                 <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#synapseFlatOptions">Flat Synapse</a>
                 </div>  
-                </label>
+        </label>
     </div>		
     <div class="collapse" id="synapseFlatOptions">
         {% include 'pages/database/components/searchComponents/synapsetypes/FlatSynapseCollapse.html' %}
     </div> 
+    
+    
+    
+    
+    
     <div class="checkbox">
         <label>
             <input type="checkbox" ng-model="SNCSBinary" ng-change="filterModels()"> 
                 <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#synapseNCSOptions">NCS Synapse</a>
                 </div>  
-                </label>
+        </label>
     </div>
     <div class="collapse" id="synapseNCSOptions">
         {% include 'pages/database/components/searchComponents/synapsetypes/NCSSynapseCollapse.html' %}
     </div> 
+    
+    
 </div>
 </div>

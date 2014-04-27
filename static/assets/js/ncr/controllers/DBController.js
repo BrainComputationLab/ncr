@@ -6,18 +6,43 @@ function DBController($scope, $resource) {
     $scope.predicateSort = "entity_name";
     $scope.reverseSort = false;
     //search form variables
+    //////////////////
+    // Neurons      //
+    //////////////////
     $scope.IZHBinary = true;
-    $scope.IZHParams = ["", "", "", "", "", "", ""];
     $scope.HHBinary = true;
-    $scope.HHParams = ["","","",""];
     $scope.NCSBinary = true;
+    
+    $scope.IZHParams = ["", "", "", "", "", "", ""];
+    $scope.HHParams = ["","","",""];
     $scope.NCSParams = ["", "", "", "", "", "", "", "", "", ""];
+    //////////////////
+    // Channels     //
+    //////////////////
     $scope.HHVGIBinary = true;
-    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"","", "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
     $scope.LIFVGIBinary = true;
-    $scope.LIFVGIParams = ["","","","","","","",""]; //VHalf, 
     $scope.LIFCDBinary = true;
+
+    $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"","", "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
+    $scope.LIFVGIParams = ["","","","","","","",""]; //VHalf, 
     $scope.LIFCDParams = ["","","","","","",""]; //VHalf, 
+    //////////////////
+    // Synapses     //
+    //////////////////
+    $scope.SFBinary = true;
+    $scope.SNCSBinary = true;
+    
+    $scope.SFParams = ["" , ""];
+    $scope.SNCSParams = ["", "", "", "", "", "" ,"" ,"", "", "", "", "", "", ""];
+    //////////////////
+    // Stimuli      //
+    //////////////////
+    $scope.RCStimBinary = true;
+    
+    $scope.RCStimParams = ["", "", "", "", "", ""];
+    //////////////////
+    // General      //
+    //////////////////
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";
@@ -971,7 +996,7 @@ function DBController($scope, $resource) {
                     }
                 }
 			}            
-            else if($scope.dbmodels[i].specification.type == "ncs" ) //&& $scope.dbmodels[i].specification.entity_type == "neuron")
+            else if($scope.dbmodels[i].specification.type == "ncs" && $scope.dbmodels[i].entity_type == "neuron")
 			{
 				if($scope.NCSBinary == true)
                 {
@@ -1524,12 +1549,12 @@ function DBController($scope, $resource) {
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
-           /* else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
+            else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
 			{
 				if($scope.SNCSBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
-			}*/
+			}
 
 		}		
 		$scope.dbsecondary = tmp;
