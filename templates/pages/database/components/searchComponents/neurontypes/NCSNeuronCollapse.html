@@ -1,7 +1,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
-	<label for="IzhA" class="col-md-1 control-label"> T</label>
+	<label for="NCSTauMembrane" class="col-md-1 control-label">T</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="Threshold">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[0]" placeholder="Tau Membrane">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -10,9 +10,9 @@
 	</div>
 </div>
 <div class="form-group" style="margin-bottom: 0px;">
-	<label for="IzhA" class="col-md-1 control-label"> R</label>
+	<label for="NCSLeakConductance" class="col-md-1 control-label">LC</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="Resting Potential">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[1]" placeholder="Leak Conductance">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -21,9 +21,9 @@
 	</div>
 </div>
 <div class="form-group" style="margin-bottom: 0px;">
-	<label for="IzhA" class="col-md-1 control-label"> Ca</label>
+	<label for="NCSLeakReversalPotential" class="col-md-1 control-label">RP</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="InputName" placeholder="Calcium">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[2]" placeholder="Leak Reversal Potential">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -31,3 +31,82 @@
             </span>
 	</div>
 </div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSCalciumSpike" class="col-md-1 control-label">CS</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[3]" placeholder="Calcium Spike Increment">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSSpikeShape" class="col-md-1 control-label">SP</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[4]" placeholder="Spike Shape">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSTauCalcium" class="col-md-1 control-label">TC</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[5]" placeholder="Tau Calcium">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSCalcium" class="col-md-1 control-label">C</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[6]" placeholder="Calcium">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSRMembrane" class="col-md-1 control-label">RM</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[7]" placeholder="R Membrane">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSThreshold" class="col-md-1 control-label">Th</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[8]" placeholder="Threshold">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+<div class="form-group" style="margin-bottom: 0px;">
+	<label for="NCSRestingPotential" class="col-md-1 control-label">RP</label>
+	<div class="input-group col-md-9">
+		<input type="text" class="form-control input-sm" id="InputName" ng-model="NCSParams[9]" placeholder="Resting Potential">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button> 
+            </span>
+            </div>
+</div>
+
+

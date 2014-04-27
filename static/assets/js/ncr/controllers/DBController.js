@@ -9,7 +9,9 @@ function DBController($scope, $resource) {
     $scope.IZHBinary = true;
     $scope.IZHParams = ["", "", "", "", "", "", ""];
     $scope.HHBinary = true;
+    $scope.HHParams = ["","","",""];
     $scope.NCSBinary = true;
+    $scope.NCSParams = ["", "", "", "", "", "", "", "", "", ""];
     $scope.HHVGIBinary = true;
     $scope.HHVGIParams = [ ["","","","","",""] , ["","","","","",""] ,"","", "", ""];// Alpha, Beta, Power, X-Initial, Conductance, Reversal Potential
     $scope.LIFVGIBinary = true;
@@ -827,20 +829,690 @@ function DBController($scope, $resource) {
             else if($scope.dbmodels[i].specification.type == "hh")
 			{
 				if($scope.HHBinary == true)
-					tmp.push($scope.dbmodels[i]);
-				//else false
+                {
+                    if($scope.HHParams[2] == ""  && $scope.HHParams[3] == "" && $scope.HHParams[0] == "" && $scope.HHParams[1] == "")
+                        tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // Threshold        ////
+                        ////////////////////////
+						if($scope.HHParams[0].search("-") == -1 && $scope.HHParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.HHParams[0]) != null)
+							{//okay to filter	
+								$scope.HHParams[0] = ""+parseFloat($scope.HHParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold != parseFloat($scope.HHParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[0] = "";//clear garbage
+						}
+						else if($scope.HHParams[0].search("-") != -1 && $scope.HHParams[0] != "")//range value filter
+						{
+							var range = $scope.HHParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.threshold > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Resting Potential ////
+                        ////////////////////////
+						if($scope.HHParams[1].search("-") == -1 && $scope.HHParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.HHParams[1]) != null)
+							{//okay to filter	
+								$scope.HHParams[1] = ""+parseFloat($scope.HHParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.resting_potential != parseFloat($scope.HHParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[1] = "";//clear garbage
+						}
+						else if($scope.HHParams[1].search("-") != -1 && $scope.HHParams[1] != "")//range value filter
+						{
+							var range = $scope.HHParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.resting_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.resting_potential > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[1] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Capacitance      ////
+                        ////////////////////////
+						if($scope.HHParams[2].search("-") == -1 && $scope.HHParams[2] != "")//single value filter
+						{
+							if(parseFloat($scope.HHParams[2]) != null)
+							{//okay to filter	
+								$scope.HHParams[2] = ""+parseFloat($scope.HHParams[2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.capacitance != parseFloat($scope.HHParams[2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[2] = "";//clear garbage
+						}
+						else if($scope.HHParams[2].search("-") != -1 && $scope.HHParams[2] != "")//range value filter
+						{
+							var range = $scope.HHParams[2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.capacitance < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.capacitance > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[2] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Channels         ////
+                        ////////////////////////
+						if($scope.HHParams[3].search("-") == -1 && $scope.HHParams[3] != "")//single value filter
+						{
+							if(parseFloat($scope.HHParams[3]) != null)
+							{//okay to filter	
+								$scope.HHParams[3] = ""+parseFloat($scope.HHParams[3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.channels != parseFloat($scope.HHParams[3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[3] = "";//clear garbage
+						}
+						else if($scope.HHParams[3].search("-") != -1 && $scope.HHParams[3] != "")//range value filter
+						{
+							var range = $scope.HHParams[3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.channels < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.channels > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHParams[3] = "";//clear garbage
+						}
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+                    }
+                }
 			}            
-            else if($scope.dbmodels[i].specification.type == "ncs")
+            else if($scope.dbmodels[i].specification.type == "ncs" ) //&& $scope.dbmodels[i].specification.entity_type == "neuron")
 			{
 				if($scope.NCSBinary == true)
-					tmp.push($scope.dbmodels[i]);
-				//else false
+                {
+                    if($scope.NCSParams[2] == ""  && $scope.NCSParams[3] == "" && $scope.NCSParams[0] == "" && $scope.NCSParams[1] == "" && $scope.NCSParams[4] == "" && $scope.NCSParams[5] == "" && $scope.NCSParams[6] == "" && $scope.NCSParams[7] == "" && $scope.NCSParams[8] == "" && $scope.NCSParams[9] == "")
+                    {
+                        tmp.push($scope.dbmodels[i]);
+                    }
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // Tau Membrane     ////
+                        ////////////////////////
+						if($scope.NCSParams[0].search("-") == -1 && $scope.NCSParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[0]) != null)
+							{//okay to filter	
+								$scope.NCSParams[0] = ""+parseFloat($scope.NCSParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.tau_membrane != parseFloat($scope.NCSParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[0] = "";//clear garbage
+						}
+						else if($scope.NCSParams[0].search("-") != -1 && $scope.NCSParams[0] != "")//range value filter
+						{
+							var range = $scope.NCSParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.tau_membrane < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.tau_membrane > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Leak Conductance ////
+                        ////////////////////////
+						if($scope.NCSParams[1].search("-") == -1 && $scope.NCSParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[1]) != null)
+							{//okay to filter	
+								$scope.NCSParams[1] = ""+parseFloat($scope.NCSParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.leak_conductance != parseFloat($scope.NCSParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[1] = "";//clear garbage
+						}
+						else if($scope.NCSParams[1].search("-") != -1 && $scope.NCSParams[1] != "")//range value filter
+						{
+							var range = $scope.NCSParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.leak_conductance < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.leak_conductance > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[1] = "";//clear garbage
+						}
+                        
+                        
+                        /////////////////////////////
+                        // Leak Reversal Potential //
+                        /////////////////////////////
+						if($scope.NCSParams[2].search("-") == -1 && $scope.NCSParams[2] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[2]) != null)
+							{//okay to filter	
+								$scope.NCSParams[2] = ""+parseFloat($scope.NCSParams[2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.leak_reversal_potential != parseFloat($scope.NCSParams[2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[2] = "";//clear garbage
+						}
+						else if($scope.NCSParams[2].search("-") != -1 && $scope.NCSParams[2] != "")//range value filter
+						{
+							var range = $scope.NCSParams[2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.leak_reversal_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.leak_reversal_potential > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[2] = "";//clear garbage
+						}
+                        
+                        
+                        /////////////////////////////
+                        // Calcium Spike Increment //
+                        /////////////////////////////
+						if($scope.NCSParams[3].search("-") == -1 && $scope.NCSParams[3] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[3]) != null)
+							{//okay to filter	
+								$scope.NCSParams[3] = ""+parseFloat($scope.NCSParams[3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.calcium_spike_increment != parseFloat($scope.NCSParams[3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[3] = "";//clear garbage
+						}
+						else if($scope.NCSParams[3].search("-") != -1 && $scope.NCSParams[3] != "")//range value filter
+						{
+							var range = $scope.NCSParams[3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.calcium_spike_increment < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.calcium_spike_increment > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[3] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Spike Shape      ////
+                        ////////////////////////
+						if($scope.NCSParams[4].search("-") == -1 && $scope.NCSParams[4] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[4]) != null)
+							{//okay to filter	
+								$scope.NCSParams[4] = ""+parseFloat($scope.NCSParams[4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.spike_shape != parseFloat($scope.NCSParams[4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[4] = "";//clear garbage
+						}
+						else if($scope.NCSParams[4].search("-") != -1 && $scope.NCSParams[4] != "")//range value filter
+						{
+							var range = $scope.NCSParams[4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.spike_shape < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.spike_shape > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[4] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Tau Calcium      ////
+                        ////////////////////////
+						if($scope.NCSParams[5].search("-") == -1 && $scope.NCSParams[5] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[5]) != null)
+							{//okay to filter	
+								$scope.NCSParams[5] = ""+parseFloat($scope.NCSParams[5]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.tau_calcium != parseFloat($scope.NCSParams[5]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[5] = "";//clear garbage
+						}
+						else if($scope.NCSParams[5].search("-") != -1 && $scope.NCSParams[5] != "")//range value filter
+						{
+							var range = $scope.NCSParams[5].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.tau_calcium < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.tau_calcium > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[5] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Calcium          ////
+                        ////////////////////////
+						if($scope.NCSParams[6].search("-") == -1 && $scope.NCSParams[6] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[6]) != null)
+							{//okay to filter	
+								$scope.NCSParams[6] = ""+parseFloat($scope.NCSParams[6]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.calcium != parseFloat($scope.NCSParams[6]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[6] = "";//clear garbage
+						}
+						else if($scope.NCSParams[6].search("-") != -1 && $scope.NCSParams[6] != "")//range value filter
+						{
+							var range = $scope.NCSParams[6].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[6] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.calcium < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.calcium > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[6] = "";//clear garbage
+						}
+                        //else false
+                        
+                        ////////////////////////
+                        // R Membrane       ////
+                        ////////////////////////
+						if($scope.NCSParams[7].search("-") == -1 && $scope.NCSParams[7] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[7]) != null)
+							{//okay to filter	
+								$scope.NCSParams[7] = ""+parseFloat($scope.NCSParams[7]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.r_membrane != parseFloat($scope.NCSParams[7]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[7] = "";//clear garbage
+						}
+						else if($scope.NCSParams[7].search("-") != -1 && $scope.NCSParams[7] != "")//range value filter
+						{
+							var range = $scope.NCSParams[7].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[7] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.r_membrane < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.r_membrane > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[7] = "";//clear garbage
+						}
+                        //else false
+                        
+                        
+                        ////////////////////////
+                        // Threshold        ////
+                        ////////////////////////
+						if($scope.NCSParams[8].search("-") == -1 && $scope.NCSParams[8] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[8]) != null)
+							{//okay to filter	
+								$scope.NCSParams[8] = ""+parseFloat($scope.NCSParams[8]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold != parseFloat($scope.NCSParams[8]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[8] = "";//clear garbage
+						}
+						else if($scope.NCSParams[8].search("-") != -1 && $scope.NCSParams[8] != "")//range value filter
+						{
+							var range = $scope.NCSParams[8].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[8] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.threshold < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.threshold > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[8] = "";//clear garbage
+						}
+                        //else false
+                        
+                        
+                        ////////////////////////
+                        // Resting Potential  //
+                        ////////////////////////
+						if($scope.NCSParams[9].search("-") == -1 && $scope.NCSParams[9] != "")//single value filter
+						{
+							if(parseFloat($scope.NCSParams[9]) != null)
+							{//okay to filter	
+								$scope.NCSParams[9] = ""+parseFloat($scope.NCSParams[9]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.resting_potential != parseFloat($scope.NCSParams[9]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[9] = "";//clear garbage
+						}
+						else if($scope.NCSParams[9].search("-") != -1 && $scope.NCSParams[9] != "")//range value filter
+						{
+							var range = $scope.NCSParams[9].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NCSParams[9] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.resting_potential < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.resting_potential > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NCSParams[9] = "";//clear garbage
+						}
+                        //else false
+                        
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+                    }
+
+                }
 			}
             else if($scope.dbmodels[i].specification.type == "rectangular_current") //Stimulus
 			{
 				if($scope.RCStimBinary == true)
-					tmp.push($scope.dbmodels[i]);
-				//else false
+                {
+                    if($scope.RCStimParams[2] == ""  && $scope.RCStimParams[3] == "" && $scope.RCStimParams[0] == "" && $scope.RCStimParams[1] == "" && $scope.RCStimParams[4] == "" && $scope.RCStimParams[5] )
+                    {
+                        tmp.push($scope.dbmodels[i]);
+                    }
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // Time Start       ////
+                        ////////////////////////
+						if($scope.RCStimParams[0].search("-") == -1 && $scope.RCStimParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[0]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[0] = ""+parseFloat($scope.RCStimParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.time_start != parseFloat($scope.RCStimParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[0] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[0].search("-") != -1 && $scope.RCStimParams[0] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.time_start < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.time_start > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Time End         ////
+                        ////////////////////////
+						if($scope.RCStimParams[1].search("-") == -1 && $scope.RCStimParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[1]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[1] = ""+parseFloat($scope.RCStimParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.time_end != parseFloat($scope.RCStimParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[1] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[1].search("-") != -1 && $scope.RCStimParams[1] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.time_end < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.time_end > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[1] = "";//clear garbage
+						}
+                        
+                        
+                        /////////////////////////////
+                        // Probability             //
+                        /////////////////////////////
+						if($scope.RCStimParams[2].search("-") == -1 && $scope.RCStimParams[2] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[2]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[2] = ""+parseFloat($scope.RCStimParams[2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.probability != parseFloat($scope.RCStimParams[2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[2] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[2].search("-") != -1 && $scope.RCStimParams[2] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.probability < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.probability > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[2] = "";//clear garbage
+						}
+                        
+                        
+                        /////////////////////////////
+                        // Width                   //
+                        /////////////////////////////
+						if($scope.RCStimParams[3].search("-") == -1 && $scope.RCStimParams[3] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[3]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[3] = ""+parseFloat($scope.RCStimParams[3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.width != parseFloat($scope.RCStimParams[3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[3] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[3].search("-") != -1 && $scope.RCStimParams[3] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.width < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.width > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[3] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Frequency        ////
+                        ////////////////////////
+						if($scope.RCStimParams[4].search("-") == -1 && $scope.RCStimParams[4] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[4]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[4] = ""+parseFloat($scope.RCStimParams[4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.frequency != parseFloat($scope.RCStimParams[4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[4] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[4].search("-") != -1 && $scope.RCStimParams[4] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.frequency < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.frequency > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[4] = "";//clear garbage
+						}
+                        
+                        
+                        
+                        ////////////////////////
+                        // Amplitude        ////
+                        ////////////////////////
+						if($scope.RCStimParams[5].search("-") == -1 && $scope.RCStimParams[5] != "")//single value filter
+						{
+							if(parseFloat($scope.RCStimParams[5]) != null)
+							{//okay to filter	
+								$scope.RCStimParams[5] = ""+parseFloat($scope.RCStimParams[5]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.amplitude != parseFloat($scope.RCStimParams[5]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[5] = "";//clear garbage
+						}
+						else if($scope.RCStimParams[5].search("-") != -1 && $scope.RCStimParams[5] != "")//range value filter
+						{
+							var range = $scope.RCStimParams[5].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.RCStimParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.amplitude < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.amplitude > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.RCStimParams[5] = "";//clear garbage
+						}
+                        
+                                              
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+                    }
+                    
+                }
 			}
             else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "flat")
 			{
@@ -848,12 +1520,12 @@ function DBController($scope, $resource) {
 					tmp.push($scope.dbmodels[i]);
 				//else false
 			}
-            else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
+           /* else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
 			{
 				if($scope.SNCSBinary == true)
 					tmp.push($scope.dbmodels[i]);
 				//else false
-			}
+			}*/
 
 		}		
 		$scope.dbsecondary = tmp;
