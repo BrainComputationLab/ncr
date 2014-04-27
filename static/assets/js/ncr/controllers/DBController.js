@@ -21,7 +21,11 @@ function DBController($scope, $resource) {
     $scope.nameFilter = "";
     $scope.detailsFilter = "";
     $scope.authorFilter = "";
-
+    $scope.scopeFilter = "any";
+	//scopes
+	$scope.labs = 0;
+	$scope.regions = 0;
+	
     //----------------model display handlers---------------------------------------------------------------------
   	//compute the number of pages of models based on the total models
     $scope.numberOfPages=function(){
@@ -1538,7 +1542,8 @@ function DBController($scope, $resource) {
 		{
 			if( (($scope.nameFilter == "") || ($scope.dbsecondary[i].entity_name.search($scope.nameFilter) != -1)) &&
 			(($scope.authorFilter == "") || ($scope.dbsecondary[i].author.search($scope.authorFilter) != -1)) &&
-			(($scope.detailsFilter == "") || ($scope.dbsecondary[i].description.search($scope.detailsFilter) != -1)) )
+			(($scope.detailsFilter == "") || ($scope.dbsecondary[i].description.search($scope.detailsFilter) != -1)) &&
+			(($scope.scopeFilter == "any") || ($scope.dbsecondary[i].scope == $scope.scopeFilter))	)
 				tmp.push($scope.dbsecondary[i]);
 			//else does not match
 		}	
@@ -1547,6 +1552,8 @@ function DBController($scope, $resource) {
 
     //This is for getting all models
     var DBModels = $resource('/dbmodels');
+    var DBRegions = $resource('/dbregions');
+    var DBLabs = $resource('/dblabs');
     $scope.dbmodels = [];//all models
     $scope.dbsecondary = [];//models from dbmodels that match up with types and ranges
     $scope.dbdisplay = [];//models from dbsecondary that match up with name, author, and description filters
@@ -1558,6 +1565,81 @@ function DBController($scope, $resource) {
             $scope.filterModels();
         });
     }
+    
+    function updateScopes() {
+		var select = document.getElementById("filterScopeSelect");
+		$('#filterScopeSelect').empty();
+		var opt = document.createElement('option');
+		opt.value = "all";
+		opt.innerHTML = "all";
+		select.appendChild(opt);
+		var opt2 = document.createElement('option');
+		opt2.value = "global";
+		opt2.innerHTML = "global";
+		select.appendChild(opt2);
+		//Use javascript to populate Regions select
+		for(var i = 0; i < $scope.dbregions.length; i++)
+		{
+			var opt = document.createElement('option');
+			opt.value = $scope.dbregions[i]['Name']; 
+			opt.innerHTML = $scope.dbregions[i]['Name'];
+			select.appendChild(opt);
+		}
+		for(var i = 0; i < $scope.dblabs.length; i++)
+		{
+			var opt = document.createElement('option');
+			opt.value = $scope.dblabs[i]['Name']; 
+			opt.innerHTML = $scope.dblabs[i]['Name'];
+			select.appendChild(opt);
+		}
+		select.selectedIndex = 0;
+    }
+    
+    function updateDBRegions() {
+        DBRegions.query({}, function (result) {
+            $scope.dbregions = result;
+            var select = document.getElementById("regionRemoveSelect");
+            var select2 = document.getElementById("labRegionSelect");
+            $('#labRegionSelect').empty();
+            $('#regionRemoveSelect').empty();
+            //Use javascript to populate Regions select
+            for(var i = 0; i < $scope.dbregions.length; i++)
+            {
+				var opt = document.createElement('option');
+				opt.value = $scope.dbregions[i]['Name']; 
+				opt.innerHTML = $scope.dbregions[i]['Name'];
+				select.appendChild(opt);
+				opt = document.createElement('option');
+				opt.value = $scope.dbregions[i]['Name']; 
+				opt.innerHTML = $scope.dbregions[i]['Name'];
+				select2.appendChild(opt);
+			}
+			updateDBLabs();
+        });
+    }
+    function updateDBLabs() {
+        DBLabs.query({}, function (result) {
+            $scope.dblabs = result;
+            var select = document.getElementById("labRemoveSelect");
+            $('#labRemoveSelect').empty();
+            var select2 = document.getElementById("managerLabSelect");
+            $('#managerLabSelect').empty();
+            //Use javascript to populate Labs select
+            for(var i = 0; i < $scope.dblabs.length; i++)
+            {
+				var opt = document.createElement('option');
+				opt.value = $scope.dblabs[i]['Name']; 
+				opt.innerHTML = $scope.dblabs[i]['Name'];
+				select.appendChild(opt);
+				opt = document.createElement('option');
+				opt.value = $scope.dblabs[i]['Name']; 
+				opt.innerHTML = $scope.dblabs[i]['Name'];
+				select2.appendChild(opt);
+			}
+			updateScopes();
+        });
+    }
+
     //delete a model and update the display
     $scope.deleteDBModel = function (dbmodelname) {
         dbmodels.remove({ dbmodelname: dbmodelname });
@@ -1667,6 +1749,229 @@ function DBController($scope, $resource) {
 			return 0;
 	}
     
+    $scope.addRegion = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("regionAddForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/region",
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Region successfully added.");
+				updateDBRegions();
+			}			
+			else
+				alert("Region add failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in region add:" + error);
+		});
+	}
+	
+    $scope.removeRegion = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("regionRemoveForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/region",
+			type: "DELETE",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Region successfully removed.");
+				updateDBRegions();
+			}			
+			else
+				alert("Region remove failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in region remove:" + error);
+		});
+	}
+
+    $scope.addLab = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("labAddForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/lab",
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Lab successfully added.");
+				updateDBLabs();
+			}			
+			else
+				alert("Lab add failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in lab add:" + error);
+		});
+	}
+
+    $scope.removeLab = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("labRemoveForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/lab",
+			type: "DELETE",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Lab successfully removed.");
+				updateDBLabs();
+			}			
+			else
+				alert("Lab remoev failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in lab remove:" + error);
+		});
+	}
+
+    $scope.assignLab = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("labAssignForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/lab",
+			type: "PUT",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Lab manager successfully assigned.");
+				updateDBLabs();
+			}			
+			else
+				alert("Lab manager failed to assign: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in lab assign:" + error);
+		});
+	}
+
+    $scope.inviteUser = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("labInviteForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/labAssign",
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Neuroscientist successfully invited.");
+				updateDBLabs();
+			}			
+			else
+				alert("Lab invitation failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in lab invite:" + error);
+		});
+	}
+	
+    $scope.resignLab = function() {
+		finished = false;
+		var formData = new FormData();
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/labAssign",
+			type: "DELETE",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Lab resignation successful!");
+			}			
+			else
+				alert("Lab resignation failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in model demotion:" + error);
+		});
+	}
+
+    $scope.updatePassword = function() {
+		finished = false;
+		var formData = new FormData(document.getElementById("changePasswordForm"));
+		formData.append("sessionID", SessionID);
+		formData.append("logged", Logged);
+
+		request = $.ajax({
+			url: "/changePassword",
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+		request.done(function(response, textStatus, jqXHR) {
+			if(response.success)
+			{
+				alert("Password successfully changed!");
+			}			
+			else
+				alert("Model demotion failed: "+response.error);
+		});
+		request.fail(function(jqXHR, textStatus, error) {
+			alert("Unexpected error in model demotion:" + error);
+		});
+	}
+    //get labs and regions
+	updateDBRegions();
     //get the models outright
     updateDBModels();
 }

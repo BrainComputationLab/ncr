@@ -10,8 +10,20 @@
 	<h5>As an admin, this control panel allows you to add and remove labs and regions.</h5>	
 	<h5>As a lab manager, this control panel allows you to join neuroscientists to your lab.</h5>	
 	<h5>You can use this control panel to update your name and password.</h5>	
-	<div class="row">
-		<form class="form-horizontal" role="form" id="regionForm" name="regionAdd" ng-submit="addRegion()" novalidate>
+	<div>
+		<ul class="nav nav-tabs">
+			<li ng-class="{active: cfgPanel=='add region'}"><a href="#" ng-click="cfgPanel='add region'">Add Region</a></li>
+			<li ng-class="{active: cfgPanel == 'remove region'}"><a href="#" ng-click="cfgPanel = 'remove region'">Remove Region</a></li>
+			<li ng-class="{active: cfgPanel == 'add lab'}"><a href="#" ng-click="cfgPanel = 'add lab'">Add Lab</a></li>
+			<li ng-class="{active: cfgPanel == 'remove lab'}"><a href="#" ng-click="cfgPanel = 'remove lab'">Remove Lab</a></li>
+			<li ng-class="{active: cfgPanel == 'assign manager'}"><a href="#" ng-click="cfgPanel = 'assign manager'">Assign Lab Manager</a></li>
+			<li ng-class="{active: cfgPanel == 'invite'}"><a href="#" ng-click="cfgPanel = 'invite'">Invite Neuroscientist</a></li>
+			<li ng-class="{active: cfgPanel == 'resign'}"><a href="#" ng-click="cfgPanel = 'resign'">Resign From Lab</a></li>
+			<li ng-class="{active: cfgPanel == 'change password'}"><a href="#" ng-click="cfgPanel = 'change password'">Change Password</a></li>
+		</ul>	
+	</div>
+	<div class="row" ng-show="cfgPanel=='add region'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="regionAddForm" name="regionAdd" ng-submit="addRegion()" novalidate>
 			<label for="regionAddInput" class="col-md-2 control-label">Add Region</label>
 			<div class="col-md-10">
 				<input id="regionAddInput" name="regionAddInput" type="text" class="form-control" data-ng-model="regionAddX" required>
@@ -24,8 +36,8 @@
 			</div>
 		</form>
 	</div>
-	<div class="row">
-		<form class="form-horizontal" role="form" id="regionForm" name="regionRemove" ng-submit="removeRegion()" novalidate>
+	<div class="row" ng-show="cfgPanel=='remove region'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="regionRemoveForm" name="regionRemove" ng-submit="removeRegion()" novalidate>
 			<label for="regionRemoveSelect" class="col-md-2 control-label">Remove Region</label>
 			<div class="col-md-10">
 				<select id="regionRemoveSelect" name="regionRemoveSelect" data-ng-model="removeLabX">
@@ -39,8 +51,8 @@
 			</div>
 		</form>
  	</div>
- 	<div class="row">
-		<form class="form-horizontal" role="form" id="labForm" name="labAdd" ng-submit="addLab()" novalidate>
+ 	<div class="row" ng-show="cfgPanel=='add lab'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="labAddForm" name="labAdd" ng-submit="addLab()" novalidate>
 			<label for="labAddInput" class="col-md-2 control-label">Add Lab</label>
 			<div class="col-md-10">
 				<input id="labAddInput" name="labAddInput" type="text" class="form-control" data-ng-model="labAddX" required>
@@ -48,13 +60,21 @@
 					Error: <span class="error" ng-show="labAdd.labAddInput.$error.required">You must enter the lab name.</span>
 				</div>
 			</div>
+			<label for="labRegionSelect" class="col-md-2 control-label">In Region</label>
+			<div class="col-md-10">
+				<select id="labRegionSelect" name="region" data-ng-model="labRegionSelectX">
+				</select>
+				<div class="error" ng-show="labAdd.region.$dirty && labAdd.region.$invalid">
+					Error: <span class="error" ng-show="labAdd.region.$error.required">You must enter the region to place this lab under.</span>
+				</div>
+			</div>
 			<div class="btn-group pull-right">
-				<button type="submit" class="btn btn-primary" ng-disabled="regionAdd.$invalid">Submit</button>
+				<button type="submit" class="btn btn-primary" ng-disabled="labAdd.$invalid">Submit</button>
 			</div>
 		</form>
  	</div>
- 	<div class="row">
-		<form class="form-horizontal" role="form" id="labForm" name="labRemove" ng-submit="removeLab()" novalidate>
+ 	<div class="row" ng-show="cfgPanel=='remove lab'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="labRemoveForm" name="labRemove" ng-submit="removeLab()" novalidate>
 			<label for="labRemoveSelect" class="col-md-2 control-label">Remove Lab</label>
 			<div class="col-md-10">
 				<select id="labRemoveSelect" name="labRemoveSelect" data-ng-model="removeLabX">
@@ -69,9 +89,77 @@
 		</form>
  	</div>
  	<!-- Assign Lab Manager -->
+  	<div class="row" ng-show="cfgPanel=='assign manager'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="labAssignForm" name="labAssign" ng-submit="assignLab()" novalidate>
+			<label for="labAssignInput" class="col-md-2 control-label">Assign Lab Manager</label>
+			<div class="col-md-10">
+				<input id="labAssignInput" name="labAssignInput" type="text" class="form-control" data-ng-model="labAssignX" required>
+				<div class="error" ng-show="labAssign.labAssignInput.$dirty && labAssign.labAssignInput.$invalid">
+					Error: <span class="error" ng-show="labAssign.labAssignInput.$error.required">You must enter the lab name.</span>
+				</div>
+			</div>
+			<label for="managerLabSelect" class="col-md-2 control-label">In Lab</label>
+			<div class="col-md-10">
+				<select id="managerLabSelect" name="lab" data-ng-model="managerLabSelectX">
+				</select>
+				<div class="error" ng-show="labAssign.lab.$dirty && labAssign.lab.$invalid">
+					Error: <span class="error" ng-show="labAssign.lab.$error.required">You must enter the region to place this lab under.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="labAssign.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
  	<!-- Invite user to lab -->
+   	<div class="row" ng-show="cfgPanel=='invite'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="labInviteForm" name="labInvite" ng-submit="inviteUser()" novalidate>
+			<label for="labInviteInput" class="col-md-2 control-label">Invite Neuroscientist</label>
+			<div class="col-md-10">
+				<input id="labInviteInput" name="labInviteInput" type="text" class="form-control" data-ng-model="labInviteX" required>
+				<div class="error" ng-show="labInvite.labInviteInput.$dirty && labInvite.labInviteInput.$invalid">
+					Error: <span class="error" ng-show="labInvite.labInviteInput.$error.required">You must enter the lab name.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="labInvite.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
  	<!-- Resign from lab -->
- 	<!-- Change name -->
+    <div class="row" ng-show="cfgPanel=='resign'" ng-controller="DBController">
+		<div class="col-md-12">
+			<button type="submit" ng-click="resignLab()" class="btn btn-block btn-warning">Resign from Lab</button>
+		</div>
+ 	</div>
+ 	<div class="row">&nbsp;</div>
  	<!-- Change password -->
- 	<!-- salt security answer -->
+    <div class="row" ng-show="cfgPanel=='change password'" ng-controller="DBController">
+		<form class="form-horizontal" role="form" id="changePasswordForm" name="changePassword" ng-submit="updatePassword()" novalidate>
+			<label for="changePasswordToInput" class="col-md-2 control-label">Change Password From</label>
+			<div class="col-md-10">
+				<input id="changePasswordFromInput" name="changePasswordFromInput" type="password" class="form-control" data-ng-model="changePasswordFromX" required>
+				<div class="error" ng-show="changePassword.changePasswordFromInput.$dirty && changePassword.changePasswordFromInput.$invalid">
+					Error: <span class="error" ng-show="changePassword.changePasswordFromInput.$error.required">You must enter your current password.</span>
+				</div>
+			</div>
+			<label for="changePasswordToInput" class="col-md-2 control-label">Change Password To</label>
+			<div class="col-md-10">
+				<input id="changePasswordFromInput" name="changePasswordToInput" type="password" class="form-control" data-ng-model="changePasswordToX" required>
+				<div class="error" ng-show="changePassword.changePasswordToInput.$dirty && changePassword.changePasswordToInput.$invalid">
+					Error: <span class="error" ng-show="changePassword.changePasswordToInput.$error.required">You must enter a password.</span>
+				</div>
+			</div>
+			<label for="changeConfirmInput" class="col-md-2 control-label">Confirm</label>
+			<div class="col-md-10">
+				<input id="changeConfirmInput" name="changeConfirmInput" type="password" class="form-control" data-ng-model="changeConfirmInputX" required>
+				<div class="error" ng-show="changePassword.changeConfirmInput.$dirty && changePassword.changeConfirmInput.$invalid">
+					Error: <span class="error" ng-show="changePassword.changeConfirmInput.$error.required">You must enter the lab name.</span>
+				</div>
+			</div>
+			<div class="btn-group pull-right">
+				<button type="submit" class="btn btn-primary" ng-disabled="changePassword.$invalid">Submit</button>
+			</div>
+		</form>
+ 	</div>
 </div>
