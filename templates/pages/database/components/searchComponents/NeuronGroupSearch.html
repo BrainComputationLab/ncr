@@ -1,8 +1,21 @@
 <div class="size collapse-group">
-    <button class="btn-group-justified btn-primary" data-toggle="collapse" data-target="#neuronGroupParameters">
+    <button class="btn-group-justified btn-primary" data-toggle="collapse" data-target="#neuronGroupCheck">
         Neuron Groups
     </button>
- <div class="collapse" id="neuronGroupParameters">
+<div class="collapse" id="neuronGroupCheck">
+
+     <div class="checkbox" ng-model="checked">
+         <label>
+             <input type="checkbox" ng-model="NGBinary" ng-change="filterModels()"> 
+                 <div class="size collapse-group">
+                     <a data-toggle="collapse" data-target="#neuronGroupParameters">Neuron Groups</a>
+                 </div>  
+        </label>
+     </div>
+</div>
+   <!-- Start big collapse -->  
+<div class="collapse" id="neuronGroupParameters">
+
     <div class="size collapse-group">
                     <a data-toggle="collapse" data-target="#geometry">Geometry</a>
                 </div>  
@@ -37,7 +50,7 @@
     <div class="collapse" id="subgroups">
         {% include 'pages/database/components/searchComponents/neurongrouptypes/SubGroupsCollapse.html' %}
     </div> 
-    
+    <!-- End Big collapse -->
     
 </div>
 </div> 

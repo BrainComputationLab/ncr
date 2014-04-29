@@ -1,0 +1,97 @@
+<h2>Geometry</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Width</th>
+            <th>Depth</th>
+            <th>Height</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.geometry.width}}'}}</td>
+            <td>{{'{{ selectedModel.specification.geometry.depth}}'}}</td>
+            <td>{{'{{ selectedModel.specification.geometry.height}}'}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+<h2>Synaptic Aliases</h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Alias</th>
+            <th>Labels</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.synaptic_aliases.alias}}'}}</td>
+            <td>{{'{{ selectedModel.specification.synaptic_aliases.labels}}'}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+<h2>Connections </h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Synapse</th>
+            <th>Recurrent</th>
+            <th>Pre Synaptic</th>
+            <th>Post Synaptic</th>
+            <th>Probability</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'{{ selectedModel.specification.connections.synapse}}'}}</td>
+            <td>{{'{{ selectedModel.specification.connections.recurrent}}'}}</td>
+            <td>{{'{{ selectedModel.specification.connections.presynaptic}}'}}</td>
+            <td>{{'{{ selectedModel.specification.connections.postsynaptic}}'}}</td>
+            <td>{{'{{ selectedModel.specification.connections.probability}}'}}</td>
+
+
+        </tr>
+    </tbody>
+</table>
+
+
+
+<h2>Neuron Groups </h2>
+<table class="table table-bordered table-hover" > 
+    <thead>
+        <tr>
+            <th>Geometry</th>
+            <th>Neuron</th>
+            <th>Location</th>
+            <th>Label</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <b>Width : </b>{{'{{ selectedModel.specification.neuron_groups.geometry.width}}'}}, 
+                <b>Depth : </b>{{'{{ selectedModel.specification.neuron_groups.geometry.depth}}'}}, 
+                <b>Height : </b>{{'{{ selectedModel.specification.neuron_groups.geometry.height}}'}} 
+
+            
+            </td>
+            <td>{{'{{ selectedModel.specification.neuron_groups.neuron}}'}}</td>
+            <td>
+                <b>X : </b>{{'{{ selectedModel.specification.neuron_groups.location.x}}'}},
+                <b>Y : </b>{{'{{ selectedModel.specification.neuron_groups.location.y}}'}},
+                <b>Z : </b>{{'{{ selectedModel.specification.neuron_groups.location.z}}'}}
+
+            </td>
+            <td>{{'{{ selectedModel.specification.neuron_groups.label}}'}}</td>
+            
+            
+        </tr>
+    </tbody>
+</table>

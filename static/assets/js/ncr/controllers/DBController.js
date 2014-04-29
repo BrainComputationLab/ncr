@@ -16,6 +16,12 @@ function DBController($scope, $resource) {
     $scope.IZHParams = ["", "", "", "", "", "", ""];
     $scope.HHParams = ["","","",""];
     $scope.NCSParams = ["", "", "", "", "", "", "", "", "", ""];
+    /////////////////////
+    // Neuron Groups   //
+    /////////////////////
+    $scope.NGBinary = true;
+    
+    $scope.NGParams = [["", "", ""] ,["", ""] ,["" ,"" ,"", "" ,""], ["", "", ""], ["" ,"" ,"" ,"" ,""]]; //Geometry, Synaptic Aliases, Connections, Neuron Aliases, Sub Groups
     //////////////////
     // Channels     //
     //////////////////
@@ -81,9 +87,6 @@ function DBController($scope, $resource) {
 		{
 			if($scope.dbmodels[i].specification.type == "hh_voltage_gated_ion") //includes particles
 			{
-                //////
-                // TODO : Alpha and Beta Parameter Filters
-                //////
 				if($scope.HHVGIBinary == true)
 				{
 					if($scope.HHVGIParams[2] == ""  && $scope.HHVGIParams[3] == "" && $scope.HHVGIParams[0] == "" && $scope.HHVGIParams[1] == "")
@@ -1701,7 +1704,7 @@ function DBController($scope, $resource) {
 
                 }
 			}
-            else if($scope.dbmodels[i].specification.type == "rectangular_current") //Stimulus
+            else if($scope.dbmodels[i].entity_type == "stimulus") //Stimulus
 			{
 				if($scope.RCStimBinary == true)
                 {
@@ -1914,15 +1917,1118 @@ function DBController($scope, $resource) {
             else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "flat")
 			{
 				if($scope.SFBinary == true)
-					tmp.push($scope.dbmodels[i]);
+                {
+                    if($scope.SFParams[0] == ""  && $scope.SFParams[1] == "" )
+                        tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+                        
+                        ////////////////////////
+                        // Delay            ////
+                        ////////////////////////
+						if($scope.SFParams[0].search("-") == -1 && $scope.SFParams[0] != "")//single value filter
+						{
+							if(parseFloat($scope.SFParams[0]) != null)
+							{//okay to filter	
+								$scope.SFParams[0] = ""+parseFloat($scope.SFParams[0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.delay != parseFloat($scope.SFParams[0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.SFParams[0] = "";//clear garbage
+						}
+						else if($scope.SFParams[0].search("-") != -1 && $scope.SFParams[0] != "")//range value filter
+						{
+							var range = $scope.SFParams[0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.SFParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.delay < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.delay > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.SFParams[0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Current          ////
+                        ////////////////////////
+						if($scope.SFParams[1].search("-") == -1 && $scope.SFParams[1] != "")//single value filter
+						{
+							if(parseFloat($scope.SFParams[1]) != null)
+							{//okay to filter	
+								$scope.SFParams[1] = ""+parseFloat($scope.SFParams[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.current != parseFloat($scope.SFParams[1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.SFParams[1] = "";//clear garbage
+						}
+						else if($scope.SFParams[1].search("-") != -1 && $scope.SFParams[1] != "")//range value filter
+						{
+							var range = $scope.SFParams[1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.SFParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.current < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.current > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.SFParams[1] = "";//clear garbage
+						}
+                        
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+                    }
+                }
 				//else false
 			}
             else if($scope.dbmodels[i].entity_type == "synapse" && $scope.dbmodels[i].specification.type == "ncs")
 			{
 				if($scope.SNCSBinary == true)
-					tmp.push($scope.dbmodels[i]);
-				//else false
+                {
+                        if($scope.SNCSParams[2] == "" && $scope.SNCSParams[3] == "" && $scope.SNCSParams[0] == "" && $scope.SNCSParams[1] == "" && $scope.SNCSParams[4] == "" && $scope.SNCSParams[5] == "" && $scope.SNCSParams[6] == "" && $scope.SNCSParams[7] == "" && $scope.SNCSParams[8] == "" && $scope.SNCSParams[9] == "" && $scope.SNCSParams[10] == "" && $scope.SNCSParams[11] == "" && $scope.SNCSParams[12] == "" && $scope.SNCSParams[13] == "")
+                            tmp.push($scope.dbmodels[i]);					
+                        else//test filter
+                        {
+                            
+                            ////////////////////////
+                            // Tau Facilitation   //
+                            ////////////////////////
+                            if($scope.SNCSParams[0].search("-") == -1 && $scope.SNCSParams[0] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[0]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[0] = ""+parseFloat($scope.SNCSParams[0]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_facilitation != parseFloat($scope.SNCSParams[0]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[0] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[0].search("-") != -1 && $scope.SNCSParams[0] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[0].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_facilitation < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.tau_facilitation > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[0] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Tau Limited      ////
+                            ////////////////////////
+                            if($scope.SNCSParams[1].search("-") == -1 && $scope.SNCSParams[1] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[1]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[1] = ""+parseFloat($scope.SNCSParams[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_limited != parseFloat($scope.SNCSParams[1]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[1] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[1].search("-") != -1 && $scope.SNCSParams[1] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[1].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_limited < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.tau_limited > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[1] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // PSG Waveform       //
+                            ////////////////////////
+                            if($scope.SNCSParams[2].search("-") == -1 && $scope.SNCSParams[2] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[2]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[2] = ""+parseFloat($scope.SNCSParams[2]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.psg_waveform_duration != parseFloat($scope.SNCSParams[2]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[2] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[2].search("-") != -1 && $scope.SNCSParams[2] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[2].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.psg_waveform_duration < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.psg_waveform_duration > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[2] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Last Prefire      ///
+                            ////////////////////////
+                            if($scope.SNCSParams[3].search("-") == -1 && $scope.SNCSParams[3] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[3]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[3] = ""+parseFloat($scope.SNCSParams[3]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.last_prefire_time != parseFloat($scope.SNCSParams[3]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[3] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[3].search("-") != -1 && $scope.SNCSParams[3] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[3].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.last_prefire_time < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.last_prefire_time > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[3] = "";//clear garbage
+                            }
+                            
+                            
+                            
+                            ////////////////////////
+                            // Last Postfire     ///
+                            ////////////////////////
+                            if($scope.SNCSParams[4].search("-") == -1 && $scope.SNCSParams[4] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[4]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[4] = ""+parseFloat($scope.SNCSParams[4]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.last_postfire_time != parseFloat($scope.SNCSParams[4]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[4] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[4].search("-") != -1 && $scope.SNCSParams[4] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[4].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.last_postfire_time < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.last_postfire_time > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[4] = "";//clear garbage
+                            }
+                            
+                            
+                            
+                            ////////////////////////
+                            // Utilization       ///
+                            ////////////////////////
+                            if($scope.SNCSParams[5].search("-") == -1 && $scope.SNCSParams[5] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[5]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[5] = ""+parseFloat($scope.SNCSParams[5]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.utilization != parseFloat($scope.SNCSParams[5]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[5] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[5].search("-") != -1 && $scope.SNCSParams[5] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[5].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.utilization < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.utilization > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[5] = "";//clear garbage
+                            }
+                            
+                            
+                            
+                            ////////////////////////
+                            // A Limited Minimum  //
+                            ////////////////////////
+                            if($scope.SNCSParams[6].search("-") == -1 && $scope.SNCSParams[6] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[6]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[6] = ""+parseFloat($scope.SNCSParams[6]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.a_ltd_minimum != parseFloat($scope.SNCSParams[6]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[6] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[6].search("-") != -1 && $scope.SNCSParams[6] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[6].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[6] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.a_ltd_minimum < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.a_ltd_minimum > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[6] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Tau Depression     //
+                            ////////////////////////
+                            if($scope.SNCSParams[7].search("-") == -1 && $scope.SNCSParams[7] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[7]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[7] = ""+parseFloat($scope.SNCSParams[7]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_depression != parseFloat($scope.SNCSParams[7]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[7] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[7].search("-") != -1 && $scope.SNCSParams[7] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[7].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[7] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_depression < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.tau_depression > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[7] = "";//clear garbage
+                            }
+                            
+                            ////////////////////////
+                            // Delay              //
+                            ////////////////////////
+                            if($scope.SNCSParams[8].search("-") == -1 && $scope.SNCSParams[8] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[8]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[8] = ""+parseFloat($scope.SNCSParams[8]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.delay != parseFloat($scope.SNCSParams[8]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[8] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[8].search("-") != -1 && $scope.SNCSParams[8] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[8].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[8] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.delay < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.delay > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[8] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Max Conductance    //
+                            ////////////////////////
+                            if($scope.SNCSParams[9].search("-") == -1 && $scope.SNCSParams[9] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[9]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[9] = ""+parseFloat($scope.SNCSParams[9]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.max_conductance != parseFloat($scope.SNCSParams[9]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[9] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[9].search("-") != -1 && $scope.SNCSParams[9] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[9].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[9] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.max_conductance < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.max_conductance > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[9] = "";//clear garbage
+                            }
+                            
+                            ////////////////////////
+                            // Reversal Potential //
+                            ////////////////////////
+                            if($scope.SNCSParams[10].search("-") == -1 && $scope.SNCSParams[10] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[10]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[10] = ""+parseFloat($scope.SNCSParams[10]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.reversal_potential != parseFloat($scope.SNCSParams[10]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[10] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[10].search("-") != -1 && $scope.SNCSParams[10] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[10].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[10] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.reversal_potential < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.reversal_potential > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[10] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Tau LTP            //
+                            ////////////////////////
+                            if($scope.SNCSParams[11].search("-") == -1 && $scope.SNCSParams[11] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[11]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[11] = ""+parseFloat($scope.SNCSParams[11]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_ltp != parseFloat($scope.SNCSParams[11]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[11] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[11].search("-") != -1 && $scope.SNCSParams[11] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[11].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[11] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.tau_ltp < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.tau_ltp > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[11] = "";//clear garbage
+                            }
+                            
+                            ////////////////////////
+                            // A LTP Minimum      //
+                            ////////////////////////
+                            if($scope.SNCSParams[12].search("-") == -1 && $scope.SNCSParams[12] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[12]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[12] = ""+parseFloat($scope.SNCSParams[12]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.a_ltp_minimum != parseFloat($scope.SNCSParams[12]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[12] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[12].search("-") != -1 && $scope.SNCSParams[12] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[12].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[12] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.a_ltp_minimum < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.a_ltp_minimum > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[12] = "";//clear garbage
+                            }
+                            
+                            
+                            ////////////////////////
+                            // Redistribution     //
+                            ////////////////////////
+                            if($scope.SNCSParams[13].search("-") == -1 && $scope.SNCSParams[13] != "")//single value filter
+                            {
+                                if(parseFloat($scope.SNCSParams[13]) != null)
+                                {//okay to filter	
+                                    $scope.SNCSParams[13] = ""+parseFloat($scope.SNCSParams[13]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.redistribution != parseFloat($scope.SNCSParams[13]))
+                                        continue;//filtered OUT, does not match
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[13] = "";//clear garbage
+                            }
+                            else if($scope.SNCSParams[13].search("-") != -1 && $scope.SNCSParams[13] != "")//range value filter
+                            {
+                                var range = $scope.SNCSParams[13].split("-");
+                                if(parseFloat(range[0]) && parseFloat(range[1]))
+                                {//okay to filter
+                                    $scope.SNCSParams[13] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+                                    if($scope.dbmodels[i].specification.redistribution < parseFloat(range[0]) || 
+                                       $scope.dbmodels[i].specification.redistribution > parseFloat(range[1]))
+                                        continue;//filtered OUT, does not fit in range
+                                    //else, continue
+                                }
+                                else//is garbage, don't filter
+                                    $scope.SNCSParams[13] = "";//clear garbage
+                            }
+                            //else false
+                            
+                            
+                            ///////////////////////////
+                            // End Of filters!      ///
+                            ///////////////////////////
+                            
+                            //made it this far! passed all filters!
+                            tmp.push($scope.dbmodels[i]);
+                        }
+                    }
+
 			}
+            else if($scope.dbmodels[i].entity_type == "group") //Neuron Group!! 
+            {
+                if($scope.NGBinary == true)
+				{					
+
+					if($scope.NGParams[2] == ""  && $scope.NGParams[3] == "" && $scope.NGParams[0] == "" && $scope.NGParams[1] == "" && $scope.NGParams[4] == "")
+                        tmp.push($scope.dbmodels[i]);					
+					else//test filter
+					{
+                        
+                ////////////////////////
+                // Geometry        ////
+               ////////////////////////
+                        
+                        ////////////////////////
+                        // Width         ////
+                        ////////////////////////
+                        if($scope.NGParams[0][0].search("-") == -1 && $scope.NGParams[0][0] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[0][0]) != null)
+							{//okay to filter	
+								$scope.NGParams[0][0] = ""+parseFloat($scope.NGParams[0][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.geometry.width != parseFloat($scope.NGParams[0][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][0] = "";//clear garbage
+						}
+						else if($scope.NGParams[0][0].search("-") != -1 && $scope.NGParams[0][0] != "")//range value filter
+						{
+							var range = $scope.NGParams[0][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[0][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.geometry.width < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.geometry.width > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][0] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Depth            ////
+                        ////////////////////////
+                        if($scope.NGParams[0][1].search("-") == -1 && $scope.NGParams[0][1] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[0][1]) != null)
+							{//okay to filter	
+								$scope.NGParams[0][1] = ""+parseFloat($scope.NGParams[0][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.geometry.depth != parseFloat($scope.NGParams[0][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][1] = "";//clear garbage
+						}
+						else if($scope.NGParams[0][1].search("-") != -1 && $scope.NGParams[0][1] != "")//range value filter
+						{
+							var range = $scope.NGParams[0][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[0][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.geometry.depth < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.geometry.depth > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][1] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Height           ////
+                        ////////////////////////
+                        if($scope.NGParams[0][2].search("-") == -1 && $scope.NGParams[0][2] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[0][2]) != null)
+							{//okay to filter	
+								$scope.NGParams[0][2] = ""+parseFloat($scope.NGParams[0][2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.geometry.height != parseFloat($scope.NGParams[0][2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][2] = "";//clear garbage
+						}
+						else if($scope.NGParams[0][2].search("-") != -1 && $scope.NGParams[0][2] != "")//range value filter
+						{
+							var range = $scope.NGParams[0][2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[0][2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.geometry.height < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.geometry.height > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[0][2] = "";//clear garbage
+						}
+                    
+                        
+                        
+                ////////////////////////
+                // Synaptic Aliases   //
+                ////////////////////////
+                        ////////////////////////
+                        // Alias            ////
+                        ////////////////////////
+                        if($scope.NGParams[1][0].search("-") == -1 && $scope.NGParams[1][0] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[1][0]) != null)
+							{//okay to filter	
+								$scope.NGParams[1][0] = ""+parseFloat($scope.NGParams[1][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.synaptic_aliases.alias != parseFloat($scope.NGParams[1][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[1][0] = "";//clear garbage
+						}
+						else if($scope.NGParams[1][0].search("-") != -1 && $scope.NGParams[1][0] != "")//range value filter
+						{
+							var range = $scope.NGParams[1][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[1][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.synaptic_aliases.alias < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.synaptic_aliases.alias > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[1][0] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Labels           ////
+                        ////////////////////////
+                        if($scope.NGParams[1][1].search("-") == -1 && $scope.NGParams[1][1] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[1][1]) != null)
+							{//okay to filter	
+								$scope.NGParams[1][1] = ""+parseFloat($scope.NGParams[1][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.synaptic_aliases.labels != parseFloat($scope.NGParams[1][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[1][1] = "";//clear garbage
+						}
+						else if($scope.NGParams[1][1].search("-") != -1 && $scope.NGParams[1][1] != "")//range value filter
+						{
+							var range = $scope.NGParams[1][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[1][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.synaptic_aliases.labels < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.synaptic_aliases.labels > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[1][1] = "";//clear garbage
+						}
+                        
+                   
+              ////////////////////////
+              // Connections      ////
+              ////////////////////////
+                        ////////////////////////
+                        // Synapse          ////
+                        ////////////////////////
+						if($scope.NGParams[2][0].search("-") == -1 && $scope.NGParams[2][0] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[2][0]) != null)
+							{//okay to filter	
+								$scope.NGParams[2][0] = ""+parseFloat($scope.NGParams[2][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.synapse != parseFloat($scope.NGParams[2][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][0] = "";//clear garbage
+						}
+						else if($scope.NGParams[2][0].search("-") != -1 && $scope.NGParams[2][0] != "")//range value filter
+						{
+							var range = $scope.NGParams[2][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[2][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.synapse < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.connections.synapse > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][0] = "";//clear garbage
+						}
+                        ////////////////////////
+                        // Recurrent        ////
+                        ////////////////////////
+						if($scope.NGParams[2][1].search("-") == -1 && $scope.NGParams[2][1] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[2][1]) != null)
+							{//okay to filter	
+								$scope.NGParams[2][1] = ""+parseFloat($scope.NGParams[2][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.recurrent != parseFloat($scope.NGParams[2][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][1] = "";//clear garbage
+						}
+						else if($scope.NGParams[2][1].search("-") != -1 && $scope.NGParams[2][1] != "")//range value filter
+						{
+							var range = $scope.NGParams[2][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[2][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.recurrent < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.connections.recurrent > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][1] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Post Synaptic    ////
+                        ////////////////////////
+                        if($scope.NGParams[2][2].search("-") == -1 && $scope.NGParams[2][2] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[2][2]) != null)
+							{//okay to filter	
+								$scope.NGParams[2][2] = ""+parseFloat($scope.NGParams[2][2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.postsynaptic != parseFloat($scope.NGParams[2][2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][2] = "";//clear garbage
+						}
+						else if($scope.NGParams[2][2].search("-") != -1 && $scope.NGParams[2][2] != "")//range value filter
+						{
+							var range = $scope.NGParams[2][2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[2][2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.postsynaptic < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.connections.postsynaptic > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][2] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Probability        //
+                        ////////////////////////
+                        if($scope.NGParams[2][3].search("-") == -1 && $scope.NGParams[2][3] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[2][3]) != null)
+							{//okay to filter	
+								$scope.NGParams[2][3] = ""+parseFloat($scope.NGParams[2][3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.probability != parseFloat($scope.NGParams[2][3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][3] = "";//clear garbage
+						}
+						else if($scope.NGParams[2][3].search("-") != -1 && $scope.NGParams[2][3] != "")//range value filter
+						{
+							var range = $scope.NGParams[2][3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[2][3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.probability < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.connections.probability > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][3] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Pre Synaptic       //
+                        ////////////////////////
+                        if($scope.NGParams[2][4].search("-") == -1 && $scope.NGParams[2][4] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[2][4]) != null)
+							{//okay to filter	
+								$scope.NGParams[2][4] = ""+parseFloat($scope.NGParams[2][4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.presynaptic != parseFloat($scope.NGParams[2][4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][4] = "";//clear garbage
+						}
+						else if($scope.NGParams[2][4].search("-") != -1 && $scope.NGParams[2][4] != "")//range value filter
+						{
+							var range = $scope.NGParams[2][4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[2][4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.connections.presynaptic < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.connections.presynaptic > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[2][4] = "";//clear garbage
+						}
+                     
+                        
+                ////////////////////////
+                // Neuron Aliases      //
+                ////////////////////////
+                        
+                        ////////////////////////
+                        // Aliases            //
+                        ////////////////////////
+                        if($scope.NGParams[3][0].search("-") == -1 && $scope.NGParams[3][0] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[3][0]) != null)
+							{//okay to filter	
+								$scope.NGParams[3][0] = ""+parseFloat($scope.NGParams[3][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.alias != parseFloat($scope.NGParams[3][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][0] = "";//clear garbage
+						}
+						else if($scope.NGParams[3][0].search("-") != -1 && $scope.NGParams[3][0] != "")//range value filter
+						{
+							var range = $scope.NGParams[3][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[3][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.alias < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.neuron_aliases.alias > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][0] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Labels             //
+                        ////////////////////////
+                        if($scope.NGParams[3][1].search("-") == -1 && $scope.NGParams[3][1] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[3][1]) != null)
+							{//okay to filter	
+								$scope.NGParams[3][1] = ""+parseFloat($scope.NGParams[3][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.labels != parseFloat($scope.NGParams[3][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][1] = "";//clear garbage
+						}
+						else if($scope.NGParams[3][1].search("-") != -1 && $scope.NGParams[3][1] != "")//range value filter
+						{
+							var range = $scope.NGParams[3][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[3][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.labels < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.neuron_aliases.labels > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][1] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Aliases            //
+                        ////////////////////////
+                        if($scope.NGParams[3][2].search("-") == -1 && $scope.NGParams[3][2] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[3][2]) != null)
+							{//okay to filter	
+								$scope.NGParams[3][2] = ""+parseFloat($scope.NGParams[3][2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.aliases != parseFloat($scope.NGParams[3][2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][2] = "";//clear garbage
+						}
+						else if($scope.NGParams[3][2].search("-") != -1 && $scope.NGParams[3][2] != "")//range value filter
+						{
+							var range = $scope.NGParams[3][2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[3][2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.neuron_aliases.aliases < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.neuron_aliases.aliases > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[3][2] = "";//clear garbage
+						}
+                        
+                        
+                        
+               ////////////////////////
+               // Sub Groups         //
+               ////////////////////////
+                        ////////////////////////
+                        // Group              //
+                        ////////////////////////
+                        if($scope.NGParams[4][0].search("-") == -1 && $scope.NGParams[4][0] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[4][0]) != null)
+							{//okay to filter	
+								$scope.NGParams[4][0] = ""+parseFloat($scope.NGParams[4][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.group != parseFloat($scope.NGParams[4][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][0] = "";//clear garbage
+						}
+						else if($scope.NGParams[4][0].search("-") != -1 && $scope.NGParams[4][0] != "")//range value filter
+						{
+							var range = $scope.NGParams[4][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[4][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.group < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.subgroups.group > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][0] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // X Location         //
+                        ////////////////////////
+                        if($scope.NGParams[4][1].search("-") == -1 && $scope.NGParams[4][1] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[4][1]) != null)
+							{//okay to filter	
+								$scope.NGParams[4][1] = ""+parseFloat($scope.NGParams[4][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.x != parseFloat($scope.NGParams[4][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][1] = "";//clear garbage
+						}
+						else if($scope.NGParams[4][1].search("-") != -1 && $scope.NGParams[4][1] != "")//range value filter
+						{
+							var range = $scope.NGParams[4][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[4][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.x < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.subgroups.location.x > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][1] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Y Location         //
+                        ////////////////////////
+                        if($scope.NGParams[4][2].search("-") == -1 && $scope.NGParams[4][2] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[4][2]) != null)
+							{//okay to filter	
+								$scope.NGParams[4][2] = ""+parseFloat($scope.NGParams[4][2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.y != parseFloat($scope.NGParams[4][2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][2] = "";//clear garbage
+						}
+						else if($scope.NGParams[4][2].search("-") != -1 && $scope.NGParams[4][2] != "")//range value filter
+						{
+							var range = $scope.NGParams[4][2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[4][2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.y < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.subgroups.location.y > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][2] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Z Location         //
+                        ////////////////////////
+                        if($scope.NGParams[4][3].search("-") == -1 && $scope.NGParams[4][3] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[4][3]) != null)
+							{//okay to filter	
+								$scope.NGParams[4][3] = ""+parseFloat($scope.NGParams[4][3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.z != parseFloat($scope.NGParams[4][3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][3] = "";//clear garbage
+						}
+						else if($scope.NGParams[4][3].search("-") != -1 && $scope.NGParams[4][3] != "")//range value filter
+						{
+							var range = $scope.NGParams[4][3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[4][3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.location.z < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.subgroups.location.z > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][3] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Label              //
+                        ////////////////////////
+                        if($scope.NGParams[4][4].search("-") == -1 && $scope.NGParams[4][4] != "")//single value filter
+						{
+							if(parseFloat($scope.NGParams[4][4]) != null)
+							{//okay to filter	
+								$scope.NGParams[4][4] = ""+parseFloat($scope.NGParams[4][4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.label != parseFloat($scope.NGParams[4][3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][4] = "";//clear garbage
+						}
+						else if($scope.NGParams[4][4].search("-") != -1 && $scope.NGParams[4][4] != "")//range value filter
+						{
+							var range = $scope.NGParams[4][4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.NGParams[4][4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.subgroups.label < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.subgroups.label > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.NGParams[4][4] = "";//clear garbage
+						}
+                        ///////////////////////////
+                        // End Of filters!      ///
+                        ///////////////////////////
+                        
+						//made it this far! passed all filters!
+						tmp.push($scope.dbmodels[i]);
+					}
+				}
+            }
 
 		}		
 		$scope.dbsecondary = tmp;
