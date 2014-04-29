@@ -19,6 +19,8 @@
         
         <!-- NCR Stylesheets -->
         <link rel="stylesheet" href="assets/css/ncr/styles_reports.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/ncr/colorpicker.css">
+		<link rel="stylesheet" href="assets/css/ncr/styles.css">
         <!-- End NCR Stylesheets -->
                 
         <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
@@ -49,19 +51,37 @@
 		<script type="text/javascript" src="assets/js/ncb/init.js"></script>
 		<script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>	
 		<script type="text/javascript" src="sample_data.js"></script>
-		<script type="text/javascript" src="line-graph.js"></script>
+		<script type="text/javascript" src="assets/js/lib/line-graph.js"></script>
+		<script type="text/javascript" src="assets/js/lib/graphHandler.js"></script> 
+		<script type="text/javascript" src="assets/js/lib/lineLib.js"></script> 
+		<script type="text/javascript" src="assets/js/lib/graphLib.js"></script> 
+		<script type="text/javascript" src="assets/js/lib/sample_data.js"></script>
+		<script type="text/javascript" src="jqueryui.js"></script>
+		<script type="text/javascript" src="assets/js/lib/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/lib/bootstrap-colorpicker-module.js"></script>	
+		<script type="text/javascript" src="assets/js/lib/d3.min.js"></script>
+			<!-- needed for Graph Capture -->
+			<!-- used for Canvas to Gif -->
+		<script type="text/javascript" src="assets/js/lib/LZWEncoder.js"></script>
+		<script type="text/javascript" src="assets/js/lib/NeuQuant.js"></script>
+		<script type="text/javascript" src="assets/js/lib/GIFEncoder.js"></script>
+		<script type="text/javascript" src="assets/js/lib/b64.js"></script>	
+			<!-- used for  SVG to Canvas -->
+		<script type="text/javascript" src="assets/js/lib/canvg.js"></script> 
 		<!-- Load Controllers -->
 		<script type="text/javascript" src="assets/js/ncr/controllers/DBController.js"></script>
 		<script type="text/javascript" src="assets/js/ncr/controllers/UserController.js"></script>
+		<script type="text/javascript" src="assets/js/ncr/controllers/ReportsController.js"></script>
 		<!-- Load Managers -->
 		<script type="text/javascript" src="assets/js/ncr/DBManager.js"></script>
 		<script type="text/javascript" src="assets/js/ncr/UserManager.js"></script>
+		<script type="text/javascript" src="assets/js/ncr/ReportsManager.js"></script>
 		<!-- Report Scripts -->
 		<script type="text/javascript" src="assets/js/ncr/reports/sample_data.js"></script>
 		<script type="text/javascript" src="assets/js/ncr/reports/line-graph.js"></script>
 		<script>
 			angular.element(document).ready(function() {
-			angular.bootstrap(document, ['UserManager', 'DBManager']);
+			angular.bootstrap(document, ['UserManager', 'DBManager', 'ReportsManager']);
 			});
 		</script>
 	</body>

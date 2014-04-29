@@ -1,324 +1,93 @@
-<div data-ng-controller="DBController" ng-show="route=='reports'">
-	<div class="btn-group" style="margin:20px 20px;">
-		<button type="button" class="btn btn-default" onclick="addElement()">Click Me!</button>
-		<button type="button" class="btn btn-default" onclick="createGraph()">Graph</button>
-		<button type="button" class="btn btn-default" onclick="createPlot()">Generate Plot</button>
-	</div>
- 
-	<div id="colorMenu" style="z-index:1000;"></div>
-
-	<div class="panel panel-default" style="width:50%;height:100%;float:right">
-		<div class="panel-heading" style="height:40px;">
-			<p style="font-size: 1.2em;">Raster Plot</p>
+<div class="container page" ng-show="route=='reports'" ng-controller="ReportsController">
+	<canvas id="canvasExample" ng-show="canvasShow"></canvas>
+	<!-- control panel-->
+	 <div class="control_panel-container">
+		<div class="control_panel-main">
+			<div class="control_panel-left">
+				<h3>Control Panel</h3>
+				<div class="btn-toolbar">
+					<div class="btn-group control_panel-button_list">
+						<button id="createGraphButton" class="btn btn-default">Add Line Graph</button>
+						<button id="createPlotButton" class="btn btn-default">Add Raster Plot</button>
+					</div>
+					<div class="btn-group" data-toggle="buttons">
+						<span class="btn btn-default">On column</span>
+						<button ng-repeat="n in [] | range: reportingColumns" class="btn btn-default" ng-click="activeReportingColumn=n">
+							<input type="radio">{{'{{n+1}}'}}
+						</button>
+					</div>
+				</div>
+				<div class="btn-group control_panel-button_list">
+					<button class="btn btn-default" data-toggle="modal" data-target="#modal-settings">Settings</button>
+					<button class="btn btn-default" data-toggle="modal" data-target="#modal-about">About</button>
+				</div>
+			</div>
+			<div class="control_panel-right">
+				<p style="font-size:20px;">
+					Reporting Status: <span id="simulationStatusLabel" class="label label-success">Live</span>
+				</p>
+				<p id="control_panel-report-time_of_last"></p>
+				<p>
+					Currently reporting cells in range: <span>0 to 50</span>
+				</p>
+			</div>
 		</div>
-		<div class="panel-body" id="raster"></div>
+	</div>	
+	<!-- html for hidden settings modal -->
+	<div id="modal-settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div id="modal-container">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Settings</h4>
+				</div>
+				<div class="modal-body">
+					<div id="settings-mega_container">
+						<div class="row">
+							<div class="btn-group" data-toggle="buttons">
+								<button id="graph-settings-removeColumnButton" class="btn btn-default" ng-click="removeColumn()">
+									<input type="radio">Remove Column</button>
+								<button id="graph-settings-addColumnButton" class="btn btn-default" ng-click="addColumn()">Add Column</button>
+							</div>
+						</div>
+						<div class="row">
+							Add graphs on:
+							<div class="btn-group" data-toggle="buttons">
+								<button class="btn btn-default active" ng-click="putGraphsOnTop=true">
+									<input type="radio">Top
+								</button>
+								<button class="btn btn-default" ng-click="putGraphsOnTop=false">
+									<input type="radio">Bottom
+								</button>
+							</div>
+						</div>
+						<div class="row">
+							Picture format:
+							<div class="btn-group" data-toggle="buttons">
+								<button class="btn btn-default active">
+									<input type="radio" ng-click="pictureFormat='gif'">.GIF
+								</button>
+								<button class="btn btn-default" ng-click="pictureFormat='svg'">
+									<input type="radio">.SVG
+								</button>
+							</div>
+						</div>
+					</div>
+					<div id="settings-individual_graphs">
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<ul id="sortable"></ul>
-
-<script>
-
-var domsArray = new Array();
-var domID = 0;
-
-var graphsArray = new Array();
-var dataArray = new Array();
-
-var activeButton;
-var activeButtonPtr;
-var activeGraph;
-
-var scaleModifier = 0;
-
-var promptInputStr;
-var promptInputArr;
-
-var intervals = [];
-
-function initMenu()
-{
-	var colors = [
-		"maroon","red","orange","yellow",
-		"olive","purple","fuchsia","lime",
-		"navy","blue","green","aqua",
-		"black","silver","grey","teal"
-		];
-
-	var grid = document.createElement('table');
-	var index = 0;
-	
-	// create grid for color picker. Much of the help found here:
-	// http://stackoverflow.com/questions/9140101/creating-a-clickable-grid-in-a-web-browser
-	for (var r=0; r<4; r++)
-	{
-		// create table, set some style attributes
-		var tr = grid.appendChild(document.createElement('tr'));
-		grid.id = 'colorMenu';
-		grid.style.zIndex = 1000;
-		
-		// create grid elements, set style attributes
-		for(var c=0; c<4; c++)
-		{
-			var cell = tr.appendChild(document.createElement('td'));
-			cell.style.backgroundColor = colors[index];
-			cell.style.width = '8px';
-			cell.style.height = '8px';
-			
-			// add clickable event listeners that allow for line and text color change
-			cell.addEventListener("click", (function(){
-				d3.selectAll("path[class='line series_" + activeGraph + activeButton +"']")
-				.transition()
-				.style("stroke", $(this).css("backgroundColor"));
-				$(activeButtonPtr).css("color", $(this).css("backgroundColor"));
-				d3.selectAll("p[id='para3']").text($(activeButtonPtr).text());
-			}), false);
-			
-			index++;
-		}
-		
-	}
-	
-	// attach menu to body, use later with clickable event. Hide in the meantime
-	document.body.appendChild(grid);
-	$("table[id='colorMenu']").hide()
-}
-
-
-function addElement()
-{
-	domID++;
-	
-	// prompt user for neuron cells
-	promptInputStr = prompt("Enter up to 4 neuron id's (eg: 1,2,3,4)","");
-	promptInputArr = promptInputStr.split(",");
-
-	// some temporary error functions
-	if (promptInputArr.length > 4)
-	{
-		alert("Error: Too many cells");
-		return false;
-	}
-	else if (promptInputArr.length <1)
-	{
-		alert("Error: Needs at least 1 cell");
-		return false;
-	}
-	
-	for (var i=0; i<promptInputArr.length; i++)
-	{
-		promptInputArr[i] = parseInt(promptInputArr[i]);
-		if (promptInputArr[i]<0)
-		{
-			alert("Error: Negative cell detected");
-			return false;
-		}
-	}
-
-	// create html environment for line graphs. Very messy, will improve with future iterations
-	$('#sortable').append(
-		$('<li class="panel panel-default" style="position:relative;height:220px;">' +
-			'<div class="panel-heading" style="height:40px">' +
-				'<p style="font-size: 1.2em;">Graph ' + domID +'</p>' +
-				'<div class="btn-group" id="buttonList' + domID + '" style="position:absolute;float:right;top:3px;left:130px;"></div>' +
-			'</div>' +
-			'<div class="panel-body" style="width:100%;">' +
-				'<div id="testDom' + domID + '" class="aGraph" style="position:absolute;width:100%;height:75%;float:right;top:40px;left:-30px;"></div>' +
-				'<div id="positionSlider' + domID +'" style="position:absolute;left:50px;bottom:15px;height:2px;width:90%;"></div>' +
-			'</div>' +
-		'</li>')
-	);
-
-	// create buttons, attach to line graph environments
-	for (var i=0; i<promptInputArr.length; i++)
-	{
-		$("#buttonList"+domID).append('<button id="'+domID+'"class="btn btn-default graphButton">' + promptInputArr[i] +'</button>');
-	}
-	
-	$("#buttonList"+domID).append('<button id="'+domID+'"class="btn btn-default scaleButton" type="button" >-</button>');
-	$("#buttonList"+domID).append('<button id="'+domID+'"class="btn btn-default scaleButton" type="button" >+</button>');
-	
-	// jquery functionallity for menu. Help found here:
-	// http://jqueryui.com/button/#splitbutton
-	$("button[class='btn btn-default graphButton']").click(function(){
-		var menu = $("table[id='colorMenu']").menu().attr('width','52px').show().position({
-			my: "left top",
-			at: "left bottom",
-			of: this
-		});
-		$( document ).one( "click", function() {
-			menu.hide();
-		});
-		activeButton = $(this).text();
-		activeButtonPtr = this;
-		activeGraph = $(this).attr('id');
-		
-		return false;
-	});
-	
-	$("button[class='btn btn-default scaleButton']").click(function(){
-		activeGraph = $(this).attr('id');
-		if ($(this).html() == '+')
-			scaleModifier = 10000000;
-		else
-			scaleModifier = -10000000;
-		
-		return false;
-	});
-	
-	$("#positionSlider" + domID).slider();
-	
-	createGraph();
-}
-
-function createGraph() {
-	var localID = domID;
-	
-	// temporary data management. Copy original data sets and iterate through them as line graphs refresh
-	var data_ ={"start":0,"end":0,"step":0,"names":[],"values":[]};
-	
-	data_["start"] = 1336594920000;
-	data_["end"] = 1336680960000;
-	data_["step"] = 200000;
-	
-	for (var i=0; i<promptInputArr.length; i++)
-	{
-		data_["values"].push(data['values'][promptInputArr[i]]);
-		data_["names"].push(promptInputArr[i].toString());
-	}
-
-	
-	//var l1 = new LineGraph({containerId: string(div.id), data: data});
-	var dataA_ = {"start":1336681080000,"end":1336681080000,"step":200000,"names":["Stats_count2xx","Stats_count3xx","Stats_count4xx","Stats_count5xx"],"values":[[15625.6826207297],[411.161376855185],[22.3887353437241],[22.3334186252455]]};
-	var l1 = new LineGraph({containerId: 'testDom'+domID, data: data_, id: domID, cells: promptInputArr});
-	var intervalID = domID;
-
-	// much of this code is used from of the examples exemplifying the libraray, found here:
-	// http://bl.ocks.org/benjchristensen/2657838
-	intervals[intervalID] = setInterval(function() {
-		/*
-		* The following will simulate live updating of the data (see dataA, dataB, dataC etc in data.js which are real examples)
-		* This is being simulated so this example functions standalone without a backend server which generates data such as data.js contains.
-		*/
-		// for each data series ...
-		var newData = [];
-		
-		data_.values.forEach(function(dataSeries, index) {
-			// take the first value and move it to the end
-			// and capture the value we're moving so we can send it to the graph as an update
-			var v = dataSeries.shift();
-
-			dataSeries.push(v);
-			// put this value in newData as an array with 1 value
-			//var t2 = document.getElementById("para" + intervalID).innerHTML= "three "+v;
-
-			newData[index] = [v];
-			//num = index;
-		})
-		
-		// we will reuse dataA each time
-		dataA_.values = newData;
-		// increment time 1 step
-		dataA_.start = dataA_.start + dataA_.step;
-		dataA_.end = dataA_.end + dataA_.step;
-		
-		if (activeGraph==localID)
-		{
-			l1.slideData(dataA_,scaleModifier);
-		
-			if (scaleModifier !=0)
-				scaleModifier =0;
-		} else
-		{
-			l1.slideData(dataA_,0);
-		}
-		
-	}, 50);
-}
-
-function createPlot() {
-
-	// D3 plot basics for drawing axes found here:
-	// http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
-	var w = 940,
-		h = 300,
-		pad = 20,
-		left_pad = 50,
-		Data_url = '/data.json';
-		
-	var svg = d3.select("#raster")
-		.append("svg")
-		.attr("width", "75%")
-		.attr("height", h);
-		
-	var x = d3.scale.linear().domain([0, 23]).range([left_pad, w-pad]),
-		y = d3.scale.linear().domain([16, 0]).range([pad, h-pad*2]);
-		
-	var xAxis = d3.svg.axis().scale(x).orient("bottom"),
-		yAxis = d3.svg.axis().scale(y).orient("left");
-		
-	svg.append("g")
-		.attr("class", "axis xaxis")
-		.attr("transform", "translate(0, "+(h-pad)+")")
-		.call(xAxis);
-	 
-	svg.append("g")
-		.attr("class", "axis yaxis")
-		.attr("transform", "translate("+(left_pad-pad)+", 0)")
-		.call(yAxis);
-	
-	
-	// simple plot basics using D3, help found here:
-	//http://bl.ocks.org/bunkat/2595950
-	var data = [[5,3], [10,17], [15,4], [2,8]];
-	var g = svg.append("svg:g")
-
-	g.selectAll("scatter-dots")
-		.data(data)
-			.enter().append("svg:circle")
-			.attr("class", "rasterData")
-			.attr("cx", function (d,i) { return x(d[0]); } )
-			.attr("cy", function (d) { return y(d[1]); } )
-			.attr("r", 2);
-	
-	var result;
-
-	var i=0;
-	setInterval(function(){
-			i+=.5;
-			//x = d3.scale.linear().domain([2+i, 25+i]).range([left_pad, w-pad]);
-			x = d3.scale.linear().domain([0+i, 23+i]).range([left_pad, w-pad]);
-			
-			xAxis = d3.svg.axis().scale(x).orient("bottom");
-
-			svg.selectAll(".xaxis")
-				.transition()
-					.duration(300)
-					.ease("linear")
-					.call(xAxis);
-					
-			g.selectAll("scatter-dots")
-				.data([[i+15,Math.random()*16]])
-					.enter().append("svg:circle")
-					.attr("class", "rasterData")
-					.attr("cx", function (d,i) { return x(d[0]); })
-					.attr("cy", function (d) { return y(d[1]); })
-					.attr("r", 2);
-					
-
-			svg.selectAll(".rasterData")
-				.transition()
-					.duration(300)
-					.ease("linear")
-					.attr("cx", function (d,i) { 
-						if (i==0) result = x(d[0]) < i ? x(d[0]+=23) : x(d[0]);
-						return x(d[0]) < i ? x(d[0]+=23) : x(d[0]); })
-					.attr("cy", function (d) { return y(d[1]); } );
-		
-				
-			document.getElementById("test").innerHTML = result;
-		},300
-	)
-}
-initMenu();
-</script>
+	<div id="graph-mega_container" class="row">
+        <div ng-class="{'col-md-12': reportingColumns == 1, 'col-md-6': reportingColumns == 2, 'col-md-4': reportingColumns == 3, 'col-md-3': reportingColumns == 4, 'col-md-2': reportingColumns == 6}" 
+        ng-repeat="n in [] | range: reportingColumns" ng-click="selectReportingColumn(n)">
+			<ul id="sortable-column0" class="sortable"></ul>
+        </div>         		
+	</div>
 </div>
