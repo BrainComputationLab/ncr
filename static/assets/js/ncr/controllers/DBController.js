@@ -91,6 +91,196 @@ function DBController($scope, $resource) {
 					else//test filter
 					{
                         
+                 ////////////////////////
+                 // Alpha            ////
+                 ////////////////////////
+                        
+                        ////////////////////////
+                        // Alpha A          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][0].search("-") == -1 && $scope.HHVGIParams[0][0] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][0]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][0] = ""+parseFloat($scope.HHVGIParams[0][0]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.a != parseFloat($scope.HHVGIParams[0][0]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][0] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][0].search("-") != -1 && $scope.HHVGIParams[0][0] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][0].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][0] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.a < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.a > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][0] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Alpha B          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][1].search("-") == -1 && $scope.HHVGIParams[0][1] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][1]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][1] = ""+parseFloat($scope.HHVGIParams[0][1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.b != parseFloat($scope.HHVGIParams[0][1]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][1] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][1].search("-") != -1 && $scope.HHVGIParams[0][1] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][1].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][1] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.b < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.b > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][1] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Alpha C          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][2].search("-") == -1 && $scope.HHVGIParams[0][2] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][2]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][2] = ""+parseFloat($scope.HHVGIParams[0][2]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.c != parseFloat($scope.HHVGIParams[0][2]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][2] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][2].search("-") != -1 && $scope.HHVGIParams[0][2] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][2].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][2] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.c < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.c > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][2] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Alpha D          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][3].search("-") == -1 && $scope.HHVGIParams[0][3] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][3]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][3] = ""+parseFloat($scope.HHVGIParams[0][3]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.d != parseFloat($scope.HHVGIParams[0][3]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][3] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][3].search("-") != -1 && $scope.HHVGIParams[0][3] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][3].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][3] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.d < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.d > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][3] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Alpha F          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][4].search("-") == -1 && $scope.HHVGIParams[0][4] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][4]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][4] = ""+parseFloat($scope.HHVGIParams[0][4]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.f != parseFloat($scope.HHVGIParams[0][4]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][4] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][4].search("-") != -1 && $scope.HHVGIParams[0][4] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][4].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][4] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.f < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.f > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][4] = "";//clear garbage
+						}
+                        
+                        ////////////////////////
+                        // Alpha H          ////
+                        ////////////////////////
+                        if($scope.HHVGIParams[0][5].search("-") == -1 && $scope.HHVGIParams[0][5] != "")//single value filter
+						{
+							if(parseFloat($scope.HHVGIParams[0][5]) != null)
+							{//okay to filter	
+								$scope.HHVGIParams[0][5] = ""+parseFloat($scope.HHVGIParams[0][5]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.h != parseFloat($scope.HHVGIParams[0][5]))
+									continue;//filtered OUT, does not match
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][5] = "";//clear garbage
+						}
+						else if($scope.HHVGIParams[0][5].search("-") != -1 && $scope.HHVGIParams[0][5] != "")//range value filter
+						{
+							var range = $scope.HHVGIParams[0][5].split("-");
+							if(parseFloat(range[0]) && parseFloat(range[1]))
+							{//okay to filter
+								$scope.HHVGIParams[0][5] = ""+parseFloat(range[0])+"-"+parseFloat(range[1]);//cleans up in the event some is garbage
+								if($scope.dbmodels[i].specification.particles.alpha.h < parseFloat(range[0]) || 
+                                   $scope.dbmodels[i].specification.particles.alpha.h > parseFloat(range[1]))
+									continue;//filtered OUT, does not fit in range
+								//else, continue
+							}
+							else//is garbage, don't filter
+								$scope.HHVGIParams[0][5] = "";//clear garbage
+						}
+                        
+                        
+                        ////////////////////////
+                        // Beta             ////
+                        ////////////////////////
+                        
+                        
                         ////////////////////////
                         // POWER            ////
                         ////////////////////////
