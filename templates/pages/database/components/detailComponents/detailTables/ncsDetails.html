@@ -84,18 +84,12 @@
         </tr>
     </tbody>
 </table>
-
-
-<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
-    <thead>
-        <tr>
-            <th>Channels</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>  {{'{{ selectedModel.specification.channels}}'}}</td>
-        </tr>
-    </tbody>
-</table>
+<!-- Channels Table -->
+<p>
+	<strong>Channels</strong>
+</p>
+<p>
+	<a ng-repeat="channel in selectedModel.specification.channels" href="#" ng-click="showdetails(channel)">
+		{{'{{ channel.entity_name}}'}}
+	</a>
+</p>

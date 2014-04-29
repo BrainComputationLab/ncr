@@ -3,7 +3,7 @@
         <tr>
             <th>Threshold</th>
             <th>Resting Potential</th>
-            <th>Capcitance</th>
+            <th>Capacitance</th>
 
         </tr>
     </thead>
@@ -14,22 +14,15 @@
             {{'{{ selectedModel.specification.resting_potential.min}}'}} , 
             {{'{{ selectedModel.specification.resting_potential.max}}'}}</td>
             <td>{{'{{ selectedModel.specification.capacitance}}'}}</td>
-
         </tr>
     </tbody>
 </table>
-
-<h3>Channels </h3>
 <!-- Channels Table -->
-<table class="table table-bordered table-hover" > <!--data-ng-controller="DBController"> -->
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{'{{ selectedModel.specification.channels}}'}}</td>
-        </tr>
-    </tbody>
-</table>
+<p>
+	<strong>Channels</strong>
+</p>
+<p>
+	<a ng-repeat="channel in selectedModel.specification.channels" href="#" ng-click="showdetails(channel)">
+		{{'{{ channel.entity_name}}'}}
+	</a>
+</p>

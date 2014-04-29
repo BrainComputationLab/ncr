@@ -3145,6 +3145,16 @@ function DBController($scope, $resource) {
         $scope.filterModels();
     }
         
+	function GetModelOb(what)
+	{
+		for(var i = 0; i < $scope.dbmodels; i++)
+		{
+			if($scope.dbmodels[i] == what || $scope.dbmodels[i]._id.$oid == what)	
+				return $scope.dbmodels[i];
+		}
+		return 0;
+	}
+ 
     //create a new model and save as a new record if it doesn't exist, or update if it does
     //this is probably done by NCB, but can still tweak to have it work to promote or alter existing models.
     $scope.addUpdateDBModel = function () {
@@ -3157,6 +3167,15 @@ function DBController($scope, $resource) {
     
     $scope.showDetails = function(model) {
 		$scope.selectedModel = model;
+		var tmp = new Array();
+		if(model.specification.channels)
+		{
+			var ob = 0;
+			for(var i = 0; i < model.specification.channels.length; i++)
+				if(ob = GetModelOb(model.specification.channels[i]))
+					tmp[tmp.length-1] = ob;
+		}
+		model.specification.channels = tmp;
 		$scope.hasPromoted();
 	}
  
