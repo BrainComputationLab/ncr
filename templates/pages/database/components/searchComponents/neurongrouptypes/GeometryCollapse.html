@@ -1,7 +1,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGGeometryWidth" class="col-md-1 control-label"> W</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGGeometryWidth" placeholder="Width">
+		<input type="email" class="form-control input-sm" id="NGGeometryWidth" ng-model="NGParams[0][0]" placeholder="Width">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -12,7 +12,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGGeometryDepth" class="col-md-1 control-label"> D</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGGeometryDepth" placeholder="Depth">
+		<input type="email" class="form-control input-sm" id="NGGeometryDepth" ng-model="NGParams[0][1]" placeholder="Depth">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -23,7 +23,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGGeometryHeight" class="col-md-1 control-label"> H</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGGeometryHeight" placeholder="Height">
+		<input type="email" class="form-control input-sm" id="NGGeometryHeight" ng-model="NGParams[0][2]" placeholder="Height">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>

@@ -1,7 +1,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGSGGroup" class="col-md-1 control-label"> G</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGSGGroup" placeholder="Group">
+		<input type="email" class="form-control input-sm" id="NGSGGroup" ng-model="NGParams[4][0]" placeholder="Group">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -12,7 +12,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGSGLocationX" class="col-md-1 control-label"> X</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGSGLocationX" placeholder="X Location Potential">
+		<input type="email" class="form-control input-sm" id="NGSGLocationX" ng-model="NGParams[4][1]" placeholder="X Location Potential">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -23,7 +23,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGSGLocationY" class="col-md-1 control-label"> Y</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGSGLocationY" placeholder="Y Location">
+		<input type="email" class="form-control input-sm" id="NGSGLocationY" ng-model="NGParams[4][2]" placeholder="Y Location">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -34,7 +34,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGSGLocationZ" class="col-md-1 control-label"> Z</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGSGLocationZ" placeholder="Z Location">
+		<input type="email" class="form-control input-sm" id="NGSGLocationZ" ng-model="NGParams[4][3]"  placeholder="Z Location">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -45,7 +45,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGSGLabel" class="col-md-1 control-label"> L</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGSGLabel" placeholder="Label">
+		<input type="email" class="form-control input-sm" id="NGSGLabel" ng-model="NGParams[4][4]" placeholder="Label">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>

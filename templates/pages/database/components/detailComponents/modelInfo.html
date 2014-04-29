@@ -31,8 +31,12 @@
 			{% include 'pages/database/components/detailComponents/detailTables/ncsSynapseDetails.html' %}
 		</div>
          
-        <div ng-show="selectedModel.specification.type == 'rectangular_current'">
+        <div ng-show="selectedModel.entity_type == 'stimulus'">
 			{% include 'pages/database/components/detailComponents/detailTables/stimulusDetails.html' %}
+		</div>
+        
+        <div ng-show="selectedModel.entity_type == 'group'">
+			{% include 'pages/database/components/detailComponents/detailTables/groupDetails.html' %}
 		</div>
         
 	</div>

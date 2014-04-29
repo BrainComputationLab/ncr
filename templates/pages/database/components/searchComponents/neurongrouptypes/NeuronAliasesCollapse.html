@@ -1,7 +1,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGNAAlias" class="col-md-1 control-label"> A</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGNAAlias" placeholder="Alias">
+		<input type="email" class="form-control input-sm" id="NGNAAlias" ng-model="NGParams[3][0]" placeholder="Alias">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -13,7 +13,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGNALabels" class="col-md-1 control-label"> L</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGNALabels" placeholder="Labels">
+		<input type="email" class="form-control input-sm" id="NGNALabels" ng-model="NGParams[3][1]" placeholder="Labels">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
@@ -25,7 +25,7 @@
 <div class="form-group" style="margin-bottom: 0px;">
 	<label for="NGNAAliases" class="col-md-1 control-label"> Ca</label>
 	<div class="input-group col-md-9">
-		<input type="email" class="form-control input-sm" id="NGNAAliases" placeholder="Aliases">
+		<input type="email" class="form-control input-sm" id="NGNAAliases" ng-model="NGParams[3][2]" placeholder="Aliases">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-sm" type="button" ng-click="filterModels()">
                     <span class="glyphicon glyphicon-search"></span>
