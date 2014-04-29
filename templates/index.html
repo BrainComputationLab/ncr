@@ -28,6 +28,7 @@
 	<body style="margin-top: 80px;" ng-controller="UserController"><!-- spacing prevents navbar, a "fixed" element from covering content -->
         {% include 'global/header.html' %}
 		{% include 'pages/database/database.html' %} 
+		{% include 'pages/reports/reports.html' %} 
 		{% include 'pages/users/registration.html' %}
 		{% include 'pages/users/activation.html' %}
 		{% include 'pages/users/forgot.html' %}
@@ -46,6 +47,9 @@
 		<script type="text/javascript" src="assets/js/lib/store.js"></script>
 		<script type="text/javascript" src="assets/js/lib/html5shiv.js"></script>
 		<script type="text/javascript" src="assets/js/ncb/init.js"></script>
+		<script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>	
+		<script type="text/javascript" src="sample_data.js"></script>
+		<script type="text/javascript" src="line-graph.js"></script>
 		<!-- Load Controllers -->
 		<script type="text/javascript" src="assets/js/ncr/controllers/DBController.js"></script>
 		<script type="text/javascript" src="assets/js/ncr/controllers/UserController.js"></script>
