@@ -85,7 +85,7 @@ def handleDBRequest(username):
 @app.route('/dbmodels', methods = ['GET'])
 def getDBModels():
     dbmodels = list( db.Channels.find() ) 
-    dbmodels.extend(  list(db.Neuron.find() )  )
+    dbmodels.extend( list(db.Neuron.find() )  )
     dbmodels.extend( list( db.Stimulus.find() ) )
     dbmodels.extend( list( db.Synapse.find() ) )
     dbmodels.extend( list( db.Neuron_Group.find() ) )

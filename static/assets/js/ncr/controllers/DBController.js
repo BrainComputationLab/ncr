@@ -16,6 +16,12 @@ function DBController($scope, $resource) {
     $scope.IZHParams = ["", "", "", "", "", "", ""];
     $scope.HHParams = ["","","",""];
     $scope.NCSParams = ["", "", "", "", "", "", "", "", "", ""];
+    /////////////////////
+    // Neuron Groups   //
+    /////////////////////
+    $scope.NGBinary = true;
+    
+    $scope.NGParams = [["", "", ""] ,["", ""] ,["" ,"" ,"", "" ,""], ["", "", ""], ["" ,"" ,"" ,"" ,""]]; //Geometry, Synaptic Aliases, Connections, Neuron Aliases, Sub Groups
     //////////////////
     // Channels     //
     //////////////////
@@ -40,12 +46,6 @@ function DBController($scope, $resource) {
     $scope.RCStimBinary = true;
     
     $scope.RCStimParams = ["", "", "", "", "", ""];
-    /////////////////////
-    // Neuron Groups   //
-    /////////////////////
-    scope.NGBinary = true;
-    
-    $scope.NGParams = [["", "", ""] ,["", ""] ,["" ,"" ,"", "" ,""], ["", "", ""], ["" ,"" ,"" ,"" ,""]]; //Geometry, Synaptic Aliases, Connections, Neuron Aliases, Sub Groups
     //////////////////
     // General      //
     //////////////////
@@ -2446,11 +2446,13 @@ function DBController($scope, $resource) {
                             tmp.push($scope.dbmodels[i]);
                         }
                     }
+
 			}
             else if($scope.dbmodels[i].entity_type == "group") //Neuron Group!! 
             {
-                if($scope.NGParams == true)
-				{
+                if($scope.NGBinary == true)
+				{					
+
 					if($scope.NGParams[2] == ""  && $scope.NGParams[3] == "" && $scope.NGParams[0] == "" && $scope.NGParams[1] == "" && $scope.NGParams[4] == "")
                         tmp.push($scope.dbmodels[i]);					
 					else//test filter
