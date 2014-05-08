@@ -1,3 +1,9 @@
+/*
+
+Constructs a Line Graph instance and appends itself onto the calling container
+
+*/
+
 function createLineGraph(containerName, cells) {
 
 	// D3 plot basics for drawing axes found here:
@@ -109,13 +115,6 @@ function createLineGraph(containerName, cells) {
 			.style("stroke", "#eee");
 		
 
-		
-
-			
-
-		  
-
-
 		// simple plot basics using D3, help found here:
 		//http://bl.ocks.org/bunkat/2595950
 
@@ -154,14 +153,7 @@ function createLineGraph(containerName, cells) {
 			.attr("width", (marginLeft-yAxisBuffer)+"px")
 			.attr("height", "100%")
 			.attr("fill", "white");
-		/*
-		svg.append("rect")
-			.attr("id", graphID+"_whiteBgYaxisRight")
-			.attr("width", marginRight+"px")
-			.attr("height", "100%")
-			.attr("fill", "white")
-			.attr("transform", "translate("+(width-marginRight)+", 0)");
-			*/
+
 		svg.append("g")
 			.attr("class", "axis yaxis")
 			.attr("transform", "translate("+(marginLeft-yAxisBuffer)+", 0)")
@@ -219,6 +211,10 @@ function createLineGraph(containerName, cells) {
 		}
 	}
 	
+	/*
+	Detects if the user has changed the dimensions of the graph
+	e.g. expanding up or expanding down
+	*/
 	var dimensionsChanged = function(){
 		oldw = width;
 		oldh = height;
@@ -235,34 +231,10 @@ function createLineGraph(containerName, cells) {
 
 	var updateData = function(){
 	
-
 		var otherTick;
 		var datum;
 		var temp;
 
-		/*
-		var newData;
-		
-		newData = pendingData.shift();
-		
-		data.forEach(function(d,i){
-			datum=d.length;
-			if(d.length>0){
-
-				otherTick=d[0][0];
-				if(otherTick>domainEnd)
-					difference = otherTick-domainEnd;
-			}
-			d.forEach(function(d,i){
-				d.push(pendingData[i]);
-			});
-		});
-		*/
-
-		if(pendingData.length > 0){
-			//console.log(pendingData[0].length+" "+data.length);
-		}
-		//console.log(pendingData.length);
 		pendingData.forEach(function(d,i){
 
 			datum = d.length;
@@ -293,17 +265,13 @@ function createLineGraph(containerName, cells) {
 		
 		if(typeof otherTick != 'undefined' && updating){
 			if(difference < 0){
-//			console.log("1");
 				difference *= Math.pow((Math.exp(difference*.1)-1), 2);
 				upToDate = true;
 			}
 			else if(difference < domainInterval && upToDate){
-//			console.log("2");
 				difference *= .1;
-//				upToDate = true;
 			}
 			else{
-//			console.log("3");
 				difference *= Math.pow((Math.exp(-difference*.1)-1), 2);
 				upToDate = true;
 			}
@@ -313,57 +281,8 @@ function createLineGraph(containerName, cells) {
 			difference = 0;
 		}
 		
-		//console.log(domainStart + " " + domainEnd + " " + domainInterval + " " + otherTick + " " + difference);
-
-		//difference *= .1;
-		//increment = 1 + difference;
-		
 		domainEnd += 1 + difference;
-		//console.log(difference + " " + increment);
 		domainStart += 1 + difference;
-		
-//		console.log("update: " + domainStart + " " + domainEnd + " " + (domainStart-domainEnd));
-
-	/*
-		console.log(difference);
-		if(difference<domainInterval){
-			difference*=.3;
-			domainStart+=1+difference;
-			domainEnd+=1+difference;
-		}
-		else{
-			domainEnd=otherTick;
-			domainStart=domainEnd-domainInterval;
-		}
-		*/
-
-		/*
-		 * Cut off the tail of each data set and push them into past data
-		 * so as to make sure the currently refreshing data set is within
-		 * the domain interval
-		 */
-		
-//		if(!pauseDataUpdate && !allowAlternateAnimation){
-//		console.log("UPDATING");
-		
-		clipGraph();
-			
-/*
-			data.forEach(function(d,i){
-				while(d.length < domainInterval + dataBuffer && pastData[i].length>0){
-					temp=pastData[i].pop();
-					d.unshift(temp);
-				}
-			});
-			*/
-/*			
-		}
-		else{
-		console.log("NOT UPDATING");
-		pauseDataUpdate = false;
-		}
-	*/	
-		
 		
 		/*
 		 * If the SVG set representing the x axis ticks exceed a certain range,
@@ -375,7 +294,10 @@ function createLineGraph(containerName, cells) {
 		}
 	}
 	
-
+	/*
+	finds the time value of the very left hand side of the graph
+	and returns it
+	*/
 	var findLowerBound = function(dataSet){
 		var lowerBound = null;
 	
@@ -386,6 +308,10 @@ function createLineGraph(containerName, cells) {
 		return lowerBound;
 	};
 	
+	/*
+	finds the time value of the very right hand side of the graph
+	and returns it
+	*/
 	var findUpperBound = function(dataSet){
 		var upperBound = null;
 	
@@ -396,6 +322,11 @@ function createLineGraph(containerName, cells) {
 		return upperBound;
 	};
 	
+	/*
+	for the current graph, finds the maximum length of the dataset
+	given in the parameter. The number of data sets in the parameter
+	could be more than one, and finds the maximum of them
+	*/
 	var getDataMaxLength = function(sampleDataSet){
 		var maxLength = 0;
 		
@@ -409,6 +340,9 @@ function createLineGraph(containerName, cells) {
 	var clipGraph = function(){
 		var lowerBound, upperBound;
 		
+		/*
+		Clip extra data from the graph on the left side
+		*/
 		data.forEach(function(d,i){
 			lowerBound = findLowerBound(i);
 			var counter = 0;
@@ -420,6 +354,10 @@ function createLineGraph(containerName, cells) {
 			}
 		});
 		
+		/*
+		If the graph needs data on the left side, then add that data on the left side
+		until the graph fills the desired boundaries
+		*/
 		if(getDataMaxLength(pastData) > 0){
 			data.forEach(function(d,i){
 				var temp;
@@ -432,20 +370,23 @@ function createLineGraph(containerName, cells) {
 			});
 		}
 		
+		/*
+		Clip extra data from the graph on the right side
+		*/
 		data.forEach(function(d,i){
 			upperBound = findUpperBound(i);
 			
-//			console.log(upperBound + " " + domainEnd + " " + (domainEnd + domainBuffer));
-			
-			//var counter = 0;
 			while(upperBound > domainEnd + domainBuffer && upperBound != null){
-				//counter++;
 				temp = d.pop();
 				forwardData[i].unshift(temp);
 				upperBound = findUpperBound(i);
 			}
 		});
 		
+		/*
+		If the graph needs data on the right side, then add that data on the right side
+		until the graph fills the desired boundaries
+		*/
 		if(getDataMaxLength(forwardData) > 0){
 			data.forEach(function(d,i){
 				var temp;
@@ -461,37 +402,37 @@ function createLineGraph(containerName, cells) {
 	};
 
 
-	
 	var tick = function (){
 	
-		//tickTime = Date().getTime() - oldTime;
-		//oldTime = tickTime;
+		/*
+		Used for timing purposes
+		*/
 		var d = new Date().getTime();
 		tickTime = d-oldTime;
 		oldTime = d;
-		
 		//differenceInPercent = (tickTime-transtionDuration)/transitionDuration;
-		
-		//console.log((differenceInPercent+1));
+
 	
 		xDomain = d3.scale.linear().domain([domainStart, domainEnd]).range([marginLeft, width-marginRight]);
 		yDomain = d3.scale.linear().domain([80, 0]).range([marginTop, height-marginBottom]);
 		
 		if(recordTimer>=0)
 			recordTick(captureFormat);
-/*			
-		if(zoomClicked){
-			redrawXAxis(false);
-			zoomClicked = false;
-		}
-		else*/
-			redrawXAxis(transitionsOn);
+
+		redrawXAxis(transitionsOn);
 
 		updateData();
 		updateSlider();
+		
+		/*
+		 * Cut off the tail of each data set and push them into past data
+		 * so as to make sure the currently refreshing data set is within
+		 * the domain interval
+		 */
+		
+		clipGraph();
 	}
 	
-	//var readyStatus = [false, false, false, false]
 	
 	var redrawLinesOnce = function(){
 		g.attr("d", line)
@@ -499,79 +440,41 @@ function createLineGraph(containerName, cells) {
 	}
 
 	var redrawLines = function(transitions, lineID){
+		/*
+		The shiftModifier variable is meant to dictate the movement of the graph
+		such that it will not shift given an event (like paused)
+		*/
 		var shiftModifier;
 		var s;
 		if(paused){
 			shiftModifier = 0;
 			paused = false;
-
 			}
 		else
 			shiftModifier = 1 + difference;
 						s = new Date().getTime()
-//			console.log("start:" + s);
-		if(transitions)// && oldw-width==0)
+
+		if(transitions)
 		{
-
-//			if(oldw-width!=0) {
-/*
-				g.attr("transform", "translate(" + (xDomain(-1)-xDomain(0)) + ")")
-				.transition()
-					.duration(transitionDuration)
-					.ease("linear")
-					.attr("d", line)
-					.each("end", function(d,i){
-						redrawLines();
+			g.attr("d", line)
+				.attr("transform", null)
+			.transition()
+				.duration(transitionDuration)
+				.ease("linear")
+				.attr("transform", "translate(" + (xDomain(-1)-xDomain(0))*shiftModifier + ")")
+				.each("end", function(d,i){
+					if(!paused){
+						redrawLines(transitionsOn, i);
+						/*
+						var d = new Date().getTime()
+						console.log("end " + i + ": " + d + ", " + (d-s));*/
 						if(i==0){
 							tick();
 						}
-					});*/
-//			}
-//			else {
-	/*
-			if(pauseDataUpdate && allowAlternateAnimation){
-				g.transition()
-					.duration(transitionDuration)
-					.ease("linear")
-					.attr("d", line)
-					.each("end", function(d,i){
-						redrawLines();
-						if(i==0){
-						
-							tick();
-							allowAlternateAnimation = false;
-							}
-					});
+					}
 					
-			}
-//			else{
-*/
-				g.attr("d", line)
-					.attr("transform", null)
-				.transition()
-					.duration(transitionDuration)
-					.ease("linear")
-					.attr("transform", "translate(" + (xDomain(-1)-xDomain(0))*shiftModifier + ")")
-					
-					.each("start", function(d,i){
-						
-					})
-					.each("end", function(d,i){
-						if(!paused){
-							redrawLines(transitionsOn, i);
-							/*
-							var d = new Date().getTime()
-							console.log("end " + i + ": " + d + ", " + (d-s));*/
-							if(i==0){
-								tick();
-							}
-						}
-						
-					});
-			//}
-		
+				});
 		}
-
 		else
 		{
 			g.attr("d", line)
@@ -596,7 +499,7 @@ function createLineGraph(containerName, cells) {
 		xDomain = d3.scale.linear().domain([domainStart, domainEnd]).range([marginLeft, width-marginRight]);
 		xAxis = d3.svg.axis().scale(xDomain).orient("bottom");
 
-		if(transitions){// && oldw-width==0){		
+		if(transitions){
 			svg.selectAll(".xaxis")
 			.transition()
 			.duration(transitionDuration)
@@ -605,11 +508,6 @@ function createLineGraph(containerName, cells) {
 		}
 		else{
 			svg.selectAll(".xaxis")
-			/*
-			.transition()
-			.duration(0)
-			.delay(transitionDuration)
-			.ease("linear")*/
 			.call(xAxis);
 		}
 	}
@@ -648,6 +546,9 @@ function createLineGraph(containerName, cells) {
 	this.deleteLine = function(cellNumber){
 		indexOflineRecentlyDeleted = reportingCells.indexOf(cellNumber);
 		
+		/*
+		Update all data sets by removing the recently deleted line
+		*/
 		reportingCells.splice(indexOflineRecentlyDeleted, 1);
 		data.splice(indexOflineRecentlyDeleted, 1);
 		pastData.splice(indexOflineRecentlyDeleted, 1);
@@ -664,7 +565,7 @@ function createLineGraph(containerName, cells) {
 	this.zoomIn = function(){
 		domainStart += domainInterval*zoomModifier;
 		calculateDomainInterval();
-		//redrawXAxis(false);
+
 		if(paused)
 			redrawLinesOnce();
 			
@@ -678,11 +579,9 @@ function createLineGraph(containerName, cells) {
 	this.zoomOut = function(){
 		pauseDataUpdate = true;
 		allowAlternateAnimation = true;
-		domainStart -= domainInterval*zoomModifier;
+		domainStart -= domainInterval * zoomModifier;
 		calculateDomainInterval();
-
-
-		//redrawXAxis(false);
+		
 		if(paused){
 			redrawXAxis();
 			redrawLinesOnce();
@@ -691,13 +590,19 @@ function createLineGraph(containerName, cells) {
 		zoomClicked = true;
 	}
 	
+	/*
+	initialize the recording process
+	*/
 	this.startRecording = function(slideLength, pictureFormatInit){
 	
 		svgDocument = d3.selectAll("."+svgID)[0][0];
 
+		// grabs the SVG string of the graph
 		serializer = new XMLSerializer();
 		svg_str = serializer.serializeToString(svgDocument);
 
+
+		// initialize the GIF encorder
 		encoder = new GIFEncoder();
 		encoder.setRepeat(0);
 		encoder.setDelay(250);
@@ -758,14 +663,18 @@ function createLineGraph(containerName, cells) {
 				.style("font-family", "sans-serif")
 				.style("font-size", "11px");
 		
+
+			// grabs the SVG string of the graph
 			svg_str = serializer.serializeToString(svgDocument);
 
+			// draws the SVG onto a canvas element
 			canvg('canvasExample', svg_str);
 
+			// gets the picture written onto the canvas
 			canvas = document.getElementById('canvasExample');
-			
 			context = canvas.getContext("2d");
 
+			// adds the canvas picture onto the Gif encoder
 			encoder.addFrame(context);
 			recordTimer++;
 		}
@@ -773,6 +682,9 @@ function createLineGraph(containerName, cells) {
 			finalizeRecording();
 	}
 	
+	/*
+	finish the recording process and save to file
+	*/
 	var finalizeRecording = function(){
 
 		encoder.finish();
@@ -813,8 +725,6 @@ function createLineGraph(containerName, cells) {
 		finalizeRecording();
 	}
 	
-
-	
 	this.pauseTransitions = function(){
 		transitionsOn = false;
 	}
@@ -823,8 +733,6 @@ function createLineGraph(containerName, cells) {
 		transitionsOn = true;
 	}
 	
-
-	
 	this.pause = function(){
 		updating = false;
 		upToDate = false;
@@ -832,9 +740,6 @@ function createLineGraph(containerName, cells) {
 	}
 	
 	this.play = function(){
-		//paused = false;
-		//tick();
-		//redrawXAxis(true);
 		redrawLines(true);
 	}
 	
@@ -849,25 +754,9 @@ function createLineGraph(containerName, cells) {
 	this.updateToSlider = function(newDomainEnd){
 		domainEnd = newDomainEnd;
 		domainStart = domainEnd - domainInterval + domainBuffer;
-		
-		//console.log("slider: " + domainStart + " " + domainEnd + " " + (domainStart-domainEnd));
-		
-		
+
 		clipGraph();
-		/*
-		if(pastData[0].length>0){
-			data.forEach(function(d,i){
-				var temp;
-				console.log(d[0][0] + " " +	domainStart);
-				while(d[0][0] > domainStart - dataBuffer && pastData[i].length > 0){
-					temp=pastData[i].pop();
-					d.unshift(temp);
-				}
-			});
-		}*/
-		
 		redrawXAxis(false);
-		
 		redrawLinesOnce();
 	}
 	

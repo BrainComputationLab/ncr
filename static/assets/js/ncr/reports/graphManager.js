@@ -1,9 +1,19 @@
 
 
+/*
+
+Many of the functions written here have to do with the construction of the HTML container
+that would hold the line graph or raster plot. The functions would also add functionality
+to the buttons and sliders.
 
 
+*/
 
 
+/*
+Only one instance of createGraphManager will be created
+instantiated in the javascript in templates/pages/reports/reports.html
+*/
 var createGraphManager = function(){
 
 	var domsArray = new Array();
@@ -35,6 +45,9 @@ var createGraphManager = function(){
 	var dataSetFront=[];
 	var totalValues;
 
+	/*
+	returns the graph instance by type and ID
+	*/
 	var getGraph = function(type, ID){
 		if(type == "GRAPH")
 			return lineGraphs[ID];
@@ -45,12 +58,17 @@ var createGraphManager = function(){
 
 	}
 	
+	/*
+	returns the graph's ID
+	*/
 	var getID = function(type, container){
 		return parseInt($(container).attr("id").split(type)[1]);
 	}
 
 
-	
+	/*
+	prompts the user for input. In this case, cell ID's.
+	*/
 	var promptForCells = function(){
 		promptInputStr = prompt("Enter up to 4 neuron id's (eg: 1,2,3,4)","");
 		
@@ -59,7 +77,7 @@ var createGraphManager = function(){
 		
 		promptInputArr = promptInputStr.split(",");
 		
-		// some temporary error functions
+		// error functions
 		if (promptInputArr.length > 4)
 		{
 			alert("Error: Too many cells");
@@ -83,6 +101,9 @@ var createGraphManager = function(){
 		return true;
 	}
 	
+	/*
+	constructs the very basic HTML that would hold the graph, buttons, slider, etc.
+	*/
 	var constructContainer = function(type, graphPrefix){
 		var elementPntr;
 		
@@ -114,7 +135,9 @@ var createGraphManager = function(){
 		);
 	}
 	
-	
+	/*
+	constructs the HTML and adds functionality for the buttons found in the panel for each line graph or raster plot
+	*/
 	var addMainButtons = function(type, containerID, graphPrefix){
 		 
 		$("#"+graphPrefix+"-panel").append(
@@ -183,6 +206,10 @@ var createGraphManager = function(){
 
 	}
 	
+	/*
+	In line graphs, there are cell buttons that users may click and a drop down menu would appear.
+	This function adds functionality to that drop down menu.
+	*/
 	var addCellButton = function (graphID, cell){
 		var buttonSuffix = "-cell_button"+cell;
 		var graphPrefix = "GRAPH"+graphID;
@@ -222,6 +249,10 @@ var createGraphManager = function(){
 
 	}
 	
+	/*
+	Add functionality to the scale buttons:
+	"Zoom in," "Zoom out," "Expand up," "Expand down"
+	*/
 	var addScaleButtons = function(type, graphPrefix){
 		
 		var elementPntr = $("#"+graphPrefix+"-scale_button_list");
@@ -233,8 +264,6 @@ var createGraphManager = function(){
 		
 		// jquery functionallity for menu. Help found here:
 		// http://jqueryui.com/button/#splitbutton
-
-		//console.log($("#"+graphPrefix+"-scale_button-"));
 		
 		$("#"+graphPrefix+"-scale_button-").click(function(){
 			var graph = getID(type, this);
@@ -265,6 +294,10 @@ var createGraphManager = function(){
 		});
 	}
 	
+	/*
+	Adds functionality to the play buttons:
+	"Play/Pause," "Fast forward," "Record," "Take picture"
+	*/
 	var addPlaybackButtons = function(type, graphPrefix){
 		
 		var elementPntr = $("#"+graphPrefix+"-playback_button_list");
@@ -335,6 +368,9 @@ var createGraphManager = function(){
 		
 	}
 
+	/*
+	Adds the position slider and its functionality
+	*/
 	var addSlider = function(type, graphPrefix){
 		
 		$("#"+graphPrefix+"-footer").append(
@@ -378,6 +414,9 @@ var createGraphManager = function(){
 		});
 	}
 	
+	/*
+	Create an instance of a Line Graph or a Raster Plot that would be held by the container
+	*/
 	var createGraph = function(type, containerName){
 		var id;
 
@@ -391,6 +430,9 @@ var createGraphManager = function(){
 		}
 	}
 	
+	/*
+	Ultimately adds the HTML container and its graph onto the current web page
+	*/
 	var addElement = function(type){
 
 		var graphPrefix;
@@ -425,6 +467,9 @@ var createGraphManager = function(){
 		createGraph(type, "#"+graphPrefix+"-graph");
 	}
 	
+	/*
+	Initializes the control panel that the users interact with to use the webpage
+	*/
 	var initializeControlPanel = function(){
 		$("#createGraphButton").click(function(){
 			addElement("GRAPH");
@@ -437,6 +482,9 @@ var createGraphManager = function(){
 		$("#control_panel-report-time_of_last").html("Status updated: "+Date());
 	}
 	
+	/*
+	Initializes the current sample data
+	*/
 	var dataInit = function(){
 	
 		/* 
@@ -457,6 +505,9 @@ var createGraphManager = function(){
 		}
 	}
 
+	/*
+	cycles through the data and prepares it for feeding for the graphs
+	*/
 	var runData = function(){
 		dataGenerator = setInterval(function(){
 			var i, temp;
@@ -473,6 +524,9 @@ var createGraphManager = function(){
 		},dataInterval);
 	}
 
+	/*
+	Feeds the data to the graphs
+	*/
 	var runGraphs = function(){
 		runningGraphs = setInterval(function(){
 

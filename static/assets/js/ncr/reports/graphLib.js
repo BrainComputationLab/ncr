@@ -1,3 +1,9 @@
+/*
+
+Constructs a Raster Plot instance and appends itself onto the calling container
+
+*/
+
 function createRasterPlot(containerName) {
 
 	// D3 plot basics for drawing axes found here:
@@ -102,10 +108,6 @@ function createRasterPlot(containerName) {
 			.selectAll("path, line")
 			.style("fill", "none")
 			.style("stroke", "#eee");
-
-		
-
-
 
 		// simple plot basics using D3, help found here:
 		//http://bl.ocks.org/bunkat/2595950
@@ -226,7 +228,7 @@ function createRasterPlot(containerName) {
 
 	
 	this.getReportingCells = function(){
-	//	return reportingCells;
+		return reportingCells;
 	}
 	
 	this.zoomIn = function(){
@@ -241,13 +243,18 @@ function createRasterPlot(containerName) {
 		redrawXAxis();
 	}
 
+	/*
+	initialize the recording process
+	*/
 	this.startRecording = function(slideLength, pictureFormatInit){
 	
 		svgDocument = d3.selectAll("."+svgID)[0][0];
 
+		// grabs the SVG string of the graph
 		serializer = new XMLSerializer();
 		svg_str = serializer.serializeToString(svgDocument);
 
+		// initialize the GIF encorder
 		encoder = new GIFEncoder();
 		encoder.setRepeat(0);
 		encoder.setDelay(250);
@@ -307,15 +314,18 @@ function createRasterPlot(containerName) {
 				.selectAll("text")
 				.style("font-family", "sans-serif")
 				.style("font-size", "11px");
-		
+				
+			// grabs the SVG string of the graph
 			svg_str = serializer.serializeToString(svgDocument);
 
+			// draws the SVG onto a canvas element
 			canvg('canvasExample', svg_str);
 
+			// gets the picture written onto the canvas
 			canvas = document.getElementById('canvasExample');
-			
 			context = canvas.getContext("2d");
-
+			
+			// adds the canvas picture onto the Gif encoder
 			encoder.addFrame(context);
 			recordTimer++;
 		}
@@ -323,6 +333,9 @@ function createRasterPlot(containerName) {
 			finalizeRecording();
 	}
 	
+	/*
+	finish the recording process and save to file
+	*/
 	var finalizeRecording = function(){
 
 		encoder.finish();
@@ -371,8 +384,6 @@ function createRasterPlot(containerName) {
 		transitionsOn = true;
 	}
 	
-
-	
 	this.pause = function(){
 		updating = false;
 		upToDate = false;
@@ -381,8 +392,6 @@ function createRasterPlot(containerName) {
 	
 	this.play = function(){
 		paused = false;
-		//tick();
-		//redrawXAxis(true);
 	}
 	
 	this.goToEnd = function(){
@@ -397,22 +406,6 @@ function createRasterPlot(containerName) {
 
 		domainEnd = newDomainEnd;
 		domainStart = domainEnd - domainInterval + domainBuffer;
-		
-		//console.log("slider: " + domainStart + " " + domainEnd + " " + (domainStart-domainEnd));
-		
-		
-		/*
-		
-		if(pastData[0].length>0){
-			data.forEach(function(d,i){
-				var temp;
-				console.log(d[0][0] + " " +	domainStart);
-				while(d[0][0] > domainStart - dataBuffer && pastData[i].length > 0){
-					temp=pastData[i].pop();
-					d.unshift(temp);
-				}
-			});
-		}*/
 		
 		redrawXAxis(false);
 	}
@@ -433,17 +426,13 @@ function createRasterPlot(containerName) {
 		
 		if(typeof otherTick != 'undefined' && updating){
 			if(difference < 0){
-//			console.log("1");
 				difference *= Math.pow((Math.exp(difference*.1)-1), 2);
 				upToDate = true;
 			}
 			else if(difference < domainInterval && upToDate){
-//			console.log("2");
 				difference *= .1;
-//				upToDate = true;
 			}
 			else{
-//			console.log("3");
 				difference *= Math.pow((Math.exp(-difference*.1)-1), 2);
 				upToDate = true;
 			}
@@ -472,7 +461,6 @@ function createRasterPlot(containerName) {
 				}
 			});
 		}
-		//console.log($("#dots").children().length);
 		
 		for(var l = 0; $("#dots").children().length > 100; l++){
 			$("#dots circle:first-child").remove();
