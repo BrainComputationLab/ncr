@@ -1,4 +1,5 @@
 <table class="table table-bordered table-hover" ng-hide="selectedModel">
+    <!-- The sorting headers. The sorting and commands developed using angular -->
     <thead>
         <tr>
             <th><a href="" ng-click="predicateSort = 'entity_name'; reverseSort=false">ID</a>
@@ -11,6 +12,8 @@
             <a href="" ng-show="predicateSort=='description'" ng-click="reverseSort=!reverseSort"> <span ng-class="{'glyphicon glyphicon-arrow-up' : reverseSort == true, 'glyphicon glyphicon-arrow-down' : reverseSort == false}"></span></a></th>
         </tr>
     </thead>
+    
+    <!-- The model list table sortable based in headers -->
     <tbody>		
         <tr data-ng-repeat="model in dbdisplay | orderBy:predicateSort:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize">
             <td class="col-md-3"><a href="#" ng-click="showDetails(model)">{{ '{{ model.entity_name }}' }}</a></td>
@@ -28,5 +31,6 @@
     </tbody>
 </table>
 <div ng-show="selectedModel">
+    <!-- The model detail view opened when a model is selected -->
 	{% include 'pages/database/components/detailComponents/modelInfo.html' %}
 </div>

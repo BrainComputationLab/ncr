@@ -5,7 +5,10 @@ function DBController($scope, $resource) {
     $scope.pageSize = 10;
     $scope.predicateSort = "entity_name";
     $scope.reverseSort = false;
-    //search form variables
+    /*search form variables
+     Binary variables determine the type selection
+     Parameter arrays are ng models for the parameter values in the search bar 
+     */
     //////////////////
     // Neurons      //
     //////////////////
@@ -80,6 +83,10 @@ function DBController($scope, $resource) {
 			$scope.pageOffset = $scope.currentPage-7;                
     }
 	//filter model database by types of models
+    /*
+     The function gets the search bar values and checks whether to keep certain models in the list returned to the table
+     This is called by changing general parameter boxes or clicking the search icons
+     */
 	$scope.filterModels = function () {
 		var tmp = [];
 		//check each model/channel type
@@ -3032,7 +3039,7 @@ function DBController($scope, $resource) {
 
 		}		
 		$scope.dbsecondary = tmp;
-		$scope.filterModelsByString();
+		$scope.filterModelsByString(); //Once the model list has made it through the parameter filters, do secondary search on the string searches
 	}  
 	//filter (already filtered by type) models by general string filters for a final search product
 	$scope.filterModelsByString = function () {
