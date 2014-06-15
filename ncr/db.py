@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 from mongokit import Document, Connection
-import datetime
+from datetime import datetime
 from crypt import Crypt
+
 
 class Controller(object):
 
@@ -9,7 +10,8 @@ class Controller(object):
         self.conn = Connection()
         self.conn.register([User, Session, Neuron])
         # 12 hours?
-        self.conn['ncr']['session'].ensure_index('created', expireAfterSeconds=43200)
+        self.conn['ncr']['session'].ensure_index('created',
+                                                 expireAfterSeconds=43200)
 
     def login(self, username, password):
         u = User.find({"username": username})
@@ -20,15 +22,16 @@ class Controller(object):
         if ses:
             return ses['token']
         token = Crypt.gen_token()
-        created = datetime.datetime.now()
+        created = datetime.now()
         ses = Session({"username": username, "token": token,
-                        "created": created})
+                       "created": created})
         ses.save()
         return token
 
     def verify_token(self, token):
         ses = Session.find({"token": token})
         return True if ses else False
+
 
 class User(Document):
 
@@ -54,7 +57,7 @@ class Session(Document):
     structure = {
         "username": str,
         "token": str,
-        "created": datetime.Datetime
+        "created": datetime
     }
 
 

@@ -1,20 +1,21 @@
 from __future__ import unicode_literals
 from flask import Flask, request, jsonify
 from flask.ext.restful import Api, Resource
-from functools import wraps
-import database
+# from functools import wraps
+import ncr.db as db
 import json
 
 # Create new application
 app = Flask(__name__)
 # Set application root
-app.settings['APPLICATION_ROOT'] = '/ncr/api'
+app.config['APPLICATION_ROOT'] = '/ncr/api'
 # Debugging is okay for now
 app.debug = True
 # Create the REST API
 api = Api(app)
 # Create a db object
-app.db = database.Controller()
+app.db = db.Controller()
+
 
 @app.before_request
 def before_request():
@@ -36,6 +37,7 @@ def before_request():
 #         return func(*args, **kwargs)
 #     return wrapper
 
+
 @app.route("/login", methods=['POST'])
 def login_route():
     if not request.json:
@@ -55,14 +57,14 @@ def login_route():
 
 class NeuronResource(Resource):
 
-#    method_decorators = [authenticate]
+    # method_decorators = [authenticate]
 
     def get(self, id):
         if not id:
             return "id must be specified", 400
         try:
-            e = database.Neuron.one({"_id": id})
-        except database.MultipleResultsFound:
+            e = db.Neuron.one({"_id": id})
+        except db.MultipleResultsFound:
             return "Error", 500
         return json.dumps(e)
 
@@ -70,32 +72,32 @@ class NeuronResource(Resource):
         if not id:
             return "id must be specified", 400
         try:
-            e = database.Neuron.one({"_id": id})
-        except database.MultipleResultsFound:
+            e = db.Neuron.one({"_id": id})
+        except db.MultipleResultsFound:
             return "Error", 500
         if e:
             return "An entity with this id already exists", 400
         req = json.loads(request.json)
-        e = database.Neuron(req)
+        e = db.Neuron(req)
 
     def put(self, id):
         if not id:
             return "id must be specified", 400
         try:
-            e = database.Neuron.one({"_id": id})
-        except database.MultipleResultsFound:
+            e = db.Neuron.one({"_id": id})
+        except db.MultipleResultsFound:
             return "Error", 500
         if not e:
             return "An entity with this id does not exist", 400
         req = json.loads(request.json)
-        e = database.Neuron.find_and_modify({"_id": id}, req)
+        e = db.Neuron.find_and_modify({"_id": id}, req)
 
     def delete(self, id):
         if not id:
             return "id must be specified", 400
         try:
-            e = database.Neuron.one({"_id": id})
-        except database.MultipleResultsFound:
+            e = db.Neuron.one({"_id": id})
+        except db.MultipleResultsFound:
             return "Error", 500
         if not e:
             return "An entity with this id does not exist", 400

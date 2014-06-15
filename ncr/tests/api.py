@@ -1,12 +1,12 @@
 import unittest
-import ncr.server
-from ncr.server import Server
+# import ncr.server
+
 
 class ApiTest(unittest.TestCase):
 
     def setUp(self):
         pass
-        #server = ncs
+        # server = ncs
 
 
 class LoginTests(ApiTest):
