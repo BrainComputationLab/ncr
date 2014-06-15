@@ -1,15 +1,14 @@
 language: python
 python:
   - "2.7"
-  - "3.4"
 # command to install dependencies
-install: "pip install -r requirements.txt --use-mirrors"
+install: "pip install -r requirements.txt"
 # service stuff
 services:
   - mongodb
 # command to run tests
 script:
-  - nosetests --with-coverage --cover-package=ncr ncr/tests/*.py
+    - nosetests -v --with-coverage --cover-package=ncr ncr/tests/*.py
 # no pesky email notifications
 notifications:
   email: false
