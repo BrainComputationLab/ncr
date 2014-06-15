@@ -11,8 +11,8 @@ community.
 Requirements
 ======================================================
 
-Python 2.7
-MongoDB
+* Python 2.7
+* MongoDB
 
 Installation
 ======================================================
