@@ -5,3 +5,5 @@ mongokit
 bcrypt
 mock
 ensure
+coverage
+coveralls
