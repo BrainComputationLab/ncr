@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.7"
+# command to install dependencies
+install: "pip install -r requirements.txt --use-mirrors"
+# service stuff
+services:
+  - mongodb
+# command to run tests
+script:
+  - nosetests --with-coverage --cover-package=ncr ncr/tests/*.py
+# no pesky email notifications
+notifications:
+  email: false
+# setup environment
+env:
+  - PYTHONPATH="${PYTHONPATH}:${TRAVIS_BUILD_DIR}/ncr/ncr"
+after_script:
+  coveralls
