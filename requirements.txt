@@ -1,9 +1,0 @@
-flask
-flask-restful
-mongoengine
-bcrypt
-mock
-ensure
-coverage
-coveralls
-jsonschema
