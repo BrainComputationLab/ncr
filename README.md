@@ -7,3 +7,23 @@ NCR
 Neo-Cortical Repository is a database system that allows neuroscientists to
 store, version, and share models amongst team members, or the neuroscience
 community.
+
+Requirements
+======================================================
+
+* Python 2.7
+* MongoDB
+
+Installation
+======================================================
+
+~~~~
+pip install -r requirements.txt
+~~~~
+
+Running
+======================================================
+
+~~~~
+python ncr/server.py
+~~~~
