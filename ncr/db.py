@@ -1,81 +1,91 @@
 from __future__ import unicode_literals
-from mongokit import Document, Connection
+from mongoengine import (
+    connect,
+    Document,
+    StringField,
+    ReferenceField,
+    EmailField,
+    DateTimeField
+)
 from datetime import datetime
 from crypt import Crypt
 
 
-class Controller(object):
+class Service(object):
 
     def __init__(self):
-        self.conn = Connection()
-        self.conn.register([User, Session, Neuron])
-        # 12 hours?
-        self.conn['ncr']['session'].ensure_index('created',
-                                                 expireAfterSeconds=43200)
+        # TODO: make this user specified
+        self.conn = connect('ncr', host='localhost')
 
-    def login(self, username, password):
-        u = User.find({"username": username})
-        hashed_pass = Crypt.hash_pw(password, u['salt'])
-        if hashed_pass != u['password']:
+    def attempt_login(self, username, password):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
             return None
-        ses = Session.find({"username": username})
-        if ses:
-            return ses['token']
+        hashed_pass = Crypt.hash_password(password, user.salt)
+        if hashed_pass != user.password:
+            return None
+        session = Session.objects(username=user.username)
+        if session:
+            return session.token
         token = Crypt.gen_token()
-        created = datetime.now()
-        ses = Session({"username": username, "token": token,
-                       "created": created})
-        ses.save()
+        session = Session(username=user.username, token=token)
+        session.save()
         return token
 
     def verify_token(self, token):
-        ses = Session.find({"token": token})
-        return True if ses else False
+        session = Session.objects(token=token)
+        return True if session else False
 
 
 class User(Document):
 
-    __database__ = "ncr"
-    __collection__ = "user"
+    username = StringField(
+        max_length=128,
+        required=True,
+        unique=True,
+        primary_key=True
+    )
+    password = StringField(max_length=64, required=True)
+    salt = StringField(max_length=64, required=True)
+    first_name = StringField(max_length=128)
+    last_name = StringField(max_length=128)
+    institution = StringField(max_length=128)
+    email = EmailField(max_length=128)
 
-    structure = {
-        "username": str,
-        "password": str,
-        "salt": str,
-        "first_name": str,
-        "last_name": str,
-        "institution": str,
-        "email": str
-    }
+
+class Permission(Document):
+
+    name = StringField(max_length=128, required=True, unique=True)
 
 
 class Session(Document):
 
-    __database__ = "ncr"
-    __collection__ = "session"
+    user = ReferenceField(User)
+    token = StringField(max_length=64)
+    created = DateTimeField(default=datetime.now)
 
-    structure = {
-        "username": str,
-        "token": str,
-        "created": datetime
+    meta = {
+        'indexes': [
+            {
+                'fields': ['created'],
+                'expireAfterSeconds': 60 * 60 * 4
+            }
+        ]
     }
 
 
 class Entity(Document):
 
-    __database__ = "ncr"
+    id = StringField(max_length=64, primary_key=True)
+    entity_type = StringField(max_length=64)
+    entity_name = StringField(max_length=64)
+    destription = StringField(max_length=512)
+    author = StringField(max_length=128)
+    author_email = EmailField(max_length=128)
 
-    structure = {
-        "_id": str,
-        "entity_type": str,
-        "entity_name": str,
-        "description": str,
-        "author": str,
-        "author_email": str,
-        "specification": dict
-    }
-
+    meta = {'allow_inheritance': True}
 
 class Neuron(Entity):
 
-    __collection__ = "neuron"
+    pass

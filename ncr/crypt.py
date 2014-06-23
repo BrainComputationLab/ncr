@@ -10,7 +10,7 @@ class Crypt(object):
         return bcrypt.gensalt()
 
     @classmethod
-    def hash_pw(plaintext, salt):
+    def hash_password(plaintext, salt):
         return bcrypt.hashpw(plaintext, salt)
 
     @classmethod
