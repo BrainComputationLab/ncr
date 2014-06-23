@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 from mongoengine import (
     connect,
     Document,
@@ -8,7 +8,7 @@ from mongoengine import (
     DateTimeField
 )
 from datetime import datetime
-from crypt import Crypt
+from ncr.crypt import Crypt
 
 
 class Service(object):
