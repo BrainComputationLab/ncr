@@ -33,9 +33,29 @@ class Service(object):
         session.save()
         return token
 
+    def create_user(self, username, password, salt, first_name, last_name,
+                    institution, email):
+        salt = Crypt.gen_salt()
+        hashed_pass = Crypt.hash_password(password, salt)
+        user = User(
+            username=username,
+            password=hashed_pass,
+            salt=salt,
+            first_name=first_name,
+            last_name=last_name,
+            institution=institution,
+            email=email
+        )
+        user.save()
+
     def verify_token(self, token):
         session = Session.objects(token=token)
         return True if session else False
+
+    def create_entity_from_dict(self, entity, json):
+        e = entity(**json)
+        e.save()
+        return True
 
 
 class User(Document):
@@ -69,6 +89,7 @@ class Session(Document):
         'indexes': [
             {
                 'fields': ['created'],
+                # expire after four hours
                 'expireAfterSeconds': 60 * 60 * 4
             }
         ]

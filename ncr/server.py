@@ -22,6 +22,10 @@ app.db = db.Service()
 @app.before_request
 def before_request():
     """ before the request we're doing some auth checking """
+    if request.method in ['POST', 'PUT']:
+        req_json = request.get_json(force=True, silent=True)
+        if not req_json:
+            return jsonify(message=strings.API_INVALID_JSON), 400
     if request.path == '/login':
         return
     token = request.headers.get('token')
@@ -35,11 +39,8 @@ def before_request():
 @app.route("/login", methods=['POST'])
 def login_route():
     """ Handles client requests to log in to the system """
-    # if Flask could not parse the request into JSON
-    req_json = request.get_json(force=True, silent=True)
-    if not req_json:
-        return jsonify(message=strings.API_INVALID_JSON), 400
     # validate the json request
+    req_json = request.get_json(force=True)
     err = schemas.validate(req_json, schemas.login_schema)
     if err:
         return jsonify(message=err), 400
@@ -57,40 +58,26 @@ def login_route():
 
 class EntityResource(Resource):
 
-    def get(self, id):
-        if not id:
-            return "id must be specified", 400
-        try:
-            e = db.Neuron.one({"_id": id})
-        except db.MultipleResultsFound:
-            return "Error", 500
-        return json.dumps(e)
-
-
-class NeuronResource(Resource):
-
-    # method_decorators = [authenticate]
+    def __init__(self, *args, **kwargs):
+        self.entity_type = kwargs.get('entity_type')
+        self.schema = kwargs.get('schema')
+        super(EntityResource, self).__init__(*args, **kwargs)
 
     def get(self, id):
         if not id:
-            return "id must be specified", 400
+            return jsonify(message=strings.ENTITY_NO_ID), 400
         try:
-            e = db.Neuron.one({"_id": id})
+            e = self.resource_type.objects.get(id)
         except db.MultipleResultsFound:
-            return "Error", 500
-        return json.dumps(e)
+            return jsonify(message=strings.ENTITY_MULTIPLE_RESULTS), 500
+        return jsonify(e.to_json())
 
-    def post(self, id):
-        if not id:
-            return "id must be specified", 400
-        try:
-            e = db.Neuron.one({"_id": id})
-        except db.MultipleResultsFound:
-            return "Error", 500
-        if e:
-            return "An entity with this id already exists", 400
-        req = json.loads(request.json)
-        e = db.Neuron(req)
+    def post(self):
+        req_json = request.get_json(force=True)
+        err = schemas.validate(req_json, self.schema)
+        if err:
+            return jsonify(message=err), 400
+        db.create_entity_from_dict(self.entity_type, req_json)
 
     def put(self, id):
         if not id:
@@ -114,6 +101,12 @@ class NeuronResource(Resource):
         if not e:
             return "An entity with this id does not exist", 400
         e.delete()
+
+
+class NeuronResource(Resource):
+
+    pass
+
 
 # add RESTful resources
 api.add_resource(NeuronResource, '/neuron/<string:id>')
