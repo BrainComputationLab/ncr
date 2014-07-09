@@ -14,3 +14,5 @@ API_BAD_CREDENTIALS = "Incorrect username or password specified"
 ENTITY_NO_ID = "No ID specified"
 ENTITY_MULTIPLE_RESULTS = "Multiple resuts were found for this ID, this is an \
     NCR problem"
+ENTITY_NOT_FOUND = "Entity with specified ID not found"
+ENTITY_INVALID_TAGS = "Entity with specified ID not found"

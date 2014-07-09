@@ -1,9 +1,10 @@
 from __future__ import unicode_literals, absolute_import
 from flask import Flask, request, jsonify
 from flask.ext.restful import Api, Resource
-import json
+import csv
 
 import ncr.strings as strings
+import ncr.exceptions as exceptions
 import ncr.schemas as schemas
 import ncr.db as db
 
@@ -22,15 +23,20 @@ app.db = db.Service()
 @app.before_request
 def before_request():
     """ before the request we're doing some auth checking """
+    # if the client is sending data to the server, verify it is valid json
     if request.method in ['POST', 'PUT']:
         req_json = request.get_json(force=True, silent=True)
         if not req_json:
             return jsonify(message=strings.API_INVALID_JSON), 400
+    # if the client is trying to log in, don't enforce a token
     if request.path == '/login':
         return
+    # possibly get the token from the request headers
     token = request.headers.get('token')
+    # if they didn't supply a request token
     if token is None:
         return strings.API_MISSING_TOKEN, 401
+    # validate the token
     valid = app.db.verify_token(token)
     if not valid:
         return strings.API_BAD_TOKEN, 401
@@ -64,43 +70,83 @@ class EntityResource(Resource):
         super(EntityResource, self).__init__(*args, **kwargs)
 
     def get(self, id):
+        # is the id specified
         if not id:
             return jsonify(message=strings.ENTITY_NO_ID), 400
+        # try and get the object from the database
         try:
             e = self.resource_type.objects.get(id)
-        except db.MultipleResultsFound:
+        # if we git more than one, something is horribly wrong
+        except self.entity_type.MultipleResultsFound:
             return jsonify(message=strings.ENTITY_MULTIPLE_RESULTS), 500
+        # if it doesn't exist, inform the user
+        except self.entity_type.DoesNotExist:
+            return jsonify(message=strings.ENTITY_NOT_FOUND), 404
+        # return the object
         return jsonify(e.to_json())
 
     def post(self):
+        # get the json from the request, it's already validated
         req_json = request.get_json(force=True)
+        # validate the request data given a schema for the entity
         err = schemas.validate(req_json, self.schema)
+        # if it could not be validated, return why
         if err:
             return jsonify(message=err), 400
-        db.create_entity_from_dict(self.entity_type, req_json)
+        # try to get the tags from the request query string
+        try:
+            tags = self.get_tags(request)
+        except exceptions.InvalidTagsException:
+            return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
+        # if everything went smootly, create the new entity
+        db.create_entity_from_dict(self.entity_type, req_json, tags)
 
     def put(self, id):
+        # get the json from the request, it's already validated
+        req_json = request.get_json(force=True)
+        # is the id specified
         if not id:
-            return "id must be specified", 400
+            return jsonify(message=strings.ENTITY_NO_ID), 400
+        # try and get the object from the database
         try:
-            e = db.Neuron.one({"_id": id})
-        except db.MultipleResultsFound:
-            return "Error", 500
-        if not e:
-            return "An entity with this id does not exist", 400
-        req = json.loads(request.json)
-        e = db.Neuron.find_and_modify({"_id": id}, req)
+            self.resource_type.objects.get(id)
+        # if we git more than one, something is horribly wrong
+        except self.entity_type.MultipleResultsFound:
+            return jsonify(message=strings.ENTITY_MULTIPLE_RESULTS), 500
+        # if it doesn't exist, inform the user
+        except self.entity_type.DoesNotExist:
+            return jsonify(message=strings.ENTITY_NOT_FOUND), 404
+        # try to get the tags from the request query string
+        try:
+            tags = self.get_tags(request)
+        except exceptions.InvalidTagsException:
+            return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
+        # if everything went smootly, update the entity
+        db.update_entity_from_dict(self.entity_type, req_json, tags)
 
     def delete(self, id):
+        # is the id specified
         if not id:
-            return "id must be specified", 400
+            return jsonify(message=strings.ENTITY_NO_ID), 400
+        # try and get the object from the database
         try:
-            e = db.Neuron.one({"_id": id})
-        except db.MultipleResultsFound:
-            return "Error", 500
-        if not e:
-            return "An entity with this id does not exist", 400
+            e = self.resource_type.objects.get(id)
+        # if we git more than one, something is horribly wrong
+        except self.entity_type.MultipleResultsFound:
+            return jsonify(message=strings.ENTITY_MULTIPLE_RESULTS), 500
+        # if it doesn't exist, inform the user
+        except self.entity_type.DoesNotExist:
+            return jsonify(message=strings.ENTITY_NOT_FOUND), 404
+        # delete the object
         e.delete()
+
+    def get_tags(request):
+        """ get the permission tags list from the request query string """
+        tags = request.args.get('tags')
+        if tags is None:
+            return []
+        tag_list = list(csv.reader(tags))
+        return tag_list
 
 
 class NeuronResource(Resource):

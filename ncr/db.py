@@ -5,7 +5,8 @@ from mongoengine import (
     StringField,
     ReferenceField,
     EmailField,
-    DateTimeField
+    DateTimeField,
+    ListField,
 )
 from datetime import datetime
 from ncr.crypt import Crypt
@@ -72,6 +73,7 @@ class User(Document):
     last_name = StringField(max_length=128)
     institution = StringField(max_length=128)
     email = EmailField(max_length=128)
+    permissions = ListField()
 
 
 class Permission(Document):
@@ -85,6 +87,7 @@ class Session(Document):
     token = StringField(max_length=64)
     created = DateTimeField(default=datetime.now)
 
+    # sessions should be TTL-ed after a set time period for security reasons
     meta = {
         'indexes': [
             {
@@ -106,6 +109,7 @@ class Entity(Document):
     author_email = EmailField(max_length=128)
 
     meta = {'allow_inheritance': True}
+
 
 class Neuron(Entity):
 
