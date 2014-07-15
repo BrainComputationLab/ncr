@@ -1,7 +1,8 @@
 from __future__ import unicode_literals, absolute_import
+import csv
+
 from flask import Flask, request, jsonify
 from flask.ext.restful import Api, Resource
-import csv
 
 import ncr.strings as strings
 import ncr.exceptions as exceptions
@@ -83,7 +84,7 @@ class EntityResource(Resource):
         except self.entity_type.DoesNotExist:
             return jsonify(message=strings.ENTITY_NOT_FOUND), 404
         # return the object
-        return jsonify(e.to_json())
+        return jsonify(e.to_json()), 200
 
     def post(self):
         # get the json from the request, it's already validated
@@ -100,6 +101,8 @@ class EntityResource(Resource):
             return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
         # if everything went smootly, create the new entity
         db.create_entity_from_dict(self.entity_type, req_json, tags)
+        # indicate success
+        return jsonify(message=strings.API_SUCCESS), 200
 
     def put(self, id):
         # get the json from the request, it's already validated
@@ -123,6 +126,8 @@ class EntityResource(Resource):
             return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
         # if everything went smootly, update the entity
         db.update_entity_from_dict(self.entity_type, req_json, tags)
+        # indicate success
+        return jsonify(message=strings.API_SUCCESS), 200
 
     def delete(self, id):
         # is the id specified
@@ -139,6 +144,8 @@ class EntityResource(Resource):
             return jsonify(message=strings.ENTITY_NOT_FOUND), 404
         # delete the object
         e.delete()
+        # indicate success
+        return jsonify(message=strings.API_SUCCESS), 200
 
     def get_tags(request):
         """ get the permission tags list from the request query string """
@@ -149,12 +156,17 @@ class EntityResource(Resource):
         return tag_list
 
 
-class NeuronResource(Resource):
+class UserResource(EntityResource):
+
+    pass
+
+class NeuronResource(EntityResource):
 
     pass
 
 
 # add RESTful resources
+api.add_resource(UserResource, '/users/<string:username>')
 api.add_resource(NeuronResource, '/neuron/<string:id>')
 
 if __name__ == '__main__':

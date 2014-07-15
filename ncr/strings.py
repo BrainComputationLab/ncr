@@ -3,6 +3,7 @@ def json_message_wrapper(message):
         'message': message
     }
 
+API_SUCCESS = "operation completed successfully"
 API_MISSING_ID = "missing id parameter"
 API_MISSING_TOKEN = "missing access token"
 API_BAD_TOKEN = "Invalid/Expired auth token"

@@ -99,3 +99,7 @@ class TestLogin(ApiTestCase):
         ensure(json_data).has_key('token').whose_value.equals(
             "token"
         )
+
+class TestUser(ApiTestCase):
+
+    pass

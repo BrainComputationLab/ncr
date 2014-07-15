@@ -1,4 +1,7 @@
 from __future__ import unicode_literals, absolute_import
+from datetime import datetime
+
+import mongoengine
 from mongoengine import (
     connect,
     Document,
@@ -8,7 +11,7 @@ from mongoengine import (
     DateTimeField,
     ListField,
 )
-from datetime import datetime
+
 from ncr.crypt import Crypt
 
 
@@ -59,6 +62,11 @@ class Service(object):
         return True
 
 
+class Permission(Document):
+
+    name = StringField(max_length=128, required=True, unique=True)
+
+
 class User(Document):
 
     username = StringField(
@@ -73,12 +81,9 @@ class User(Document):
     last_name = StringField(max_length=128)
     institution = StringField(max_length=128)
     email = EmailField(max_length=128)
-    permissions = ListField()
-
-
-class Permission(Document):
-
-    name = StringField(max_length=128, required=True, unique=True)
+    permissions = ListField(
+        ReferenceField(Permission, reverse_delete_rule=mongoengine.PULL)
+    )
 
 
 class Session(Document):
