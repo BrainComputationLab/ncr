@@ -160,6 +160,7 @@ class UserResource(EntityResource):
 
     pass
 
+
 class NeuronResource(EntityResource):
 
     pass
@@ -167,7 +168,7 @@ class NeuronResource(EntityResource):
 
 # add RESTful resources
 api.add_resource(UserResource, '/users/<string:username>')
-api.add_resource(NeuronResource, '/neuron/<string:id>')
+api.add_resource(NeuronResource, '/<string:repository>/neuron/<string:id>')
 
 if __name__ == '__main__':
     app.run("0.0.0.0", 9000)

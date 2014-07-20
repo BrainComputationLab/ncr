@@ -10,6 +10,7 @@ from mongoengine import (
     EmailField,
     DateTimeField,
     ListField,
+    BooleanField,
 )
 
 from ncr.crypt import Crypt
@@ -20,6 +21,19 @@ class Service(object):
     def __init__(self):
         # TODO: make this user specified
         self.conn = connect('ncr', host='localhost')
+
+    def bootstrap(self):
+        # admin user
+        User(
+            username="admin",
+            password="password",
+            salt=Crypt.gen_salt(),
+            is_admin=True
+        ).save()
+        # default repository
+        Repository(
+            name="default",
+        ).save()
 
     def attempt_login(self, username, password):
         try:
@@ -62,11 +76,6 @@ class Service(object):
         return True
 
 
-class Permission(Document):
-
-    name = StringField(max_length=128, required=True, unique=True)
-
-
 class User(Document):
 
     username = StringField(
@@ -81,9 +90,19 @@ class User(Document):
     last_name = StringField(max_length=128)
     institution = StringField(max_length=128)
     email = EmailField(max_length=128)
-    permissions = ListField(
-        ReferenceField(Permission, reverse_delete_rule=mongoengine.PULL)
+    is_admin = BooleanField(default=False)
+
+
+class Repository(Document):
+
+    name = StringField(max_length=128, required=True, unique=True)
+    read_access = ListField(
+        ReferenceField(User, reverse_delete_rule=mongoengine.PULL)
     )
+    write_access = ListField(
+        ReferenceField(User, reverse_delete_rule=mongoengine.PULL)
+    )
+    is_public = BooleanField()
 
 
 class Session(Document):
