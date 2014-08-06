@@ -1,0 +1,4 @@
+mock
+ensure
+coverage
+coveralls

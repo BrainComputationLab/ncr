@@ -1,3 +1,0 @@
-class InvalidTagsException(Exception):
-
-    pass

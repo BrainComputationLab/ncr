@@ -1,23 +1,26 @@
 from __future__ import unicode_literals, absolute_import
-import unittest
 import mock
 from ensure import ensure
 import json
-import ncr.server
+import ncr
 import ncr.strings as strings
 import ncr.db
 
 
-class ApiTestCase(unittest.TestCase):
+class ApiTestCase(object):
 
     def setUp(self):
         self.app = ncr.server.app.test_client()
 
 
-class TestLogin(ApiTestCase):
+class TestAuthenticate(ApiTestCase):
+
+    def setUp(self):
+        super(TestAuthenticate, self).setUp()
+        self.route = ncr.AUTHENTICATION_ROUTE
 
     def test_client_login_no_data(self):
-        res = self.app.post('/login')
+        res = self.app.post(self.route)
         ensure(res).has_attribute('status_code')
         ensure(res.status_code).equals(400)
         json_data = json.loads(res.get_data().decode())
@@ -25,7 +28,7 @@ class TestLogin(ApiTestCase):
             strings.API_INVALID_JSON)
 
     def test_client_login_bad_json(self):
-        res = self.app.post('/login', data="{gfds}")
+        res = self.app.post(self.route, data="{gfds}")
         ensure(res).has_attribute('status_code')
         ensure(res.status_code).equals(400)
         json_data = json.loads(res.get_data().decode())
@@ -36,7 +39,7 @@ class TestLogin(ApiTestCase):
         req = {
             "username": "test"
         }
-        res = self.app.post('/login', data=json.dumps(req))
+        res = self.app.post(self.route, data=json.dumps(req))
         ensure(res).has_attribute('status_code')
         ensure(res.status_code).equals(400)
         json_data = json.loads(res.get_data().decode())
@@ -46,13 +49,16 @@ class TestLogin(ApiTestCase):
         req = {
             "password": "password"
         }
-        res = self.app.post('/login', data=json.dumps(req))
+        res = self.app.post(self.route, data=json.dumps(req))
         ensure(res).has_attribute('status_code')
         ensure(res.status_code).equals(400)
         json_data = json.loads(res.get_data().decode())
         ensure(json_data).has_key('message')
 
-    @mock.patch.object(ncr.db.Service, attribute='attempt_login')
+    @mock.patch.object(
+        ncr.services.auth.AuthenticationService,
+        attribute='attempt_login',
+        autospec=True)
     def test_client_invalid_username(self, mock_method):
         mock_method.return_value = None
         req = {
@@ -68,7 +74,10 @@ class TestLogin(ApiTestCase):
             strings.API_BAD_CREDENTIALS
         )
 
-    @mock.patch.object(ncr.db.Service, attribute='attempt_login')
+    @mock.patch.object(
+        ncr.services.auth.AuthenticationService,
+        attribute='attempt_login',
+        autospec=True)
     def test_client_invalid_password(self, mock_method):
         mock_method.return_value = None
         req = {
@@ -84,7 +93,10 @@ class TestLogin(ApiTestCase):
             strings.API_BAD_CREDENTIALS
         )
 
-    @mock.patch.object(ncr.db.Service, attribute='attempt_login')
+    @mock.patch.object(
+        ncr.services.auth.AuthenticationService,
+        attribute='attempt_login',
+        autospec=True)
     def test_client_valid_credentials(self, mock_method):
         mock_method.return_value = "token"
         req = {
@@ -99,7 +111,3 @@ class TestLogin(ApiTestCase):
         ensure(json_data).has_key('token').whose_value.equals(
             "token"
         )
-
-class TestUser(ApiTestCase):
-
-    pass

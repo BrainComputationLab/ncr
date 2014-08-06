@@ -23,3 +23,11 @@ login_schema = {
     },
     "required": ["username", "password"]
 }
+
+user_schema = {
+
+}
+
+neuron_schema = {
+
+}
