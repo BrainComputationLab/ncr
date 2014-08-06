@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # create and enter virtualenv
-if [ ! -d "env" ]; then
-  virtualenv env
+if [ ! -d ".env" ]; then
+  virtualenv .env
 fi
-. env/bin/activate
+. .env/bin/activate
 
 # required dirs
 if [ ! -d "logs" ]; then

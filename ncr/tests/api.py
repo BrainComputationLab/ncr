@@ -3,14 +3,14 @@ import mock
 from ensure import ensure
 import json
 import ncr
-import ncr.strings as strings
-import ncr.db
+import ncr.lib.strings as strings
+import ncr.services.auth
 
 
 class ApiTestCase(object):
 
     def setUp(self):
-        self.app = ncr.server.app.test_client()
+        self.app = ncr.app.test_client()
 
 
 class TestAuthenticate(ApiTestCase):
@@ -56,7 +56,7 @@ class TestAuthenticate(ApiTestCase):
         ensure(json_data).has_key('message')
 
     @mock.patch.object(
-        ncr.services.auth.AuthenticationService,
+        ncr.services.auth.AuthService,
         attribute='attempt_login',
         autospec=True)
     def test_client_invalid_username(self, mock_method):
@@ -75,7 +75,7 @@ class TestAuthenticate(ApiTestCase):
         )
 
     @mock.patch.object(
-        ncr.services.auth.AuthenticationService,
+        ncr.services.auth.AuthService,
         attribute='attempt_login',
         autospec=True)
     def test_client_invalid_password(self, mock_method):
@@ -94,7 +94,7 @@ class TestAuthenticate(ApiTestCase):
         )
 
     @mock.patch.object(
-        ncr.services.auth.AuthenticationService,
+        ncr.services.auth.AuthService,
         attribute='attempt_login',
         autospec=True)
     def test_client_valid_credentials(self, mock_method):
