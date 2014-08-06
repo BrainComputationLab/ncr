@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.3"
 # command to install dependencies
-install: "pip install -r requirements.txt"
+install: ./bootstrap.sh && source env/bin/activate
 # service stuff
 services:
   - mongodb
