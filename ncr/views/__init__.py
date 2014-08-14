@@ -14,18 +14,21 @@ class AuthenticationResource(Resource):
     def post(self):
         """ Handles client requests to authenticate with the system """
         # validate the json request
-        import pdb; pdb.set_trace()
         req_json = request.get_json(silent=True)
         err = validate(req_json, auth_schema)
         if err:
-            return jsonify(message=err), 400
+            res = jsonify(message=err)
+            res.status_code = 400
+            return res
         # get the username and password and attempt to login
         username = req_json.get('username')
         password = req_json.get('password')
         res = AuthService.attempt_login(username, password)
         # if theres no user matching those credentials
         if res is None:
-            return jsonify(message=strings.API_BAD_CREDENTIALS), 401
+            res = jsonify(message=strings.API_BAD_CREDENTIALS)
+            res.status_code = 401
+            return res
         # if it's valid, return a json object with their auth token
         else:
             return jsonify(token=res)
@@ -93,7 +96,7 @@ class EntityResource(Resource):
         except exceptions.InvalidTagsException:
             return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
         # if everything went smootly, update the entity
-        db.update_entity_from_dict(self.entity_type, req_json, tags)
+        self.entity_type.update_entity_from_dict(req_json, tags)
         # indicate success
         return jsonify(message=strings.API_SUCCESS), 200
 
@@ -130,14 +133,4 @@ class UserResource(EntityResource):
         super(UserResource, self).__init__(
             entity_type="user",
             schema=user_schema
-        )
-
-
-class NeuronResource(EntityResource):
-    """ RESTful resource for neuron entities """
-
-    def __init__(self):
-        super(NeuronResource, self).__init__(
-            entity_type="neuron",
-            schema=neuron_schema
         )

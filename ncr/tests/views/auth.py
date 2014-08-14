@@ -14,7 +14,7 @@ class TestAuthenticate(ApiTestCase):
         super(TestAuthenticate, self).setUp()
         self.route = ncr.AUTHENTICATION_ROUTE
 
-    def test_client_login_no_json_header(self):
+    def test_client_login_with_no_json_header_fails(self):
         res = self.app.post(
             self.route,
         )
@@ -25,7 +25,7 @@ class TestAuthenticate(ApiTestCase):
             strings.API_NOT_JSON_TYPE
         )
 
-    def test_client_login_no_data(self):
+    def test_client_login_with_no_data_fails(self):
         res = self.app.post(
             self.route,
             headers=self.headers,
@@ -37,7 +37,7 @@ class TestAuthenticate(ApiTestCase):
             strings.API_INVALID_JSON
         )
 
-    def test_client_login_bad_json(self):
+    def test_client_login_with_bad_json_fails(self):
         res = self.app.post(
             self.route,
             data="{gfds}",
@@ -50,7 +50,7 @@ class TestAuthenticate(ApiTestCase):
             strings.API_INVALID_JSON
         )
 
-    def test_client_login_no_password(self):
+    def test_client_login_with_no_password_fails(self):
         req = {
             "username": "test"
         }
@@ -64,7 +64,7 @@ class TestAuthenticate(ApiTestCase):
         json_data = json.loads(res.get_data().decode())
         ensure(json_data).has_key('message')
 
-    def test_client_login_no_username(self):
+    def test_client_login_with_no_username_fails(self):
         req = {
             "password": "password"
         }
@@ -79,7 +79,7 @@ class TestAuthenticate(ApiTestCase):
         ensure(json_data).has_key('message')
 
     @mock.patch('ncr.services.auth.AuthService.attempt_login')
-    def test_client_invalid_username(self, mock_method):
+    def test_client_login_with_invalid_username_fails(self, mock_method):
         mock_method.return_value = None
         req = {
             "username": "not_a_username",
@@ -99,8 +99,7 @@ class TestAuthenticate(ApiTestCase):
         )
 
     @mock.patch('ncr.services.auth.AuthService.attempt_login')
-    def test_client_invalid_password(self, mock_method):
-        import pdb; pdb.set_trace()
+    def test_client_login_with_invalid_password_fails(self, mock_method):
         mock_method.return_value = None
         req = {
             "username": "username",
@@ -120,7 +119,7 @@ class TestAuthenticate(ApiTestCase):
         )
 
     @mock.patch('ncr.services.auth.AuthService.attempt_login')
-    def test_client_valid_credentials(self, mock_method):
+    def test_client_login_with_valid_credentials_succeeds(self, mock_method):
         mock_method.return_value = "token"
         req = {
             "username": "username",

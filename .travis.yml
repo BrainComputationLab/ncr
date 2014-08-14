@@ -9,7 +9,7 @@ services:
   - mongodb
 # command to run tests
 script:
-    - nosetests -v --with-coverage --cover-package=ncr ncr/tests/*.py
+    - py.test --spec --cov-report term-missing --cov ncr ncr/tests/**/*.py
 # no pesky email notifications
 notifications:
   email: false

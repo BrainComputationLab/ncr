@@ -7,7 +7,6 @@ import ncr.lib.strings as strings
 from ncr.views import (
     AuthenticationResource,
     UserResource,
-    NeuronResource,
 )
 
 AUTHENTICATION_ROUTE = '/authenticate'
@@ -44,13 +43,13 @@ def before_request():
     token = request.headers.get(TOKEN_HEADER_KEY)
     # if they didn't supply a request token
     if token is None:
-        return strings.API_MISSING_TOKEN, 401
+        return jsonify(message=strings.API_MISSING_TOKEN), 400
     # validate the token
     valid = app.db.verify_token(token)
     if not valid:
-        return strings.API_BAD_TOKEN, 401
+        return jsonify(strings.API_BAD_TOKEN), 401
 
 # Add Resources
 api.add_resource(AuthenticationResource, AUTHENTICATION_ROUTE)
 api.add_resource(UserResource, '/user/<string:username>')
-api.add_resource(NeuronResource, '/<string:repository>/neuron/<string:id>')
+# api.add_resource(NeuronResource, '/<string:repository>/neuron/<string:id>')
