@@ -1,4 +1,6 @@
-nose
+pytest
+pytest-spec
+pytest-random
 mock
 ensure
 coverage

@@ -3,32 +3,33 @@ from flask import request, jsonify
 from flask.ext.restful import Resource
 
 from ncr.lib import strings, exceptions
-from ncr.schemas import (
-    validate,
-    login_schema,
-    user_schema,
-    neuron_schema,
-)
+from ncr.schemas import validate
+from ncr.schemas.auth import auth_schema
+from ncr.schemas.user import user_schema
+from ncr.services.auth import AuthService
+
 
 class AuthenticationResource(Resource):
 
     def post(self):
         """ Handles client requests to authenticate with the system """
         # validate the json request
-        req_json = request.get_json(force=True)
-        err = validate(req_json, login_schema)
+        import pdb; pdb.set_trace()
+        req_json = request.get_json(silent=True)
+        err = validate(req_json, auth_schema)
         if err:
             return jsonify(message=err), 400
         # get the username and password and attempt to login
         username = req_json.get('username')
         password = req_json.get('password')
-        res = app.db.attempt_login(username, password)
+        res = AuthService.attempt_login(username, password)
         # if theres no user matching those credentials
         if res is None:
             return jsonify(message=strings.API_BAD_CREDENTIALS), 401
         # if it's valid, return a json object with their auth token
         else:
             return jsonify(token=res)
+
 
 class EntityResource(Resource):
 
@@ -67,7 +68,7 @@ class EntityResource(Resource):
         except exceptions.InvalidTagsException:
             return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
         # if everything went smootly, create the new entity
-        db.create_entity_from_dict(self.entity_type, req_json, tags)
+        self.entity_type.create_entity_from_dict(req_json, tags)
         # indicate success
         return jsonify(message=strings.API_SUCCESS), 200
 

@@ -1,8 +1,8 @@
 from __future__ import unicode_literals, absolute_import
+
 from datetime import datetime
 
 import mongoengine
-
 from mongoengine import (
     Document,
     StringField,
@@ -11,6 +11,10 @@ from mongoengine import (
     DateTimeField,
     ListField,
     BooleanField,
+    UUIDField,
+    EmbeddedDocument,
+    FloatField,
+    DynamicField,
 )
 
 
@@ -62,8 +66,11 @@ class Session(Document):
 
 
 class Entity(Document):
+    """The entity is the main simulation construct in NCS.
 
-    id = StringField(max_length=64, primary_key=True)
+    Entities include neurons, synapses, channels, etc.
+    """
+    id = UUIDField(primary_key=True)
     entity_type = StringField(max_length=64)
     entity_name = StringField(max_length=64)
     destription = StringField(max_length=512)
@@ -73,6 +80,41 @@ class Entity(Document):
     meta = {'allow_inheritance': True}
 
 
-class Neuron(Entity):
+class Normal(EmbeddedDocument):
+    """ Class for a normal distribution.
 
-    pass
+    """
+    mean = FloatField()
+    stdev = FloatField()
+
+
+class Uniform(EmbeddedDocument):
+    """ Class for a uniform distribution.
+
+    """
+    min = FloatField()
+    max = FloatField()
+
+
+class Neuron(Entity):
+    """The neuron entity represents an individual cell type in a simulation.
+
+    Examples of possible neurons include purkinje, pyramidal, etc.
+    """
+    neuron_type = StringField(max_length=64)
+
+    meta = {'allow_inheritance': True}
+
+
+class IzhNeuron(Neuron):
+    """A neuron type making use of the Izhikevich neuron model.
+
+    Stuff about Izhikevich.
+    """
+    a = DynamicField(choices=[Normal, Uniform, FloatField])
+    b = DynamicField(choices=[Normal, Uniform, FloatField])
+    c = DynamicField(choices=[Normal, Uniform, FloatField])
+    d = DynamicField(choices=[Normal, Uniform, FloatField])
+    u = DynamicField(choices=[Normal, Uniform, FloatField])
+    v = DynamicField(choices=[Normal, Uniform, FloatField])
+    threshold = DynamicField(choices=[Normal, Uniform, FloatField])

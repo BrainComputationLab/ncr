@@ -7,7 +7,8 @@ from ncr.lib.crypt import hash_password, gen_token
 
 class AuthService(object):
 
-    def attempt_login(self, username, password):
+    @classmethod
+    def attempt_login(cls, username, password):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -19,13 +20,15 @@ class AuthService(object):
         if user_session:
             return user_session.token
         token = gen_token()
-        self.set_user_session(username, token)
+        cls.set_user_session(username, token)
         return token
 
-    def verify_token(self, token):
+    @classmethod
+    def verify_token(cls, token):
         session = mongo_session.objects(token=token)
         return True if session else False
 
-    def set_user_session(self, username, token):
+    @classmethod
+    def set_user_session(cls, username, token):
         user_session = UserSession(username=username, token=token)
         user_session.save()
