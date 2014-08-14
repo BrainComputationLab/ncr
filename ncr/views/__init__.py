@@ -2,7 +2,7 @@ import csv
 from flask import request, jsonify
 from flask.ext.restful import Resource
 
-from ncr.lib import strings, exceptions
+from ncr.util import strings, exceptions
 from ncr.schemas import validate
 from ncr.schemas.auth import auth_schema
 from ncr.schemas.user import user_schema

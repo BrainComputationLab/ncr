@@ -3,7 +3,7 @@ from __future__ import unicode_literals, absolute_import
 from flask import Flask, request, jsonify
 from flask.ext.restful import Api
 
-import ncr.lib.strings as strings
+from ncr.util import strings
 from ncr.views import (
     AuthenticationResource,
     UserResource,

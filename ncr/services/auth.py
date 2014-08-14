@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import
 
 from ncr.services import mongo_session
 from ncr.models import Session as UserSession, User
-from ncr.lib.crypt import hash_password, gen_token
+from ncr.util.crypt import hash_password, gen_token
 
 
 class AuthService(object):

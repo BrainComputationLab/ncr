@@ -4,7 +4,7 @@ from ensure import ensure
 import mock
 
 import ncr
-import ncr.lib.strings as strings
+from ncr.util import strings
 from ncr.tests.views import ApiTestCase
 
 
