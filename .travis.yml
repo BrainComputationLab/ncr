@@ -9,7 +9,7 @@ services:
   - mongodb
 # command to run tests
 script:
-    - py.test --pep8 --spec --cov-report term-missing --cov ncr ncr/tests/**/*.py
+    - py.test --spec --cov-report term-missing --cov ncr ncr/tests/**/*.py
     - flake8 ncr/
 # no pesky email notifications
 notifications:
