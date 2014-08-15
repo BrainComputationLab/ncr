@@ -20,6 +20,7 @@ class UserService(object):
             email=email
         )
         user.save()
+        return user
 
     @classmethod
     def get_user(cls, username):
