@@ -1,11 +1,12 @@
 from __future__ import unicode_literals, absolute_import
 from ncr.models import User
-from ncr.lib.crypt import gen_salt, hash_password
+from ncr.util.crypt import gen_salt, hash_password
 
 
 class UserService(object):
 
-    def create_user(self, username, password, salt, first_name, last_name,
+    @classmethod
+    def create_user(cls, username, password, salt, first_name, last_name,
                     institution, email):
         salt = gen_salt()
         hashed_pass = hash_password(password, salt)
@@ -19,3 +20,11 @@ class UserService(object):
             email=email
         )
         user.save()
+
+    @classmethod
+    def get_user(cls, username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            # TODO log something
+            return None
