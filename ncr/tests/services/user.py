@@ -1,31 +1,81 @@
-from __future__ import unicode_literals, absolute_import
+from __future__ import absolute_import, unicode_literals
+import pytest
 
-import unittest
+from mongoengine import ValidationError
 
-from ncr.util.crypt import gen_salt, hash_password, gen_token
-
-
-class TestGenSalt(unittest.TestCase):
-
-    def test_returns_salt(self):
-        salt = gen_salt()
-        assert type(salt) is str
-        assert len(salt) == 29
+from ncr.tests.services import DatabaseTestCase
+from ncr.services.user import UserService
+from ncr.models import User
 
 
-class TestHashPassword(unittest.TestCase):
+class TestCreateUser(DatabaseTestCase):
 
-    def test_hashes_to_correct_value(self):
-        salt = "$2a$12$DG39IJLyK/8DQ18Zz/GclO"
-        password = 'password'
-        hashed_pass = hash_password(password, salt)
-        assert hashed_pass == \
-            "$2a$12$DG39IJLyK/8DQ18Zz/GclOARDSrOQSZNQ8VRNPYGWiSAsjX380KHK"
+    def test_create_valid_user(self):
+        user = UserService.create_user(
+            username='username',
+            password='password',
+            first_name='first',
+            last_name='last',
+            institution='university',
+            email='test@example.com',
+        )
+        assert user is not None
+        db_user = User.objects.get(username='username')
+        assert db_user.username == 'username'
+        assert db_user.first_name == 'first'
+        assert db_user.last_name == 'last'
+        assert db_user.institution == 'university'
+        assert db_user.email == 'test@example.com'
+
+    def test_create_user_bad_first_name(self):
+        with pytest.raises(ValidationError):
+            UserService.create_user(
+                username='username',
+                password='password',
+                first_name=123,
+                last_name='last',
+                institution='university',
+                email='test@example.com',
+            )
+
+    def test_create_user_bad_email(self):
+        with pytest.raises(ValidationError):
+            UserService.create_user(
+                username='username',
+                password='password',
+                first_name=123,
+                last_name='last',
+                institution='university',
+                email='not_an_email',
+            )
 
 
-class TestGenToken(unittest.TestCase):
+class TestGetUser(DatabaseTestCase):
 
-    def test_returns_token(self):
-        token = gen_token()
-        assert type(token) is str
-        assert len(token) == 64
+    def test_gets_user_when_user_exists(self):
+        User(
+            username='username',
+            first_name='first',
+            last_name='last',
+            salt="$2a$12$DG39IJLyK/8DQ18Zz/GclO",
+            password=
+                "$2a$12$DG39IJLyK/8DQ18Zz/GclOARDSrOQSZNQ8VRNPYGWiSAsjX380KHK",
+            institution='university',
+            email='test@example.com',
+        ).save()
+        user = UserService.get_user('username')
+        assert user is not None
+
+    def test_returns_none_when_user_does_not_exist(self):
+        User(
+            username='username',
+            first_name='first',
+            last_name='last',
+            salt="$2a$12$DG39IJLyK/8DQ18Zz/GclO",
+            password=
+                "$2a$12$DG39IJLyK/8DQ18Zz/GclOARDSrOQSZNQ8VRNPYGWiSAsjX380KHK",
+            institution='university',
+            email='test@example.com',
+        ).save()
+        user = UserService.get_user('not_a_username')
+        assert user is None

@@ -6,7 +6,7 @@ from ncr.util.crypt import gen_salt, hash_password
 class UserService(object):
 
     @classmethod
-    def create_user(cls, username, password, salt, first_name, last_name,
+    def create_user(cls, username, password, first_name, last_name,
                     institution, email):
         salt = gen_salt()
         hashed_pass = hash_password(password, salt)
