@@ -5,10 +5,8 @@ from flask.ext.restful import Api
 
 from ncr.services.auth import AuthService
 from ncr.util import strings
-from ncr.views import (
-    AuthenticationResource,
-    UserResource,
-)
+from ncr.views.auth import AuthenticationResource
+from ncr.views.user import UserResource
 
 AUTHENTICATION_ROUTE = '/authenticate'
 TOKEN_HEADER_KEY = 'Auth-Token'
@@ -28,12 +26,12 @@ def before_request():
     """Before the request we're doing some authentication.
 
     """
-    # check for the json content-type
-    content_type = request.headers.get('Content-Type')
-    if not content_type or content_type != 'application/json':
-        return jsonify(message=strings.API_NOT_JSON_TYPE), 400
     # if the client is sending data to the server, verify it is valid json
     if request.method in ['POST', 'PUT']:
+        # check for the json content-type
+        content_type = request.headers.get('Content-Type')
+        if not content_type or content_type != 'application/json':
+            return jsonify(message=strings.API_NOT_JSON_TYPE), 400
         req_json = request.get_json(silent=True)
         if not req_json:
             return jsonify(message=strings.API_INVALID_JSON), 400

@@ -46,6 +46,18 @@ class Repository(Document):
     )
     is_public = BooleanField()
 
+    meta = {
+        'indexes': [
+            'is_public',
+            {
+                'fields': ['name'],
+                'unique': True
+            },
+            'read_access',
+            'write_access',
+        ]
+    }
+
 
 class Session(Document):
 
@@ -65,6 +77,14 @@ class Session(Document):
     }
 
 
+class Tag(Document):
+
+    tag_name = StringField(max_length=64)
+    tag_description = StringField(max_length=128)
+    tag_background_color = StringField(max_length=7)
+    tag_text_color = StringField(max_length=7)
+
+
 class Entity(Document):
     """The entity is the main simulation construct in NCS.
 
@@ -73,11 +93,32 @@ class Entity(Document):
     id = UUIDField(primary_key=True)
     entity_type = StringField(max_length=64)
     entity_name = StringField(max_length=64)
-    destription = StringField(max_length=512)
+    description = StringField(max_length=512)
     author = StringField(max_length=128)
     author_email = EmailField(max_length=128)
+    tags = ListField(
+        ReferenceField(Tag, reverse_delete_rule=mongoengine.PULL)
+    )
 
-    meta = {'allow_inheritance': True}
+    meta = {
+        'allow_inheritance': True,
+        'indexes': [
+            'entity_type',
+            # This is supposed to be a full-text-search index, but the
+            # correct way in mongoengine to add a text-index yeilds an error
+            # when performed here:
+            # http://docs.mongoengine.org/guide/text-indexes.html
+            {
+                'fields': [
+                    'entity_name',
+                    'description',
+                    'author',
+                    'author_email',
+                ],
+                'default_language': 'english',
+            },
+        ]
+    }
 
 
 class Normal(EmbeddedDocument):
@@ -103,7 +144,9 @@ class Neuron(Entity):
     """
     neuron_type = StringField(max_length=64)
 
-    meta = {'allow_inheritance': True}
+    meta = {
+        'indexes': ['neuron_type']
+    }
 
 
 class IzhNeuron(Neuron):

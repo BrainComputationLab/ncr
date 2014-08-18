@@ -16,3 +16,5 @@ ENTITY_MULTIPLE_RESULTS = (
 )
 ENTITY_NOT_FOUND = "Entity with specified ID not found"
 ENTITY_INVALID_TAGS = "Entity with specified ID not found"
+
+USER_NO_USERNAME = "No username specified"

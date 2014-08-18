@@ -1,37 +1,40 @@
 from __future__ import absolute_import, unicode_literals
-import csv
 
 from flask import request, jsonify
 from flask.ext.restful import Resource
 
+from ncr.util import strings
+# from ncr.schemas.user import user_schema
+from ncr.viewmappers.user import UserViewMapper
+from ncr.models import User
 from ncr.schemas import validate
-from ncr.util import strings, exceptions
+from ncr.services.user import UserService
 
 
-class EntityResource(Resource):
+class UserResource(Resource):
 
-    def __init__(self, *args, **kwargs):
-        self.entity_type = kwargs.get('entity_type')
-        self.schema = kwargs.get('schema')
-        super(EntityResource, self).__init__()
-
-    def get(self, repository, id):
-        # is the id specified
-        if not id:
-            return jsonify(message=strings.ENTITY_NO_ID), 400
+    def get(self, username):
+        if not username:
+            return jsonify(message=strings.USER_NO_USERNAME), 400
         # try and get the object from the database
         try:
-            e = self.entity_type.objects.get(id=id)
-        # if we git more than one, something is horribly wrong
-        except self.entity_type.MultipleObjectsReturned:
-            return jsonify(message=strings.ENTITY_MULTIPLE_RESULTS), 500
+            user = UserService.get_user(username)
+        # if we get more than one, something is horribly wrong
+        except User.MultipleObjectsReturned:
+            res = jsonify(message=strings.ENTITY_MULTIPLE_RESULTS)
+            res.status_code = 500
         # if it doesn't exist, inform the user
-        except self.entity_type.DoesNotExist:
-            return jsonify(message=strings.ENTITY_NOT_FOUND), 404
+        except User.DoesNotExist:
+            res = jsonify(message=strings.ENTITY_NOT_FOUND)
+            res.status_code = 404
+            return res
         # return the object
-        return jsonify(e.to_json()), 200
+        json = UserViewMapper.to_json_from_model(user)
+        res = jsonify(json)
+        res.status_code = 200
+        return res
 
-    def post(self, repository):
+    def post(self, username):
         # get the json from the request, it's already validated
         req_json = request.get_json(force=True)
         # validate the request data given a schema for the entity
@@ -39,17 +42,12 @@ class EntityResource(Resource):
         # if it could not be validated, return why
         if err:
             return jsonify(message=err), 400
-        # try to get the tags from the request query string
-        try:
-            tags = self.get_tags(request)
-        except exceptions.InvalidTagsException:
-            return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
         # if everything went smootly, create the new entity
-        self.entity_type.create_entity_from_dict(req_json, tags)
+        UserViewMapper.to_model_from_json(req_json)
         # indicate success
         return jsonify(message=strings.API_SUCCESS), 200
 
-    def put(self, repository, id):
+    def put(self, username):
         # get the json from the request, it's already validated
         req_json = request.get_json(force=True)
         # is the id specified
@@ -64,17 +62,12 @@ class EntityResource(Resource):
         # if it doesn't exist, inform the user
         except self.entity_type.DoesNotExist:
             return jsonify(message=strings.ENTITY_NOT_FOUND), 404
-        # try to get the tags from the request query string
-        try:
-            tags = self.get_tags(request)
-        except exceptions.InvalidTagsException:
-            return jsonify(message=strings.ENTITY_INVALID_TAGS), 401
-        # if everything went smootly, update the entity
-        self.entity_type.update_entity_from_dict(req_json, tags)
+        # if everything went smoothly, update the entity
+        UserService.update_user(req_json)
         # indicate success
         return jsonify(message=strings.API_SUCCESS), 200
 
-    def delete(self, repository, id):
+    def delete(self, username):
         # is the id specified
         if not id:
             return jsonify(message=strings.ENTITY_NO_ID), 400
@@ -91,11 +84,3 @@ class EntityResource(Resource):
         e.delete()
         # indicate success
         return jsonify(message=strings.API_SUCCESS), 200
-
-    def get_tags(request):
-        """ get the permission tags list from the request query string """
-        tags = request.args.get('tags')
-        if tags is None:
-            return []
-        tag_list = list(csv.reader(tags))
-        return tag_list
