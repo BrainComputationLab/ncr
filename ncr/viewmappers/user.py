@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from ncr.viewmappers import ViewMapper
+from ncr.models import User
 
 
 class UserViewMapper(ViewMapper):
@@ -18,4 +19,4 @@ class UserViewMapper(ViewMapper):
 
     @classmethod
     def to_model_from_json(cls, js):
-        pass
+        return User(**js)
