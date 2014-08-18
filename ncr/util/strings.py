@@ -1,10 +1,6 @@
-def json_message_wrapper(message):
-    return {
-        'message': message
-    }
+from __future__ import unicode_literals, absolute_import
 
 API_SUCCESS = "operation completed successfully"
-API_MISSING_ID = "missing id parameter"
 API_MISSING_TOKEN = "missing access token"
 API_BAD_TOKEN = "Invalid/Expired auth token"
 API_INVALID_JSON = "Invalid JSON object"

@@ -1,4 +1,7 @@
+from __future__ import absolute_import, unicode_literals
+
 from mongoengine import connect
+
 from ncr import config
 
 mongo_session = connect(

@@ -1,4 +1,6 @@
+from __future__ import absolute_import, unicode_literals
 import csv
+
 from flask import request, jsonify
 from flask.ext.restful import Resource
 

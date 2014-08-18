@@ -1,16 +1,23 @@
 from __future__ import unicode_literals, absolute_import
+import logging
 
 from ncr.models import Session
+
+logger = logging.getLogger(__name__)
 
 
 class SessionService(object):
 
     @classmethod
-    def get_session_by_username(cls, username):
+    def get_session_by_user(cls, user):
         try:
-            return Session.objects.get(username=username)
+            return Session.objects.get(user=user)
         except Session.DoesNotExist:
-            # TODO log something
+            logger.info(
+                "Cannot retrieve session with username %s: "
+                "session doesn't exist.",
+                user.username
+            )
             return None
 
     @classmethod
@@ -18,20 +25,29 @@ class SessionService(object):
         try:
             return Session.objects.get(token=token)
         except Session.DoesNotExist:
-            # TODO log something
+            logger.info(
+                "Cannot retrieve session with token %s: "
+                "session doesn't exist.",
+                token
+            )
             return None
 
     @classmethod
-    def create_session(cls, username, token):
-        Session(username=username, token=token).save()
+    def create_session(cls, user, token):
+        Session(user=user, token=token).save()
+        return True
 
     @classmethod
-    def delete_session_by_username(cls, username):
+    def delete_session_by_user(cls, user):
         try:
-            Session.objects.get(username=username).delete()
+            Session.objects.get(user=user).delete()
             return True
         except Session.DoesNotExist:
-            # TODO log something
+            logger.warning(
+                "Cannot delete session with username %s: "
+                "session doesn't exist.",
+                user.username,
+            )
             return False
 
     @classmethod
@@ -40,5 +56,9 @@ class SessionService(object):
             Session.objects.get(token=token).delete()
             return True
         except Session.DoesNotExist:
-            # TODO log something
+            logger.warning(
+                "Cannot delete session with token %s: "
+                "session doesn't exist.",
+                token
+            )
             return False

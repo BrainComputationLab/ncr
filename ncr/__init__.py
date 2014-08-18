@@ -3,6 +3,7 @@ from __future__ import unicode_literals, absolute_import
 from flask import Flask, request, jsonify
 from flask.ext.restful import Api
 
+from ncr.services.auth import AuthService
 from ncr.util import strings
 from ncr.views import (
     AuthenticationResource,
@@ -10,7 +11,7 @@ from ncr.views import (
 )
 
 AUTHENTICATION_ROUTE = '/authenticate'
-TOKEN_HEADER_KEY = 'auth-token'
+TOKEN_HEADER_KEY = 'Auth-Token'
 
 # Create new application
 app = Flask(__name__)
@@ -43,11 +44,11 @@ def before_request():
     token = request.headers.get(TOKEN_HEADER_KEY)
     # if they didn't supply a request token
     if token is None:
-        return jsonify(message=strings.API_MISSING_TOKEN), 400
+        return jsonify(message=strings.API_MISSING_TOKEN), 401
     # validate the token
-    valid = app.db.verify_token(token)
+    valid = AuthService.verify_token(token)
     if not valid:
-        return jsonify(strings.API_BAD_TOKEN), 401
+        return jsonify(message=strings.API_BAD_TOKEN), 401
 
 # Add Resources
 api.add_resource(AuthenticationResource, AUTHENTICATION_ROUTE)

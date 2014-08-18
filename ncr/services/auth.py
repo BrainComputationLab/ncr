@@ -15,11 +15,11 @@ class AuthService(object):
         hashed_pass = hash_password(password, user.salt)
         if hashed_pass != user.password:
             return None
-        session = SessionService.get_session_by_username(user.username)
+        session = SessionService.get_session_by_user(user)
         if session:
             return session.token
         token = gen_token()
-        SessionService.create_session(username, token)
+        SessionService.create_session(user, token)
         return token
 
     @classmethod
