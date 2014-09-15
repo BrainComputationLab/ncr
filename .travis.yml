@@ -3,14 +3,14 @@ python:
   - "2.7"
   - "3.3"
 # command to install dependencies
-install: ./bootstrap.sh && source .env/bin/activate
+install:
+    - make bootstrap
+    - source .env/bin/activate
 # service stuff
 services:
   - mongodb
 # command to run tests
-script:
-    - py.test --spec --cov-report term-missing --cov ncr ncr/tests/**/*.py ncr/tests/*.py
-    - flake8 ncr/
+script: make test
 # no pesky email notifications
 notifications:
   email: false
